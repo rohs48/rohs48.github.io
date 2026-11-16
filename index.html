@@ -149,60 +149,13 @@ a{color:#c1d4b9}
 
 .chat-avatar-image{width:42px;height:42px;flex:0 0 42px;border-radius:50%;object-fit:cover;background:#34314c}.member-avatar-image{width:42px;height:42px;flex:none;border-radius:50%;object-fit:cover;border:1px solid #526455}
 
-
-/* ROHS48 responsive repair: preserve the night-garden visual identity. */
-html{scroll-behavior:smooth}
-.nav{min-width:0;flex-wrap:nowrap;gap:clamp(8px,1.5vw,18px)}
-.nav nav{min-width:0;flex-wrap:nowrap;white-space:nowrap}
-/* The drawer is moved to body by JS; it can now cover the complete viewport. */
-.more-backdrop{position:fixed;inset:0;z-index:9998;background:#050806b8;backdrop-filter:blur(3px)}
-.more-menu{position:fixed;inset:0 auto 0 0;width:clamp(350px,30vw,520px);max-width:88vw;height:100vh;height:100dvh;min-height:100vh;overflow-y:auto;overscroll-behavior:contain;z-index:9999;padding:28px 24px calc(24px + env(safe-area-inset-bottom));border:0;border-right:1px solid #526455;border-radius:0 20px 20px 0;box-shadow:20px 0 60px #0008;background:#202a23;display:flex;flex-direction:column;align-items:stretch;gap:7px}
-.more-menu-head{position:sticky;top:-28px;background:#202a23;padding:12px 4px 18px;z-index:1}
-.more-menu-head strong{font-size:clamp(22px,2vw,28px)}
-.more-menu a{display:flex;align-items:center;min-height:52px;padding:14px 16px;border-radius:12px;font-size:16px}
-.more-menu a:focus-visible,.more-menu button:focus-visible,.nav a:focus-visible{outline:2px solid #a8c4a0;outline-offset:3px}
-/* Compact two-tier mobile header: actions stay together, links scroll horizontally. */
-@media(max-width:760px){
- header{z-index:100}
- .nav{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;padding:12px 14px}
- .brand{order:0;flex:1 1 auto;min-width:76px;margin-right:auto;font-size:27px;line-height:1}
- .more-wrap{order:1;flex:0 0 auto}
- #accountBtn{order:2;flex:0 0 auto;padding:10px 13px;font-size:13px;white-space:nowrap}
- .bell-wrap{order:3;flex:0 0 auto}
- .bell-btn{padding:10px 12px}
- .nav nav{order:4;display:flex;flex:0 0 100%;width:100%;min-width:0;gap:21px;justify-content:flex-start;overflow-x:auto;overflow-y:hidden;white-space:nowrap;flex-wrap:nowrap;padding:5px 1px 7px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
- .nav nav::-webkit-scrollbar{display:none}
- .nav nav a{flex:0 0 auto;display:block;font-size:13px;padding:5px 0}
- .more-menu{width:84vw;max-width:84vw;min-width:0;padding:20px 17px calc(20px + env(safe-area-inset-bottom));border-radius:0 18px 18px 0}
- .more-menu-head{top:-20px;padding-top:10px}
- .more-menu a{min-height:50px;font-size:15px}
- main{padding:25px 18px 64px}
-}
-@media(max-width:380px){.brand{font-size:24px}#accountBtn{padding:9px 10px;font-size:12px}.nav{gap:7px}.more-wrap>button{padding:9px 10px;font-size:12px}}
-/* Chats opens on a conversation list only; selecting a person takes over the screen. */
-.chat-shell{display:block;height:auto;min-height:420px;max-height:none;border-radius:20px}
-.chat-sidebar{display:flex;width:100%;min-height:420px;border:0}
-.chat-main{display:none}
-.chat-route .chat-heading{display:flex}
-.chat-route .chat-shell{height:auto;min-height:420px}
-.chat-route .chat-sidebar{min-height:min(650px,70vh)}
-body.chat-route.chat-conversation-open{overflow:hidden}
-body.chat-route.chat-conversation-open>header{display:none}
-body.chat-route.chat-conversation-open>main{display:block;position:fixed;inset:0;z-index:9990;max-width:none;width:100%;height:100dvh;margin:0;padding:0;background:#11111d;overflow:hidden}
-body.chat-route.chat-conversation-open #messages{display:flex!important;position:absolute;inset:0;flex-direction:column;width:100%;height:100%;margin:0;padding:0;background:#11111d;overflow:hidden}
-body.chat-route.chat-conversation-open #messages .chat-heading,
-body.chat-route.chat-conversation-open #messages>.chat-footnote{display:none!important}
-body.chat-route.chat-conversation-open #messages .chat-shell{display:block;position:absolute;inset:0;width:100%;height:100%;min-height:0;margin:0;border:0;border-radius:0;box-shadow:none;background:#11111d}
-body.chat-route.chat-conversation-open #messages .chat-sidebar{display:none!important}
-body.chat-route.chat-conversation-open #messages .chat-main{display:flex!important;position:absolute;inset:0;width:100%;height:100%;min-height:0}
-body.chat-route.chat-conversation-open #messages .chat-active{height:100%;min-height:0}
-body.chat-route.chat-conversation-open #messages .chat-topbar{position:relative;top:auto;z-index:2;flex:0 0 68px;height:68px;padding:0 14px;padding-top:env(safe-area-inset-top);background:#1b1a2a}
-body.chat-route.chat-conversation-open #messages .chat-back-btn{display:block;margin-left:auto}
-body.chat-route.chat-conversation-open #messages .chat-messages{flex:1;min-height:0;overflow-y:auto;padding:18px 14px}
-body.chat-route.chat-conversation-open #messages .chat-composer{flex:0 0 auto;padding-bottom:calc(12px + env(safe-area-inset-bottom))}
-body.chat-route.chat-conversation-open #messages .chat-compose-line textarea{min-width:0}
-@media(max-width:720px){.chat-route .chat-shell{height:auto;min-height:420px;border-radius:18px;border:1px solid #34314c}.chat-route .chat-sidebar{min-height:65vh}.chat-route .chat-main{display:none}}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+/* ROHS48 requested interaction polish */
+.read-list{display:grid;gap:9px}.read-item{width:100%;display:flex;flex-direction:column;align-items:flex-start;gap:5px;text-align:left;padding:14px 16px;border:1px solid var(--line);border-radius:13px;background:var(--card);color:var(--ink);transition:background .18s ease,border-color .18s ease,transform .18s ease,box-shadow .18s ease}.read-item strong{font-size:14px}.read-item span{font-size:11px;color:var(--muted);line-height:1.45}.read-item:hover{background:#f0f1e9;border-color:#b9c3b3;transform:translateY(-1px);box-shadow:0 7px 18px #19241712}
+.more-menu{left:0;right:auto;width:clamp(350px,30vw,520px);max-width:88vw;border-left:0;border-right:1px solid #526455;border-radius:0 20px 20px 0;transform:translateX(-105%);visibility:hidden;transition:transform .24s ease,visibility .24s ease}.more-menu:not(.hidden){transform:translateX(0);visibility:visible}.more-menu a{padding:16px 17px;font-size:16px;border-radius:12px}.more-backdrop{opacity:0;transition:opacity .2s ease}.more-backdrop:not(.hidden){opacity:1}
+.chat-shell{height:calc(100dvh - 205px);min-height:520px;display:block;position:relative}.chat-sidebar{height:100%;width:100%;border:0}.chat-main{display:none;position:absolute;inset:0;z-index:3;width:100%;height:100%;border-radius:inherit}.chat-shell.chat-open .chat-sidebar{display:none}.chat-shell.chat-open .chat-main{display:flex}.chat-back-btn{display:inline-flex}.chat-page .chat-heading{margin-bottom:12px}.chat-conversation{position:relative}.chat-conversation-open{display:flex;flex:1;min-width:0;align-items:center;gap:12px;background:transparent;color:inherit;text-align:left;padding:12px;border-radius:13px}.chat-conversation{padding-right:42px}.chat-conv-more{position:absolute;right:6px;top:50%;transform:translateY(-50%);padding:7px 10px;background:transparent;color:#aaa6ca}.chat-conversation-list{display:grid;align-content:start;gap:3px}.chat-route main{max-width:none;padding:12px 18px 0}.chat-route #messages{max-width:none;margin:0;padding:0}.chat-route .chat-page{max-width:none;width:100%;margin:0}.chat-route .chat-shell{height:calc(100dvh - 150px);min-height:420px;border-radius:18px}.chat-route .chat-heading{transition:opacity .18s ease}.chat-conversation-open.chat-route .chat-heading{display:none}.chat-conversation-open.chat-route>header{display:none}.chat-conversation-open.chat-route main{padding:0}.chat-conversation-open.chat-route #messages{margin:0}.chat-conversation-open.chat-route .chat-shell{height:100dvh;min-height:100dvh;border-radius:0;border:0}
+@media(max-width:720px){.more-menu{width:84vw;max-width:84vw}.chat-route main{padding:0}.chat-route #messages{padding:0}.chat-route .chat-heading{padding:10px 14px}.chat-route .chat-shell{height:calc(100dvh - 132px);min-height:380px;border-radius:0;border-left:0;border-right:0}.chat-route .chat-page .chat-heading h2{font-size:28px}.chat-bubble-row{max-width:92%}}
+@keyframes rohsPageIn{from{opacity:.72;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}.page-section.route-active:not(.hidden){animation:rohsPageIn .22s ease-out}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 
 </style>
 </head>
@@ -221,7 +174,7 @@ body.chat-route.chat-conversation-open #messages .chat-compose-line textarea{min
 <div id="submitPanel" class="panel"><div class="row"><div><label for="kind">What are you sharing?</label><select id="kind"><option value="memory">Photo album</option><option value="diary">Diary entry</option></select></div><div><label for="title">Title</label><input id="title" maxlength="100" placeholder="Give this moment a title"></div></div><label for="body">Your words</label><textarea id="body" maxlength="10000" placeholder="What would you like people to know?"></textarea><div id="photoField"><label for="photo">Photos (JPG, PNG or WebP, up to 20)</label><input id="photo" type="file" multiple accept="image/jpeg,image/png,image/webp"><div id="photoPreview" class="thumbs"></div><p class="muted" style="font-size:13px;margin:8px 0 0">Large photos are automatically resized before upload.</p></div><div id="visibilityWrap"><label for="visibility">Who can read this?</label><select id="visibility"><option value="public">Public — after approval</option><option value="friends">Close friends — after approval</option><option value="private">Private — only you</option></select></div><div class="actions"><button id="submitPost">Submit for review</button><button id="signOut" class="secondary hidden">Sign out</button></div><p class="muted" id="profileLine"></p></div></section>
 <section id="messages" data-page="messages" class="page-section section chat-page">
  <div class="chat-heading"><div><div class="chat-kicker">YOUR PRIVATE CORNER</div><h2>Messages</h2><p>Little conversations, just between you and them.</p></div><div class="chat-status"><i></i> private chats</div></div>
- <div id="chatShell" class="chat-shell">
+ <div class="chat-shell">
   <aside class="chat-sidebar"><div class="chat-sidebar-top"><strong>Conversations</strong></div>
    <div class="new-chat-box"><strong>Message the creator</strong><small>Anyone can start a direct message with the ROHS48 creator using their name-only profile.</small></div><div id="chatConversationList" class="chat-conversation-list"><div class="chat-empty-side">Your conversations will appear here.</div></div>
   </aside>
@@ -257,15 +210,12 @@ const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const configured = !SUPABASE_URL.startsWith("YOUR_") && !SUPABASE_ANON_KEY.startsWith("YOUR_");
 const client = configured ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 const $ = id => document.getElementById(id);
-// Fixed overlays must be direct body children: the sticky header's backdrop-filter
-// otherwise becomes the containing block and clips the drawer to header height.
-(()=>{const backdrop=$("moreMenuBackdrop"),drawer=$("moreMenu");if(backdrop&&drawer){document.body.append(backdrop,drawer);}})();
 function notice(text, bad=false){$("message").textContent=text;$("message").classList.remove("hidden","error");if(bad)$("message").classList.add("error");window.scrollTo({top:0,behavior:"smooth"});}
 function esc(s=""){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 let currentUser=null, isAdmin=false, currentProfile=null, replyTarget=null;
 const PAGE_IDS={home:"home",memories:"memories",diary:"diary",records:"records",messages:"messages",posts:"posts",share:"share",profile:"profile",viewProfile:"viewProfile","about-website":"home","about-creator":"home",members:"members",mine:"mine",friends:"friends",admin:"admin"};
-function showRoute(){const raw=(location.hash||"#home").slice(1);let page=PAGE_IDS[raw]||((raw==="mess"||raw==="chat")?"messages":"home");document.body.classList.toggle("chat-route",page==="messages");if(page!=="messages")document.body.classList.remove("chat-conversation-open");if(page==="admin"&&!isAdmin)page="home";if(["members","mine","friends"].includes(page)&&!currentProfile?.display_name)page="home";document.querySelectorAll(".page-section").forEach(el=>{const active=el.dataset.page===page;el.classList.toggle("route-active",active);if(active){const restricted=(el.id==="admin"&&!isAdmin)||(["members","mine","friends","friendsFeed"].includes(el.id)&&!currentProfile?.display_name);el.classList.toggle("hidden",restricted);} });if(page!=="share")$("authPanel")?.classList.add("hidden");if(raw==="about-website"||raw==="about-creator")setTimeout(()=>$ (raw)?.scrollIntoView({behavior:"smooth",block:"start"}),0);else window.scrollTo({top:0,behavior:"instant"});}
-window.addEventListener("hashchange",()=>{showRoute();if((location.hash||"").slice(1)==="messages"||["mess","chat"].includes((location.hash||"").slice(1)))loadChatConversations();});
+function showRoute(){const raw=(location.hash||"#home").slice(1);let page=PAGE_IDS[raw]||"home";document.body.classList.toggle("chat-route",page==="messages");if(page!=="messages")document.body.classList.remove("chat-conversation-open");if(page==="admin"&&!isAdmin)page="home";if(["members","mine","friends"].includes(page)&&!currentProfile?.display_name)page="home";document.querySelectorAll(".page-section").forEach(el=>{const active=el.dataset.page===page;el.classList.toggle("route-active",active);if(active){const restricted=(el.id==="admin"&&!isAdmin)||(["members","mine","friends","friendsFeed"].includes(el.id)&&!currentProfile?.display_name);el.classList.toggle("hidden",restricted);} });if(page!=="share")$("authPanel")?.classList.add("hidden");if(raw==="about-website"||raw==="about-creator")setTimeout(()=>$ (raw)?.scrollIntoView({behavior:"smooth",block:"start"}),0);else window.scrollTo({top:0,behavior:"instant"});}
+window.addEventListener("hashchange",showRoute);
 
 async function getSigned(path){const {data,error}=await client.storage.from("rohs-media").createSignedUrl(path,3600);return error?"":data.signedUrl;}
 function gallery(u,title){const a=(Array.isArray(u)?u:[u]).filter(Boolean);if(!a.length)return "";const imgs=a.map((x,i)=>`<img src="${x}" alt="${esc(title||"Shared memory")}" loading="lazy" data-gallery-index="${i}">`).join("");return `<div class="gwrap"><div class="gallery">${imgs}</div><button class="gallery-open" type="button" data-gallery-open="${esc(JSON.stringify(a))}">View fullscreen · ${a.length} photo${a.length===1?"":"s"}</button></div>`;}
@@ -296,11 +246,12 @@ function closeReading(){$("readingView").classList.add("hidden");document.body.s
 $("closeReading").onclick=closeReading;
 $("readingView").addEventListener("click",e=>{if(e.target===$("readingView"))closeReading();});
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeReading();});
-function readingList(p,images=[]){
- const b=document.createElement("button");b.type="button";b.className="read-item compact-content-row";
- const dt=new Date(p.created_at),visibility=p.visibility==="private"?"Private":p.visibility==="friends"?"Close friends":"Public";
- b.innerHTML=`<strong>${esc(p.title||"Untitled")}</strong><span>${dt.toLocaleDateString()} · ${dt.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})} · ${esc(p.display_name||"ROHS48 member")} · ${visibility}</span>`;
- b.onclick=()=>openReading(p,images);return b;
+function readingList(p){
+ const b=document.createElement("button");b.type="button";b.className="read-item";
+ const stamp=new Date(p.created_at),author=p.display_name||p.author_name||"";
+ const visibility=p.visibility? (p.visibility==="friends"?"Close friends":p.visibility==="private"?"Private":"Public"):"";
+ b.innerHTML=`<strong>${esc(p.title||"Untitled")}</strong><span>${stamp.toLocaleDateString()} · ${stamp.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})}${author?` · ${esc(author)}`:""}${visibility?` · ${esc(visibility)}`:""}</span>`;
+ b.onclick=()=>openReading(p);return b;
 }
 
 const publicPostCache=new Map();
@@ -323,31 +274,30 @@ async function loadPublic(){
  for(const [kind,target] of [["memory","memoryGrid"],["diary","diaryGrid"]]){
   const {data,error}=await client.from("posts").select("id,kind,title,body,media_paths,media_path,created_at,display_name,visibility,status,user_id").eq("status","approved").eq("visibility","public").eq("kind",kind).order("created_at",{ascending:false}).limit(30);
   if(error){$(target).innerHTML='<p class="muted">Could not load this section yet.</p>';continue;}
-  $(target).classList.add("read-list");$(target).innerHTML="";
-  for(const p of (data||[])){
-   const images=kind==="memory"?await getSignedAll(p):[];
-   if(kind==="memory")publicPostCache.set(p.id,{post:p,images});
-   $(target).appendChild(readingList(p,images));
+  if(kind==="memory"){
+   $(target).classList.add("read-list");$(target).innerHTML="";
+   (data||[]).forEach(p=>{const item=readingList(p);item.onclick=async()=>openReading(p,await getSignedAll(p));$(target).appendChild(item);});
+   if(!data?.length)$(target).innerHTML='<p class="muted">No public albums yet. Be the first to share one.</p>';
+  }else{
+   $(target).classList.add("read-list");$(target).innerHTML="";
+   (data||[]).forEach(p=>$(target).appendChild(readingList(p)));
+   if(!data?.length)$(target).innerHTML='<p class="muted">No public entries yet.</p>';
   }
-  if(!data?.length)$(target).innerHTML=kind==="memory"?'<p class="muted">No public albums yet. Be the first to share one.</p>':'<p class="muted">No public entries yet.</p>';
  }
  await hydrateLikeButtons($("memories"));
 }
 async function loadPostsFeed(){
  const box=$("postsFeed");if(!box||!client)return;box.innerHTML='<p class="muted">Loading your feed…</p>';
- let rows=[];
- const pub=await client.from("posts").select("id,kind,title,body,media_paths,media_path,created_at,display_name,visibility,status,user_id").eq("status","approved").eq("visibility","public").in("kind",["memory","diary"]).order("created_at",{ascending:false}).limit(50);
+ let rows=[];const pub=await client.from("posts").select("id,kind,title,body,media_paths,media_path,created_at,display_name,visibility,status,user_id").eq("status","approved").eq("visibility","public").in("kind",["memory","diary"]).order("created_at",{ascending:false}).limit(50);
  if(!pub.error)rows.push(...(pub.data||[]));
  if(currentUser){const fr=await client.rpc("friends_feed");if(!fr.error)rows.push(...(fr.data||[]).filter(p=>p.kind==="memory"||p.kind==="diary").map(p=>({...p,display_name:p.author_name||p.display_name,feed_visibility:"Close friends"})));}
  const vr=await client.from("voice_records").select("id,user_id,title,audio_path,duration_seconds,created_at,visibility,status").eq("status","approved").in("visibility",["public","friends"]).order("created_at",{ascending:false}).limit(40);
- if(!vr.error)rows.push(...(vr.data||[]).map(r=>({...r,kind:"record",body:"",media_paths:[],feed_visibility:r.visibility==="friends"?"Close friends":"Public"})));
- const unique=[...new Map(rows.map(p=>[p.id,p])).values()].sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
- const directory=currentUser?((await client.rpc("rohs_member_directory")).data||[]):[];const profileById=new Map(directory.map(m=>[m.id,m]));if(currentUser&&currentProfile)profileById.set(currentUser.id,currentProfile);
- if(!unique.length){box.innerHTML='<p class="muted">No shared posts yet. Public posts and close-friends posts shared with you will appear here.</p>';return;}
- box.innerHTML="";box.classList.add("read-list");
- for(const p of unique){const prof=profileById.get(p.user_id)||{};const name=p.display_name||prof.display_name||"ROHS48 member";const dt=new Date(p.created_at);const row=document.createElement("button");row.type="button";row.className="read-item compact-content-row";const kind=p.kind==="memory"?"Album":p.kind==="diary"?"Diary":"Record";const visibility=p.feed_visibility||(p.visibility==="friends"?"Close friends":"Public");row.innerHTML=`<strong>${esc(p.title||"Untitled")}</strong><span>${dt.toLocaleDateString()} · ${dt.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})} · ${esc(name)} · ${kind} · ${esc(visibility)}</span>`;
-  row.addEventListener("click",async()=>{if(p.kind==="record"){openVoiceReading(p,await signedVoice(p.audio_path),false);}else{openReading(p,await getSignedAll(p));}});box.appendChild(row);
- }
+ if(!vr.error)rows.push(...(vr.data||[]).map(r=>({...r,kind:"record",body:"",feed_visibility:r.visibility==="friends"?"Close friends":"Public"})));
+ const unique=[...new Map(rows.map(x=>[x.id,x])).values()].sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
+ const directory=currentUser?((await client.rpc("rohs_member_directory")).data||[]):[];const names=new Map(directory.map(m=>[m.id,m.display_name]));if(currentUser&&currentProfile)names.set(currentUser.id,currentProfile.display_name);
+ box.classList.add("read-list");box.innerHTML="";
+ for(const item of unique){const p={...item,display_name:item.display_name||names.get(item.user_id),visibility:item.feed_visibility? (item.feed_visibility==="Close friends"?"friends":"public"):item.visibility};const row=readingList(p);row.onclick=async()=>{if(p.kind==="record")openVoiceReading(p,await signedVoice(p.audio_path),false);else openReading(p,await getSignedAll(p));};box.appendChild(row);}
+ if(!unique.length)box.innerHTML='<p class="muted">No shared posts yet. Public posts and close-friends posts shared with you will appear here.</p>';
 }
 
 async function refresh(){
@@ -389,7 +339,7 @@ function mineCard(p,url){
  const wrap=document.createElement("div");
  const show=()=>{
   wrap.innerHTML=`<button type="button" class="read-item"><strong>${esc(p.title||"Untitled")}</strong><span>${new Date(p.created_at).toLocaleDateString()} · ${esc(statusLabel(p))}</span></button><div class="actions"><button class="secondary" data-a="edit">Edit</button><button class="secondary" data-a="del">Delete</button></div>`;
-  wrap.querySelector(".read-item").onclick=()=>openReading(p,url);
+  wrap.querySelector(".read-item").onclick=async()=>openReading(p,await getSignedAll(p));
   wrap.querySelector('[data-a="edit"]').onclick=edit;
   wrap.querySelector('[data-a="del"]').onclick=del;
  };
@@ -461,13 +411,12 @@ async function loadMine(){
  box.classList.remove("hidden");
  const {data,error}=await client.from("posts").select("id,kind,title,body,media_paths,media_path,created_at,display_name,visibility,status").eq("user_id",currentUser.id).in("kind",["memory","diary"]).order("created_at",{ascending:false}).limit(100);
  if(error){$("mineGrid").innerHTML='<p class="muted">Could not load your posts yet.</p>';return;}
- const urls=await Promise.all((data||[]).map(p=>getSignedAll(p)));
  const grid=$("mineGrid");grid.innerHTML="";
- (data||[]).forEach((p,i)=>grid.appendChild(mineCard(p,urls[i])));
+ (data||[]).forEach(p=>grid.appendChild(mineCard(p,[])));
  if(!data?.length)grid.innerHTML='<p class="muted">You haven\'t shared anything yet.</p>';
  const vr=$("myRecordsGrid");vr.innerHTML="";
  const {data:voiceRows}=await client.from("voice_records").select("id,user_id,title,audio_path,duration_seconds,visibility,status,created_at").eq("user_id",currentUser.id).order("created_at",{ascending:false}).limit(100);
- for(const r of voiceRows||[]){const item=document.createElement("div");item.innerHTML=`<button type="button" class="read-item"><strong>${esc(r.title||"Untitled recording")}</strong><span>${new Date(r.created_at).toLocaleDateString()} · ${esc(statusLabel(r))}</span></button>`;item.querySelector("button").onclick=async()=>openVoiceReading(r,await signedVoice(r.audio_path),true);vr.appendChild(item);}
+ for(const r of voiceRows||[]){const item=document.createElement("div");item.innerHTML=`<button type="button" class="read-item"><strong>${esc(r.title||"Untitled recording")}</strong><span>${new Date(r.created_at).toLocaleDateString()} · ${new Date(r.created_at).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})} · ${esc(statusLabel(r))}</span></button>`;item.querySelector("button").onclick=async()=>openVoiceReading(r,await signedVoice(r.audio_path),true);vr.appendChild(item);}
  if(!voiceRows?.length)vr.innerHTML='<p class="muted">No voice records yet.</p>';
 }
 async function loadFriends(){
@@ -494,9 +443,9 @@ async function loadFriends(){
  const {data:posts,error:e2}=await client.rpc("friends_feed");
  const grid=$("friendsGrid");
  if(e2){grid.innerHTML='<p class="muted">Could not load this section yet.</p>';return;}
- const visiblePosts=(posts||[]).filter(p=>p.kind==='memory'||p.kind==='diary');const urls=await Promise.all(visiblePosts.map(p=>getSignedAll(p)));
+ const visiblePosts=(posts||[]).filter(p=>p.kind==='memory'||p.kind==='diary');
  grid.innerHTML="";grid.classList.add("read-list");
- visiblePosts.forEach((p,i)=>{const item=readingList({...p,display_name:p.author_name});item.querySelector("span").textContent=new Date(p.created_at).toLocaleDateString()+" · Close friends";item.onclick=()=>openReading(p,urls[i]);grid.appendChild(item);});
+ visiblePosts.forEach(p=>{const item=readingList({...p,display_name:p.author_name,visibility:"friends"});item.onclick=async()=>openReading(p,await getSignedAll(p));grid.appendChild(item);});
  if(!visiblePosts.length)grid.innerHTML='<p class="muted">Nothing from your close friends yet.</p>';
 }
 async function adminAuth(){const email=$("adminEmail").value.trim(),password=$("adminPassword").value;if(!email||!password)return notice("Enter the administrator credentials.",true);const {data,error}=await client.auth.signInWithPassword({email,password});if(error)return notice(error.message,true);$("adminLoginModal").classList.add("hidden");await refresh();if(!isAdmin){await client.auth.signOut();await refresh();return notice("This account is not marked as the site administrator.",true);}notice("Administrator signed in.");}
@@ -623,8 +572,8 @@ function voiceCard(r,url,adminMode=false){
  const el=document.createElement("div");
  const owner=!!currentUser&&r.user_id===currentUser.id;
  const status=adminMode?"Awaiting approval":(r.visibility==="private"?"Private":r.visibility==="friends"?"Close friends":r.status==="approved"?"Public":"Awaiting approval");
- el.innerHTML=`<button type="button" class="read-item compact-content-row"><strong>${esc(r.title||"Untitled recording")}</strong><span>${new Date(r.created_at).toLocaleDateString()} · ${new Date(r.created_at).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})} · ${esc(status)}</span></button>`;
- el.querySelector("button").onclick=()=>openVoiceReading(r,url,owner);
+ el.innerHTML=`<button type="button" class="read-item"><strong>${esc(r.title||"Untitled recording")}</strong><span>${new Date(r.created_at).toLocaleDateString()} · ${new Date(r.created_at).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})}${r.display_name?` · ${esc(r.display_name)}`:""} · ${esc(status)}</span></button>`;
+ el.querySelector("button").onclick=async()=>openVoiceReading(r,await signedVoice(r.audio_path),owner);
  if(adminMode){const actions=document.createElement("div");actions.className="actions";actions.innerHTML='<button data-review="approved">Approve</button><button class="secondary" data-review="rejected">Reject</button>';actions.querySelectorAll("button").forEach(btn=>btn.onclick=()=>moderateVoice(r.id,btn.dataset.review));el.appendChild(actions);}
  return el;
 }
@@ -649,11 +598,12 @@ async function loadRecords(){
   if(friendRows)rows.push(...friendRows);
  }
  const unique=[...new Map(rows.map(r=>[r.id,r])).values()].sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
- grid.innerHTML="";for(const r of unique){const url=await signedVoice(r.audio_path);grid.appendChild(voiceCard(r,url));}
+ if(currentUser){const directory=(await client.rpc("rohs_member_directory")).data||[];const names=new Map(directory.map(m=>[m.id,m.display_name]));if(currentProfile)names.set(currentUser.id,currentProfile.display_name);unique.forEach(r=>r.display_name=names.get(r.user_id)||"");}
+ grid.innerHTML="";for(const r of unique){grid.appendChild(voiceCard(r,""));}
  if(!unique.length)grid.innerHTML='<p class="muted">No voice records available yet.</p>';
 }
 async function deleteVoice(r){if(!confirm("Delete this voice recording? This cannot be undone."))return;const {data,error}=await client.from("voice_records").delete().eq("id",r.id).select("id");if(error||!data?.length)return notice(error?.message||"Could not delete this recording.",true);await client.storage.from("rohs-voice").remove([r.audio_path]);notice("Voice record deleted.");await loadRecords();await loadMine();}
-async function loadPendingRecords(){if(!isAdmin)return;const grid=$("pendingRecordsGrid");const {data,error}=await client.from("voice_records").select("id,user_id,title,audio_path,duration_seconds,visibility,status,created_at").eq("status","pending").order("created_at",{ascending:true});if(error){grid.innerHTML='<p class="muted">Could not load pending voice records.</p>';return;}grid.innerHTML="";for(const r of data||[]){grid.appendChild(voiceCard(r,await signedVoice(r.audio_path),true));}if(!data?.length)grid.innerHTML='<p class="muted">No voice records waiting for review.</p>';}
+async function loadPendingRecords(){if(!isAdmin)return;const grid=$("pendingRecordsGrid");const {data,error}=await client.from("voice_records").select("id,user_id,title,audio_path,duration_seconds,visibility,status,created_at").eq("status","pending").order("created_at",{ascending:true});if(error){grid.innerHTML='<p class="muted">Could not load pending voice records.</p>';return;}grid.innerHTML="";for(const r of data||[]){grid.appendChild(voiceCard(r,"",true));}if(!data?.length)grid.innerHTML='<p class="muted">No voice records waiting for review.</p>';}
 async function moderateVoice(id,status){const {error}=await client.from("voice_records").update({status}).eq("id",id);if(error)return notice(error.message,true);notice(status==="approved"?"Voice record approved.":"Voice record rejected.");await loadPendingRecords();await loadRecords();}
 
 
@@ -676,7 +626,7 @@ async function loadChatConversations(){
  const rows=data||[];const html=await Promise.all(rows.map(async c=>{const person=people.get(c.other_user_id)||{};let avatar=`<span class="chat-avatar">${esc((c.other_name||'R').slice(0,1).toUpperCase())}</span>`;if(person.avatar_path){const signed=await client.storage.from('rohs-avatars').createSignedUrl(person.avatar_path,1800);if(signed.data?.signedUrl)avatar=`<img class="chat-avatar-image" src="${signed.data.signedUrl}" alt="">`;}return `<div class="chat-conversation ${c.conversation_id===activeChatId?'active':''}"><button class="chat-conversation-open" type="button" data-chat-open="${esc(c.conversation_id)}" data-peer-id="${esc(c.other_user_id)}" data-peer-name="${esc(c.other_name||'rohs member')}">${avatar}<span class="chat-conv-copy"><strong>${esc(c.other_name||'rohs member')}${c.other_name==='Rohith-Admin'?'<i class="chat-admin-mark">ADMIN</i>':''}</strong><span>${esc(c.last_message||'Start a conversation')}</span></span><small class="chat-conv-time">${c.last_at?chatTime(c.last_at):''}</small></button><button class="chat-conv-more" type="button" data-chat-more="${esc(c.conversation_id)}" aria-label="More options">⋯</button><div class="chat-conv-menu hidden"><button type="button" data-profile-action="view" data-peer-id="${esc(c.other_user_id)}" data-chat-id="${esc(c.conversation_id)}">View Profile</button><button type="button" data-profile-action="erase" data-peer-id="${esc(c.other_user_id)}" data-chat-id="${esc(c.conversation_id)}">Erase History</button><button type="button" data-profile-action="delete" data-peer-id="${esc(c.other_user_id)}" data-chat-id="${esc(c.conversation_id)}">Delete Profile</button></div></div>`;}));
  list.innerHTML=html.join('')||'<div class="chat-empty-side">No conversations yet.<br>Message the creator or find a member to start one.</div>';
 }
-function openChat(id,peer,name){if(activeChatId&&activeChatId!==id)setChatTyping(false);activeChatId=id;chatTypingActive=false;activePeerId=peer;$('chatWelcome').classList.add('hidden');$('chatActive').classList.remove('hidden');$('chatPeerName').textContent=name||'rohs member';$('chatAvatar').textContent=(name||'R').slice(0,1).toUpperCase();$('chatShell')?.classList.add('chat-open');document.body.classList.add('chat-conversation-open');loadChatMessages();loadChatConversations();if(chatTypingPoll)clearInterval(chatTypingPoll);chatTypingPoll=setInterval(pollChatTyping,1800);pollChatTyping();if(chatRealtime)client.removeChannel(chatRealtime);chatRealtime=client.channel('rohs-chat-'+id).on('postgres_changes',{event:'*',schema:'public',table:'rohs_chat_messages',filter:'conversation_id=eq.'+id},()=>loadChatMessages()).on('postgres_changes',{event:'*',schema:'public',table:'rohs_chat_reactions'},()=>loadChatMessages()).subscribe();}
+function openChat(id,peer,name){document.body.classList.add('chat-conversation-open');if(activeChatId&&activeChatId!==id)setChatTyping(false);activeChatId=id;chatTypingActive=false;activePeerId=peer;$('chatWelcome').classList.add('hidden');$('chatActive').classList.remove('hidden');$('chatPeerName').textContent=name||'rohs member';$('chatAvatar').textContent=(name||'R').slice(0,1).toUpperCase();$('chatShell')?.classList.add('chat-open');document.querySelector('.chat-shell')?.classList.add('chat-open');loadChatMessages();loadChatConversations();if(chatTypingPoll)clearInterval(chatTypingPoll);chatTypingPoll=setInterval(pollChatTyping,1800);pollChatTyping();if(chatRealtime)client.removeChannel(chatRealtime);chatRealtime=client.channel('rohs-chat-'+id).on('postgres_changes',{event:'*',schema:'public',table:'rohs_chat_messages',filter:'conversation_id=eq.'+id},()=>loadChatMessages()).on('postgres_changes',{event:'*',schema:'public',table:'rohs_chat_reactions'},()=>loadChatMessages()).subscribe();}
 async function loadChatMessages(){
  if(!activeChatId)return;const box=$('chatMessages');const {data,error}=await client.from('rohs_chat_messages').select('id,conversation_id,sender_id,body,message_type,media_path,created_at,edited_at,deleted_at,read_at,reply_to_message_id').eq('conversation_id',activeChatId).order('created_at',{ascending:true}).limit(300);
  if(error){box.innerHTML='<div class="chat-date-chip">Could not load messages. Check the SQL migration.</div>';return;}
@@ -705,7 +655,7 @@ $('chatTextInput').addEventListener('input',()=>{if(!activeChatId)return;setChat
 async function sendChatMessage(body='',type='text',path=null){if(!activeChatId||!currentUser)return notice('Open a conversation first.',true);if(type==='text'&&!body.trim())return;const {error}=await client.from('rohs_chat_messages').insert({conversation_id:activeChatId,sender_id:currentUser.id,body:body.trim()||null,message_type:type,media_path:path,reply_to_message_id:replyTarget?.id||null});if(error)return notice(error.message||'Message could not be sent.',true);if(type==='text')$('chatTextInput').value='';replyTarget=null;$('chatReplyBar').classList.add('hidden');await setChatTyping(false);await loadChatMessages();await loadChatConversations();}
 async function uploadChatMedia(file,type){if(!activeChatId||!currentUser)return notice('Open a conversation first.',true);if(type==='image'&&!['image/jpeg','image/png','image/webp'].includes((file.type||'').split(';')[0]))return notice('Choose a JPG, PNG or WebP image.',true);if(file.size>15*1024*1024)return notice('Files must be smaller than 15 MB.',true);const path=`${activeChatId}/${currentUser.id}/${crypto.randomUUID()}.${chatFileExt(file)}`;const {error}=await client.storage.from('rohs-chat-media').upload(path,file,{contentType:(file.type||'application/octet-stream').split(';')[0],upsert:false});if(error)return notice(error.message||'Upload failed.',true);await sendChatMessage('',type,path);}
 async function recordChatVoice(){if(!navigator.mediaDevices?.getUserMedia||!window.MediaRecorder)return notice('Voice notes are not supported by this browser.',true);if(chatRecorder){chatRecorder.stop();$('chatVoiceBtn').textContent='♫';return;}try{const stream=await navigator.mediaDevices.getUserMedia({audio:true});chatVoiceChunks=[];chatRecorder=new MediaRecorder(stream);chatRecorder.ondataavailable=e=>{if(e.data.size)chatVoiceChunks.push(e.data);};chatRecorder.onstop=()=>{chatVoiceBlob=new Blob(chatVoiceChunks,{type:chatRecorder.mimeType||'audio/webm'});stream.getTracks().forEach(t=>t.stop());chatRecorder=null;$('chatVoiceBtn').textContent='♫';$('chatVoicePreview').classList.remove('hidden');$('chatRecordHint').textContent='Voice note recorded';};chatRecorder.start();$('chatVoiceBtn').textContent='■';$('chatRecordHint').textContent='Recording… tap ■ to stop';}catch(e){notice(e.message||'Microphone permission was denied.',true);}}
-$('chatReplyCancel').onclick=()=>{replyTarget=null;$('chatReplyBar').classList.add('hidden');};$('chatSendBtn').onclick=()=>sendChatMessage($('chatTextInput').value);$('chatTextInput').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChatMessage($('chatTextInput').value);}});$('chatPhotoInput').onchange=async e=>{const f=e.target.files?.[0];if(f)await uploadChatMedia(f,'image');e.target.value='';};$('chatVoiceBtn').onclick=recordChatVoice;$('chatSendVoice').onclick=async()=>{if(!chatVoiceBlob)return;const ext=chatFileExt(chatVoiceBlob);const file=new File([chatVoiceBlob],`voice-note.${ext}`,{type:chatVoiceBlob.type});await uploadChatMedia(file,'voice');chatVoiceBlob=null;$('chatVoicePreview').classList.add('hidden');};$('chatDiscardVoice').onclick=()=>{chatVoiceBlob=null;$('chatVoicePreview').classList.add('hidden');};$('chatBackBtn').onclick=()=>{document.querySelector('.chat-shell')?.classList.remove('chat-open');document.body.classList.remove('chat-conversation-open');if(chatTypingPoll)clearInterval(chatTypingPoll);setChatTyping(false);activeChatId=null;activePeerId=null;$('chatActive').classList.add('hidden');$('chatWelcome').classList.remove('hidden');loadChatConversations();};
+$('chatReplyCancel').onclick=()=>{replyTarget=null;$('chatReplyBar').classList.add('hidden');};$('chatSendBtn').onclick=()=>sendChatMessage($('chatTextInput').value);$('chatTextInput').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChatMessage($('chatTextInput').value);}});$('chatPhotoInput').onchange=async e=>{const f=e.target.files?.[0];if(f)await uploadChatMedia(f,'image');e.target.value='';};$('chatVoiceBtn').onclick=recordChatVoice;$('chatSendVoice').onclick=async()=>{if(!chatVoiceBlob)return;const ext=chatFileExt(chatVoiceBlob);const file=new File([chatVoiceBlob],`voice-note.${ext}`,{type:chatVoiceBlob.type});await uploadChatMedia(file,'voice');chatVoiceBlob=null;$('chatVoicePreview').classList.add('hidden');};$('chatDiscardVoice').onclick=()=>{chatVoiceBlob=null;$('chatVoicePreview').classList.add('hidden');};$('chatBackBtn').onclick=()=>{document.body.classList.remove('chat-conversation-open');document.querySelector('.chat-shell')?.classList.remove('chat-open');if(chatTypingPoll)clearInterval(chatTypingPoll);setChatTyping(false);loadChatConversations();};
 let chatPressTimer=null,chatTapCount=0,chatTapTimer=null,chatGestureOpened=false;
 const chatMessageSurface=$('chatMessages');
 chatMessageSurface?.addEventListener('pointerdown',e=>{const bubble=e.target.closest('.chat-bubble');if(!bubble)return;const row=bubble.closest('.chat-bubble-row');chatPressTimer=setTimeout(()=>{row.classList.add('actions-open');chatGestureOpened=true;chatTapCount=0;},520);});
@@ -775,13 +725,14 @@ document.addEventListener('click',async e=>{
  if(act.dataset.profileAction==='delete'){
   if(!targetPeerId)return;if(!isAdmin)return notice('Only the administrator can delete another member profile. You can delete your own profile from Profile settings.',true);
   if(!confirm('Permanently delete this member profile, their shared posts, voice records, chat history and uploaded attachments? This cannot be undone.'))return;
-  const {error}=await client.rpc('rohs_admin_delete_member_profile',{p_user_id:targetPeerId});if(error)return notice(error.message,true);
+  const deleted=await requestProfileDeletion(targetPeerId);if(!deleted)return;
   if(activePeerId===targetPeerId){activeChatId=null;activePeerId=null;$('chatActive').classList.add('hidden');$('chatWelcome').classList.remove('hidden');}
   await refresh();notice('Member profile and associated content deleted.');
  }
 });
 $('eraseOwnHistory').onclick=async()=>{if(!currentUser)return;if(!confirm('Clear all your conversations from your chat history? Other participants will keep their copies.'))return;const {error}=await client.rpc('rohs_erase_all_my_chat_history');if(error)return notice(error.message,true);await loadChatMessages();await loadChatConversations();notice('Your chat history was cleared.');};
-$('deleteOwnProfile').onclick=async()=>{if(!currentUser||!confirm('Permanently delete your profile, shared posts, voice records, chat history and uploaded attachments? Your anonymous sign-in session will remain so you can create a new profile.'))return;const {error}=await client.rpc('rohs_delete_my_profile');if(error)return notice(error.message,true);currentProfile=null;activeChatId=null;activePeerId=null;await client.auth.signOut();currentUser=null;await refresh();notice('Your profile and associated content were deleted.');};
+async function requestProfileDeletion(targetUserId=null){if(!currentUser){notice("Sign in first.",true);return false;}const {data:{session}}=await client.auth.getSession();if(!session?.access_token){notice("Your session expired. Sign in again.",true);return false;}const {data:result,error}=await client.functions.invoke("delete-profile",{body:targetUserId?{userId:targetUserId}:{}});if(error||!result?.success){notice(result?.error||error?.message||"Profile deletion failed. No success was reported.",true);return false;}if(!targetUserId||targetUserId===currentUser.id){currentProfile=null;activeChatId=null;activePeerId=null;if(chatRealtime)await client.removeChannel(chatRealtime);await client.auth.signOut();currentUser=null;await refresh();}else{await loadChatConversations();}notice("Profile and associated content were deleted.");return true;}
+$('deleteOwnProfile').onclick=async()=>{if(!currentUser||!confirm('Permanently delete your profile, shared posts, voice records, chat history and uploaded attachments? This cannot be undone.'))return;await requestProfileDeletion();};
 function closeMoreMenu(){if(!$('moreMenu'))return;$('moreMenu').classList.add('hidden');$('moreMenuBackdrop').classList.add('hidden');$('moreMenuBtn').setAttribute('aria-expanded','false');if($('albumViewer').classList.contains('hidden')&&$('readingView').classList.contains('hidden')&&$('cropModal').classList.contains('hidden'))document.body.style.overflow='';}function openMoreMenu(){$('moreMenu').classList.remove('hidden');$('moreMenuBackdrop').classList.remove('hidden');$('moreMenuBtn').setAttribute('aria-expanded','true');document.body.style.overflow='hidden';}$('moreMenuBtn').onclick=()=>{$('moreMenu').classList.contains('hidden')?openMoreMenu():closeMoreMenu();};$('moreMenuClose').onclick=closeMoreMenu;$('moreMenuBackdrop').onclick=closeMoreMenu;document.addEventListener('click',e=>{if(e.target.closest('#moreMenu a'))closeMoreMenu();else if(!e.target.closest('.more-wrap')&&!e.target.closest('#moreMenu'))closeMoreMenu();});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMoreMenu();});
 
 showRoute();
