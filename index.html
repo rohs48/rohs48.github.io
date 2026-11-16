@@ -1,0 +1,790 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>rohs. — A place where memories live</title>
+<meta name="description" content="A shared home for photographs, diary entries and memories.">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--ink:#252820;--muted:#777b70;--paper:#f7f6f0;--card:#fffefa;--green:#687b62;--line:#e7e6dc}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}
+header{position:sticky;top:0;background:#f7f6f0ed;backdrop-filter:blur(12px);border-bottom:1px solid var(--line);z-index:2}
+.nav{max-width:1050px;margin:auto;padding:17px 22px;display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+.brand{font-family:Georgia,serif;font-size:29px;font-weight:bold;letter-spacing:-1.5px;margin-right:auto}
+nav{display:flex;gap:18px;flex-wrap:wrap}a,button{color:inherit}nav a{text-decoration:none;color:var(--muted);font-size:14px}nav a:hover{color:var(--ink)}
+main{max-width:1050px;margin:0 auto;padding:34px 22px 80px}.hero{padding:55px 0 38px;max-width:680px}
+.eyebrow{text-transform:uppercase;letter-spacing:2px;color:var(--green);font-size:11px;font-weight:700}
+h1{font:clamp(42px,7vw,72px)/.98 Georgia,serif;letter-spacing:-2px;margin:16px 0}
+h2{font:32px Georgia,serif;margin:0 0 8px}.sub{color:var(--muted);line-height:1.7}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+button,.button{border:0;border-radius:999px;background:var(--green);color:white;padding:12px 18px;font-weight:650;cursor:pointer;text-decoration:none;font-size:14px}
+button.secondary,.button.secondary{background:#e9ebe4;color:var(--ink)}button:disabled{opacity:.5;cursor:wait}
+.section{margin-top:44px}.section-head{display:flex;align-items:end;justify-content:space-between;gap:15px;margin-bottom:17px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.card img{width:100%;height:230px;object-fit:cover;display:block;background:#e9e8df}
+.card-body{padding:16px}.card h3{font:22px Georgia,serif;margin:0 0 7px}.meta{font-size:12px;color:var(--muted);margin-bottom:10px}.card p{line-height:1.6;white-space:pre-wrap}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;margin-top:20px}
+label{display:block;font-size:13px;font-weight:650;margin:14px 0 6px}
+input,textarea,select{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:10px;background:white;font:inherit;color:var(--ink)}
+textarea{min-height:125px;resize:vertical}.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.friend{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line)}.friend:first-child{border-top:0}.gwrap{position:relative}.gallery{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;background:#e9e8df}.gallery img{flex:0 0 100%;scroll-snap-align:center}.pill{position:absolute;right:10px;bottom:10px;background:#000a;color:#fff;font-size:11px;padding:4px 10px;border-radius:999px;pointer-events:none}.thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.thumbs img{width:64px;height:64px;object-fit:cover;border-radius:8px;border:1px solid var(--line)}.thumb{position:relative;padding:0;border:0;background:none;border-radius:8px;cursor:pointer}.thumb span{position:absolute;top:3px;right:3px;background:#000a;color:#fff;border-radius:999px;font-size:11px;width:18px;height:18px;line-height:18px;text-align:center}.thumb.removed img{opacity:.25;outline:2px solid #b4513c}.badge{display:inline-block;font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;background:#e9ebe4;color:var(--ink);margin-bottom:10px}.hidden{display:none!important}.notice{padding:12px 14px;background:#edf1e9;border-radius:10px;color:#43543e;margin:14px 0;font-size:14px}
+.record-card{padding:16px}.record-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px}.record-controls button{padding:8px 12px}.record-controls select{width:auto;padding:8px}.record-time{font-variant-numeric:tabular-nums;color:var(--muted);font-size:12px}.error{background:#f8e9e5;color:#8b3929}.muted{color:var(--muted)}.tabs{display:flex;gap:8px;flex-wrap:wrap}.tabs button{background:#e9ebe4;color:var(--ink)}.tabs button.active{background:var(--green);color:white}
+footer{border-top:1px solid var(--line);padding:28px 22px;text-align:center;color:var(--muted);font-size:13px}
+@media(max-width:620px){.nav{gap:12px}nav{order:3;width:100%;justify-content:space-between}.row{grid-template-columns:1fr}.hero{padding-top:38px}}
+
+/* rohs night garden theme */
+:root{color-scheme:dark;--ink:#eee9dc;--muted:#a7ad9e;--paper:#171d19;--card:#202a23;--green:#789879;--line:#354238;--accent:#a8c4a0;--ivory:#eee9dc}
+body{background:radial-gradient(ellipse at 15% 0%,#26372b 0%,#171d19 48%,#151b17 100%);color:var(--ink)}
+header{background:#171d19eF;border-bottom-color:#354238}
+nav a{color:#a7ad9e}nav a:hover,nav a:focus{color:#eee9dc}
+.brand{color:#e8e5d8}
+.eyebrow{color:#a8c4a0}
+h1,h2,h3{color:#eee9dc}
+.sub,.muted,.meta,.record-time{color:#a7ad9e}
+button,.button{background:#587b5b;color:#f7f4e9;transition:background .18s ease,transform .18s ease,border-color .18s ease}
+button:hover,.button:hover{background:#6b906d;transform:translateY(-1px)}
+button.secondary,.button.secondary,.tabs button{background:#2b382e;color:#e7e9dc;border:1px solid #435447}
+.tabs button.active{background:#587b5b;color:#fff}
+.card,.panel{background:linear-gradient(145deg,#222d25,#1e2821);border-color:#39483c;box-shadow:0 12px 34px #080d0925}
+.card img,.gallery{background:#2a352d}
+input,textarea,select{background:#18211b;color:#eee9dc;border-color:#435447}
+input::placeholder,textarea::placeholder{color:#879184}
+input:focus,textarea:focus,select:focus{outline:2px solid #789879;outline-offset:1px}
+.badge{background:#344b38;color:#dce8d8}
+.notice{background:#293b2d;color:#d9ead7;border:1px solid #435b46}
+.notice.error{background:#482c28;color:#ffdcd2}
+footer{border-color:#354238;color:#a7ad9e}
+.friend{border-color:#354238}
+a{color:#c1d4b9}
+.read-list{display:grid;grid-template-columns:1fr;gap:10px}
+.read-item{width:100%;text-align:left;border-radius:14px;padding:17px 19px;background:#202a23;border:1px solid #39483c;color:var(--ink)}
+.read-item strong{display:block;font:21px Georgia,serif;margin-bottom:5px}
+.read-item span{font-size:12px;color:var(--muted)}
+.reading-overlay{position:fixed;inset:0;background:#080d0bd9;z-index:20;display:grid;place-items:center;padding:18px}
+.reading-sheet{width:min(760px,100%);max-height:90vh;overflow:auto;background:#202a23;border:1px solid #435447;border-radius:20px;padding:clamp(22px,5vw,42px);box-shadow:0 25px 80px #0008}
+.reading-sheet h2{font:clamp(30px,5vw,44px)/1.1 Georgia,serif;margin:12px 0}
+.reading-content{white-space:pre-wrap;line-height:1.9;color:#e2e3d9;margin-top:24px}
+.record-card h3{font:22px Georgia,serif}
+.page-section{display:none!important}.page-section.route-active:not(.hidden){display:block!important}
+.mine-heading{font:20px Georgia,serif;margin:28px 0 12px;color:var(--ink)}
+.read-item{display:block}.read-item:hover{border-color:#789879;transform:translateY(-1px)}
+.reading-content audio{width:100%;margin-top:16px}.reading-content .record-controls{margin-top:12px}
+
+@media(max-width:620px){.nav{padding:14px 16px}nav{gap:12px;justify-content:flex-start;overflow-x:auto;white-space:nowrap}.hero{padding-top:35px}.section{margin-top:36px}}
+
+
+/* Community interactions */
+.interaction-tools{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px}
+.interaction-tools button{padding:8px 13px;font-size:13px}
+.like-btn.liked{background:#8d4650;color:#fff}
+.interaction-panel{margin-top:22px;padding-top:18px;border-top:1px solid var(--line)}
+.interaction-panel h3{font:22px Georgia,serif;margin:0 0 12px}
+.comment-list{display:grid;gap:10px;margin:14px 0}
+.comment-item{padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:#18221b}
+.comment-item strong{font-size:13px}.comment-item p{white-space:pre-wrap;line-height:1.55;margin:7px 0 0}
+.bell-wrap{position:relative}.bell-btn{position:relative;padding:10px 13px;font-size:18px;line-height:1}
+.bell-count{position:absolute;top:-5px;right:-5px;background:#b74f58;color:#fff;border-radius:999px;min-width:18px;height:18px;padding:0 5px;font-size:10px;display:grid;place-items:center;border:2px solid #171d19}
+.notification-panel{position:absolute;right:0;top:48px;width:min(360px,calc(100vw - 28px));max-height:65vh;overflow:auto;z-index:30;background:#202a23;border:1px solid #435447;border-radius:16px;padding:14px;box-shadow:0 18px 50px #0009}
+.notification-item{display:block;width:100%;text-align:left;background:transparent;border:0;border-bottom:1px solid var(--line);border-radius:0;padding:12px 6px;color:var(--ink)}
+.notification-item.unread{background:#2b3b2e}.notification-item small{display:block;color:var(--muted);margin-top:5px}
+.notification-item:last-child{border-bottom:0}
+.message-entry{padding:15px;border:1px solid var(--line);border-radius:13px;margin:10px 0;background:#1a241d}
+.message-entry p{white-space:pre-wrap;line-height:1.6}
+@media(max-width:620px){.notification-panel{right:-8px}}
+
+
+/* ROHS direct messages: separate midnight-indigo / electric-lilac atmosphere */
+.chat-page{max-width:1120px;margin:18px auto 0;color:#e9e8f4}
+.chat-page .chat-heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;gap:15px}
+.chat-kicker{font-size:10px;letter-spacing:2.5px;color:#a9a0ff;font-weight:800}
+.chat-page .chat-heading h2{font:38px/1.1 Georgia,serif;margin:8px 0 5px;color:#f4f1ff}
+.chat-page .chat-heading p{margin:0;color:#9c9ab5;font-size:14px}
+.chat-status{font-size:11px;color:#b9b6d2;border:1px solid #373550;padding:8px 12px;border-radius:30px;background:#1b1a2b}
+.chat-status i{display:inline-block;width:7px;height:7px;border-radius:50%;background:#69d6b0;margin-right:6px;box-shadow:0 0 10px #69d6b0}
+.chat-shell{height:min(690px,76vh);min-height:520px;display:grid;grid-template-columns:310px minmax(0,1fr);background:#11111d;border:1px solid #34314c;border-radius:23px;overflow:hidden;box-shadow:0 25px 75px #05050d88}
+.chat-sidebar{background:linear-gradient(180deg,#19182a,#151522);border-right:1px solid #302e46;min-width:0;display:flex;flex-direction:column}
+.chat-sidebar-top{height:70px;padding:0 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #302e46;color:#f0edff;font-size:15px}
+.chat-new-btn{width:36px;height:36px;padding:0;border-radius:12px;background:#7770d9;color:white;font-size:24px;line-height:1}
+.new-chat-box{padding:14px;border-bottom:1px solid #302e46;background:#201f35}.new-chat-box label{color:#c8c4e7;margin:0 0 7px}.new-chat-box input{background:#121220!important;color:#f2efff!important;border-color:#454161!important}.new-chat-box button{margin-top:9px;width:100%;background:#7770d9}.new-chat-box small{display:block;color:#8886a7;margin-top:8px;font-size:11px}
+.chat-conversation-list{overflow:auto;padding:8px}.chat-conversation{display:flex;width:100%;align-items:center;gap:12px;padding:13px 11px;border:0;border-radius:14px;background:transparent;color:#e8e5f7;text-align:left;margin:2px 0}.chat-conversation:hover,.chat-conversation.active{background:#292741;transform:none}.chat-conversation .chat-avatar{flex:0 0 42px;width:42px;height:42px;font-size:16px}.chat-conv-copy{min-width:0;flex:1}.chat-conv-copy strong{display:block;font-size:13px}.chat-conv-copy span{display:block;color:#9693b1;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:5px}.chat-conv-time{font-size:10px;color:#777591;align-self:flex-start;white-space:nowrap}
+.chat-empty-side{padding:22px 14px;color:#8886a4;font-size:12px;line-height:1.6;text-align:center}
+.chat-main{min-width:0;display:flex;flex-direction:column;position:relative;background:radial-gradient(ellipse at 50% 0%,#24213d 0%,#171625 52%,#12121e 100%)}
+.chat-welcome{margin:auto;text-align:center;padding:25px;color:#a5a1c0}.chat-orbit{width:74px;height:74px;border-radius:25px;display:grid;place-items:center;margin:0 auto 20px;background:linear-gradient(145deg,#514b92,#292744);color:#dedaff;font-size:32px;box-shadow:0 10px 40px #05050d88}.chat-welcome h3{font:25px Georgia,serif;color:#eeebff;margin:0 0 8px}.chat-welcome p{font-size:13px;margin:0;color:#9693b1}
+.chat-active{height:100%;min-height:0;display:flex;flex-direction:column}.chat-topbar{position:relative;top:auto;backdrop-filter:none;height:70px;flex:0 0 70px;padding:0 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid #302e46;background:#1b1a2a}.chat-topbar strong{display:block;color:#f0edff;font-size:14px}.chat-topbar small{display:block;color:#9290ad;font-size:11px;margin-top:4px}.chat-avatar{width:42px;height:42px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(145deg,#7770d9,#38345f);color:#fff;font-weight:800;box-shadow:0 5px 18px #05050d66}.chat-back-btn{display:none;margin-left:auto;background:#292741;color:#d9d5f6;padding:8px 12px}
+.chat-messages{flex:1;min-height:0;overflow-y:auto;padding:22px clamp(14px,4vw,42px);display:flex;flex-direction:column;gap:10px}.chat-date-chip{align-self:center;font-size:10px;color:#9996b7;background:#25243a;padding:6px 11px;border-radius:20px;margin:0 0 10px}.chat-bubble-row{display:flex;align-items:flex-end;gap:8px;max-width:82%}.chat-bubble-row.mine{align-self:flex-end;flex-direction:row-reverse}.chat-bubble{position:relative;padding:11px 14px 8px;border-radius:17px 17px 17px 5px;background:#29283f;border:1px solid #3b3958;color:#eeeaff;min-width:72px;box-shadow:0 5px 18px #05050d33}.chat-bubble-row.mine .chat-bubble{background:linear-gradient(145deg,#655fc0,#514b9e);border-color:#7770d9;border-radius:17px 17px 5px 17px;color:#fff}.chat-bubble p{white-space:pre-wrap;overflow-wrap:anywhere;margin:0;font-size:13px;line-height:1.55}.chat-bubble .chat-stamp{display:block;text-align:right;font-size:9px;color:#c1bddc;margin-top:6px}.chat-bubble-row.mine .chat-stamp{color:#e0ddff}.chat-photo{max-width:min(280px,58vw);max-height:260px;display:block;border-radius:11px;margin-bottom:5px;object-fit:cover}.chat-audio{width:min(260px,55vw);height:38px;display:block}.chat-edited{font-size:9px;color:#b6b1d6;margin-left:5px}.chat-message-actions{display:none;position:absolute;z-index:5;right:0;bottom:calc(100% + 5px);gap:5px;align-items:center;padding:6px;border:1px solid #45415f;border-radius:13px;background:#1d1b30;box-shadow:0 10px 28px #0008}.chat-bubble-row{position:relative}.chat-bubble-row.actions-open .chat-message-actions{display:flex}.chat-message-actions button{padding:7px 9px;border-radius:9px;background:#302e49;color:#d8d4f5;font-size:12px}.chat-emoji-pick{display:none;position:absolute;right:0;bottom:calc(100% + 5px);gap:3px;flex-wrap:wrap;max-width:220px;background:#24233a;border:1px solid #403d5d;border-radius:12px;padding:6px;box-shadow:0 10px 28px #0008}.chat-message-actions.emoji-open .chat-emoji-pick{display:flex}.chat-emoji-pick button{padding:4px 5px;font-size:13px;background:transparent;border:0}.chat-reactions{display:flex;gap:4px;margin-top:6px;flex-wrap:wrap}.chat-reply-preview{display:block;margin:-2px 0 7px;padding:6px 9px;border-left:3px solid #a69fff;border-radius:6px;background:#171627;color:#c9c5e7;font-size:10px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.chat-bubble-row.mine .chat-reply-preview{background:#47418b;color:#f0edff}.chat-reply-bar{display:flex;align-items:center;gap:8px;padding:8px 11px;margin-bottom:7px;border-left:3px solid #a69fff;border-radius:8px;background:#25243a;color:#dedaff;font-size:11px}.chat-reply-bar span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.chat-reply-bar button{background:transparent;color:#dedaff;padding:2px 7px}.chat-reaction{border:1px solid #575273;border-radius:14px;background:#292740;color:#f0edff;padding:3px 7px;font-size:11px;cursor:pointer}.chat-composer{padding:10px 17px 16px;border-top:1px solid #302e46;background:#191827}.chat-attach-row{display:flex;align-items:center;gap:9px;margin:0 0 8px}.chat-attach{width:31px;height:29px;display:grid;place-items:center;border-radius:10px;background:#292741;color:#c7c2f4;font-size:17px;border:1px solid #403d5d;cursor:pointer}.chat-attach-row span{font-size:10px;color:#8986a6}.chat-compose-line{display:flex;align-items:flex-end;gap:9px}.chat-compose-line textarea{min-height:43px;max-height:120px;resize:vertical;border-radius:15px;background:#10101c!important;border:1px solid #3b3956!important;color:#f1efff!important;padding:12px 14px;font-size:13px;flex:1}.chat-send-btn{width:44px;height:43px;border-radius:14px;padding:0;background:linear-gradient(145deg,#8179e7,#625bc1);font-size:19px}.chat-voice-preview{margin-top:10px;padding:9px 12px;border-radius:12px;background:#25243a;color:#dedaff;display:flex;align-items:center;gap:8px;font-size:11px}.chat-voice-preview button{padding:7px 10px;font-size:11px;background:#6b64c8}.chat-voice-preview .chat-discard{background:#39374e}.chat-footnote{text-align:center;color:#777591;font-size:11px;margin:12px 0}.chat-page button{box-shadow:none}.chat-page button:hover{filter:brightness(1.12);transform:none}
+@media(max-width:720px){.chat-shell{grid-template-columns:1fr;height:74vh;min-height:500px}.chat-sidebar{border-right:0}.chat-main{display:none}.chat-shell.chat-open .chat-sidebar{display:none}.chat-shell.chat-open .chat-main{display:flex}.chat-back-btn{display:block}.chat-page .chat-heading h2{font-size:32px}.chat-status{font-size:10px}.chat-bubble-row{max-width:92%}.chat-message-actions{right:0;max-width:calc(100vw - 55px)}.chat-compose-line textarea{min-height:42px}.chat-composer{padding:8px 10px calc(10px + env(safe-area-inset-bottom))}}
+
+
+/* Six community upgrades */
+.feature-chip{display:inline-flex;align-items:center;gap:6px;border:1px solid #435447;background:#29392d;color:#dce8d8;border-radius:999px;padding:4px 9px;font-size:11px}
+.member-card,.contribution-card{padding:15px;border:1px solid var(--line);border-radius:14px;background:#202a23}
+.member-card{display:flex;align-items:center;gap:12px}.member-avatar{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:#344b38;color:#e6efdf;font-weight:800;flex:none}.member-card p,.contribution-card p{white-space:pre-wrap;line-height:1.55}
+.chat-typing{min-height:20px;padding:2px 14px;color:#b9b6d2;font-size:12px}.chat-read{font-size:10px;color:#a9a0ff;margin-left:5px}
+.chat-admin-mark{font-size:10px;color:#c6bfff;border:1px solid #5b5684;border-radius:999px;padding:2px 6px;margin-left:6px}
+@media(max-width:620px){#memberDirectory{grid-template-columns:1fr}.member-card{align-items:flex-start}}
+
+/* Name-only profiles and creator information */
+.name-gate{max-width:560px;margin:18px auto;padding:20px;border:1px solid var(--line);border-radius:18px;background:#202a23}
+.profile-avatar{width:88px;height:88px;border-radius:50%;object-fit:cover;background:#344b38;border:2px solid #789879}
+.profile-layout{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.about-panel{padding:22px;border:1px solid var(--line);border-radius:16px;background:#202a23;margin:16px 0}
+.about-panel p{white-space:pre-wrap;line-height:1.75}
+.admin-login-panel{position:fixed;inset:0;z-index:90;background:#050806cc;display:grid;place-items:center;padding:20px}
+.admin-login-card{width:min(420px,100%);padding:22px;border-radius:18px;background:#202a23;border:1px solid #526455}
+
+
+/* ROHS48 complete refresh: navigation, feed, fullscreen gallery, crop and full-page chat */
+.more-wrap{position:relative}.more-backdrop{position:fixed;inset:0;z-index:95;background:#050806b8;backdrop-filter:blur(3px)}.more-menu{position:fixed;top:0;right:0;bottom:0;z-index:96;width:min(340px,88vw);padding:22px 18px calc(24px + env(safe-area-inset-bottom));background:#202a23;border-left:1px solid #526455;border-radius:20px 0 0 20px;box-shadow:-20px 0 60px #0008;display:flex;flex-direction:column;align-items:stretch;gap:5px;overflow:auto}.more-menu-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:5px 4px 18px;margin-bottom:8px;border-bottom:1px solid #435447;color:#e8eadf}.more-menu-head strong{font:24px Georgia,serif}.more-menu-head button{padding:8px 11px;font-size:12px}.more-menu a{padding:13px 14px;border-radius:10px;text-decoration:none;color:#e8eadf;font-size:14px}.more-menu a:hover{background:#344b38}
+.notification-head{display:flex;align-items:center;justify-content:space-between;gap:8px}.notification-head h3{margin:4px 6px 8px;font-size:18px}.notification-head button{padding:7px 10px;font-size:11px}
+.post-feed-card{border:1px solid #39483c;border-radius:18px;overflow:hidden;background:#202a23;box-shadow:0 12px 34px #080d0925}.post-feed-author{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid #354238}.post-feed-author img,.post-feed-avatar{width:38px;height:38px;border-radius:50%;object-fit:cover;background:#344b38;display:grid;place-items:center}.post-feed-author strong,.post-feed-author small{display:block}.post-feed-author small{font-size:11px;color:var(--muted);margin-top:3px}.post-feed-content{padding:15px}.post-feed-content h3{font:22px Georgia,serif;margin:6px 0}.post-feed-content p{white-space:pre-wrap;line-height:1.6}.post-feed-image{width:100%;max-height:360px;object-fit:cover;border-radius:12px;margin:6px 0;cursor:zoom-in}.profile-shared-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}.profile-shared-item{padding:14px;border:1px solid #39483c;border-radius:13px;background:#18221b}.profile-shared-item strong,.profile-shared-item small{display:block}.profile-shared-item small{color:var(--muted);margin:5px 0}.profile-shared-item img{width:100%;max-height:180px;object-fit:cover;border-radius:8px;margin-top:6px}.profile-shared-item audio{width:100%;margin-top:8px}
+.gallery-open{position:absolute;right:10px;bottom:10px;padding:8px 11px;font-size:11px;background:#111c;color:#fff;border:1px solid #ffffff55}.album-viewer{position:fixed;inset:0;z-index:120;background:#050509f5;display:flex;align-items:center;justify-content:center;padding:65px 70px 55px}.album-viewer img{max-width:100%;max-height:100%;object-fit:contain;user-select:none}.album-close,.album-arrow{position:absolute;border:1px solid #ffffff44;background:#191827;color:#fff;border-radius:50%;display:grid;place-items:center}.album-close{top:18px;right:20px;width:44px;height:44px;font-size:20px}.album-arrow{top:50%;transform:translateY(-50%);width:48px;height:48px;font-size:34px;padding:0}.album-prev{left:16px}.album-next{right:16px}.album-arrow:disabled{opacity:.25;cursor:not-allowed}.album-counter{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);color:#eee;font-size:13px;background:#2222;padding:6px 12px;border-radius:20px}
+.crop-overlay{position:fixed;inset:0;z-index:110;background:#050806eF;display:grid;place-items:center;padding:16px}.crop-card{width:min(480px,100%);max-height:94dvh;overflow:auto;padding:20px;border:1px solid #526455;border-radius:20px;background:#202a23}.crop-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}.crop-head h2{font-size:25px}.crop-stage{width:min(320px,78vw);aspect-ratio:1;margin:16px auto;border-radius:50%;overflow:hidden;background:#101610;border:2px solid #789879}.crop-stage canvas{width:100%;height:100%;display:block}.crop-card input[type=range]{padding:0;accent-color:#789879}.crop-card .actions{justify-content:flex-end}
+.chat-profile-menu-wrap{position:relative;margin-left:auto}.chat-profile-menu-btn{width:38px;height:38px;padding:0;background:#292741;color:#e6e2ff;font-size:24px}.chat-profile-menu{position:absolute;right:0;top:44px;z-index:25;width:180px;padding:6px;background:#201f35;border:1px solid #454161;border-radius:12px;box-shadow:0 12px 35px #0009}.chat-profile-menu button{display:block;width:100%;text-align:left;background:transparent;color:#e8e5f7;border-radius:8px;padding:10px 12px;font-size:12px}.chat-profile-menu button:hover{background:#302e49}
+.chat-route main{max-width:none;padding:14px 18px 0}.chat-route #messages{max-width:none;margin:0;padding:0}.chat-route .chat-page{max-width:none;width:100%;margin:0}.chat-route .chat-shell{height:calc(100dvh - 185px);min-height:540px;border-radius:18px}.chat-route footer{display:none}.chat-route .chat-page .chat-heading{margin:0 0 12px}.chat-route .chat-messages{overscroll-behavior:contain}.chat-route .chat-composer{padding-bottom:calc(12px + env(safe-area-inset-bottom))}
+@media(max-width:720px){.nav{flex-wrap:nowrap;gap:8px}.nav nav{order:0;width:auto;flex:1;overflow-x:auto;justify-content:flex-start;gap:14px}.more-wrap{flex:none}.more-wrap>button{padding:9px 11px}.brand{font-size:24px}.chat-route main{padding:8px 0 0}.chat-route #messages{padding:0}.chat-route .chat-heading{padding:0 14px}.chat-route .chat-shell{height:calc(100dvh - 148px);min-height:420px;border-radius:0;border-left:0;border-right:0}.chat-route .chat-page .chat-heading h2{font-size:28px}.chat-route .chat-footnote{display:none}.album-viewer{padding:60px 8px 55px}.album-prev{left:5px}.album-next{right:5px}.album-arrow{width:38px;height:38px;font-size:28px}.crop-card{padding:16px}}
+
+
+.chat-conversation{position:relative;padding:0;gap:0;display:flex;align-items:stretch}.chat-conversation-open{display:flex;align-items:center;gap:12px;min-width:0;flex:1;text-align:left;background:transparent;color:#e8e5f7;border:0;border-radius:14px;padding:13px 8px 13px 11px}.chat-conversation-open:hover{background:transparent;transform:none}.chat-conv-more{flex:none;align-self:center;padding:5px 8px;background:transparent;color:#a9a5c6;font-size:20px}.chat-conv-menu{position:absolute;z-index:20;right:7px;top:54px;width:160px;padding:6px;border:1px solid #454161;border-radius:12px;background:#201f35;box-shadow:0 12px 35px #0009}.chat-conv-menu button{display:block;width:100%;text-align:left;background:transparent;color:#e8e5f7;border-radius:8px;padding:9px 10px;font-size:11px}.chat-conv-menu button:hover{background:#302e49}
+
+.chat-avatar-image{width:42px;height:42px;flex:0 0 42px;border-radius:50%;object-fit:cover;background:#34314c}.member-avatar-image{width:42px;height:42px;flex:none;border-radius:50%;object-fit:cover;border:1px solid #526455}
+
+
+/* ROHS48 responsive repair: preserve the night-garden visual identity. */
+html{scroll-behavior:smooth}
+.nav{min-width:0;flex-wrap:nowrap;gap:clamp(8px,1.5vw,18px)}
+.nav nav{min-width:0;flex-wrap:nowrap;white-space:nowrap}
+/* The drawer is moved to body by JS; it can now cover the complete viewport. */
+.more-backdrop{position:fixed;inset:0;z-index:9998;background:#050806b8;backdrop-filter:blur(3px)}
+.more-menu{position:fixed;inset:0 auto 0 0;width:clamp(350px,30vw,520px);max-width:88vw;height:100vh;height:100dvh;min-height:100vh;overflow-y:auto;overscroll-behavior:contain;z-index:9999;padding:28px 24px calc(24px + env(safe-area-inset-bottom));border:0;border-right:1px solid #526455;border-radius:0 20px 20px 0;box-shadow:20px 0 60px #0008;background:#202a23;display:flex;flex-direction:column;align-items:stretch;gap:7px}
+.more-menu-head{position:sticky;top:-28px;background:#202a23;padding:12px 4px 18px;z-index:1}
+.more-menu-head strong{font-size:clamp(22px,2vw,28px)}
+.more-menu a{display:flex;align-items:center;min-height:52px;padding:14px 16px;border-radius:12px;font-size:16px}
+.more-menu a:focus-visible,.more-menu button:focus-visible,.nav a:focus-visible{outline:2px solid #a8c4a0;outline-offset:3px}
+/* Compact two-tier mobile header: actions stay together, links scroll horizontally. */
+@media(max-width:760px){
+ header{z-index:100}
+ .nav{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;padding:12px 14px}
+ .brand{order:0;flex:1 1 auto;min-width:76px;margin-right:auto;font-size:27px;line-height:1}
+ .more-wrap{order:1;flex:0 0 auto}
+ #accountBtn{order:2;flex:0 0 auto;padding:10px 13px;font-size:13px;white-space:nowrap}
+ .bell-wrap{order:3;flex:0 0 auto}
+ .bell-btn{padding:10px 12px}
+ .nav nav{order:4;display:flex;flex:0 0 100%;width:100%;min-width:0;gap:21px;justify-content:flex-start;overflow-x:auto;overflow-y:hidden;white-space:nowrap;flex-wrap:nowrap;padding:5px 1px 7px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+ .nav nav::-webkit-scrollbar{display:none}
+ .nav nav a{flex:0 0 auto;display:block;font-size:13px;padding:5px 0}
+ .more-menu{width:84vw;max-width:84vw;min-width:0;padding:20px 17px calc(20px + env(safe-area-inset-bottom));border-radius:0 18px 18px 0}
+ .more-menu-head{top:-20px;padding-top:10px}
+ .more-menu a{min-height:50px;font-size:15px}
+ main{padding:25px 18px 64px}
+}
+@media(max-width:380px){.brand{font-size:24px}#accountBtn{padding:9px 10px;font-size:12px}.nav{gap:7px}.more-wrap>button{padding:9px 10px;font-size:12px}}
+/* Chats opens on a conversation list only; selecting a person takes over the screen. */
+.chat-shell{display:block;height:auto;min-height:420px;max-height:none;border-radius:20px}
+.chat-sidebar{display:flex;width:100%;min-height:420px;border:0}
+.chat-main{display:none}
+.chat-route .chat-heading{display:flex}
+.chat-route .chat-shell{height:auto;min-height:420px}
+.chat-route .chat-sidebar{min-height:min(650px,70vh)}
+body.chat-route.chat-conversation-open{overflow:hidden}
+body.chat-route.chat-conversation-open>header{display:none}
+body.chat-route.chat-conversation-open>main{display:block;position:fixed;inset:0;z-index:9990;max-width:none;width:100%;height:100dvh;margin:0;padding:0;background:#11111d;overflow:hidden}
+body.chat-route.chat-conversation-open #messages{display:flex!important;position:absolute;inset:0;flex-direction:column;width:100%;height:100%;margin:0;padding:0;background:#11111d;overflow:hidden}
+body.chat-route.chat-conversation-open #messages .chat-heading,
+body.chat-route.chat-conversation-open #messages>.chat-footnote{display:none!important}
+body.chat-route.chat-conversation-open #messages .chat-shell{display:block;position:absolute;inset:0;width:100%;height:100%;min-height:0;margin:0;border:0;border-radius:0;box-shadow:none;background:#11111d}
+body.chat-route.chat-conversation-open #messages .chat-sidebar{display:none!important}
+body.chat-route.chat-conversation-open #messages .chat-main{display:flex!important;position:absolute;inset:0;width:100%;height:100%;min-height:0}
+body.chat-route.chat-conversation-open #messages .chat-active{height:100%;min-height:0}
+body.chat-route.chat-conversation-open #messages .chat-topbar{position:relative;top:auto;z-index:2;flex:0 0 68px;height:68px;padding:0 14px;padding-top:env(safe-area-inset-top);background:#1b1a2a}
+body.chat-route.chat-conversation-open #messages .chat-back-btn{display:block;margin-left:auto}
+body.chat-route.chat-conversation-open #messages .chat-messages{flex:1;min-height:0;overflow-y:auto;padding:18px 14px}
+body.chat-route.chat-conversation-open #messages .chat-composer{flex:0 0 auto;padding-bottom:calc(12px + env(safe-area-inset-bottom))}
+body.chat-route.chat-conversation-open #messages .chat-compose-line textarea{min-width:0}
+@media(max-width:720px){.chat-route .chat-shell{height:auto;min-height:420px;border-radius:18px;border:1px solid #34314c}.chat-route .chat-sidebar{min-height:65vh}.chat-route .chat-main{display:none}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+</style>
+</head>
+<body>
+<header><div class="nav"><div class="brand">rohs48.</div><nav aria-label="Main navigation"><a href="#home">Home</a><a href="#memories">Albums</a><a href="#diary">Diaries</a><a href="#records">Records</a><a href="#messages">Chats</a><a href="#posts">Posts</a></nav><div class="more-wrap"><button id="moreMenuBtn" class="secondary" type="button" aria-expanded="false" aria-controls="moreMenu">More ☰</button></div><div id="moreMenuBackdrop" class="more-backdrop hidden"></div><aside id="moreMenu" class="more-menu hidden" aria-label="More sections"><div class="more-menu-head"><strong>More sections</strong><button id="moreMenuClose" class="secondary" type="button">Close ✕</button></div><a href="#share">Share a moment</a><a href="#members">Members</a><a href="#mine">My Space</a><a href="#friends">Close friends</a><a href="#about-website">About My Website</a><a href="#about-creator">About Creator</a><a href="#admin" id="adminLink" class="hidden">Review desk</a></aside><button id="accountBtn" class="secondary">Create profile</button><div class="bell-wrap hidden" id="notificationWrap"><button type="button" id="notificationBell" class="secondary bell-btn" aria-label="Notifications" title="Notifications">🔔<span id="notificationCount" class="bell-count hidden">0</span></button><div id="notificationPanel" class="notification-panel hidden"><div class="notification-head"><h3>Notifications</h3><button id="clearNotifications" type="button" class="secondary">Clear all</button></div><div id="notificationList"></div></div></div></div></header>
+<main>
+<section id="home" class="hero page-section" data-page="home"><div class="eyebrow">A shared collection of little moments</div><h1>A place where<br>memories live.</h1><p class="sub">Photographs, everyday thoughts and memories worth keeping. Every memory has a person, a moment and a place here.</p><div class="actions"><a class="button" href="#memories">Explore memories</a><a class="button secondary" href="#share">Share a moment</a><a class="button secondary" href="#messages">Message the creator</a></div><div id="nameGate" class="name-gate"><h3>Welcome to ROHS48</h3><p class="muted">Enter your name to create your profile. No email or password needed.</p><label for="visitorName">Your name</label><input id="visitorName" maxlength="60" placeholder="Enter your name"><button id="createVisitorProfile" type="button">Continue</button></div><div class="about-panel" id="contactCreator"><div class="eyebrow">A direct line to the creator</div><h2>Message Rohith</h2><p>Anyone can leave a message here. No profile, email address or password is required.</p><label for="visitorMessageName">Your name</label><input id="visitorMessageName" maxlength="60" placeholder="Your name"><label for="visitorMessageBody">Your message</label><textarea id="visitorMessageBody" maxlength="3000" placeholder="Write your message..."></textarea><button id="sendVisitorMessage" type="button">Send message</button></div><div class="about-panel" id="about-website"><div class="eyebrow">The idea behind this place</div><h2>About My Website</h2><p>ROHS48 is a place to collect memories, photographs, everyday thoughts and conversations worth keeping.</p></div><div class="about-panel" id="about-creator"><div class="eyebrow">The person behind ROHS48</div><h2>About Creator</h2><p id="creatorAboutText">The creator has not added an introduction yet.</p><button id="editCreatorAbout" class="secondary hidden" type="button">Edit About Creator</button><div id="creatorAboutEditor" class="hidden"><textarea id="creatorAboutInput" maxlength="10000" placeholder="Write about yourself..."></textarea><div class="actions"><button id="saveCreatorAbout" type="button">Save</button><button id="deleteCreatorAbout" class="secondary" type="button">Delete content</button><button id="cancelCreatorAbout" class="secondary" type="button">Cancel</button></div></div></div></section>
+<section id="onThisDay" data-page="home" class="section page-section"><div class="eyebrow">A little time travel</div><h2>On This Day</h2><p class="sub">Memories shared on this date in earlier years.</p><div id="onThisDayGrid" class="read-list"><p class="muted">Create your name-only profile to see your memories from this day.</p></div></section>
+<div id="message" class="notice hidden" role="status"></div>
+<section id="memories" data-page="memories" class="page-section section"><div class="section-head"><div><div class="eyebrow">The public album</div><h2>Albums</h2></div></div><div id="memoryGrid" class="grid"><p class="muted">Connect your Supabase project to load public memories.</p></div><div class="panel"><h3>Shared albums</h3><p class="muted">Invite a member to contribute a note or photo to an album you own.</p><div id="collabAlbumTools" class="hidden"><label for="collabAlbumSelect">Your album</label><select id="collabAlbumSelect"></select><label for="collabMemberSelect">Invite a member by profile name</label><div class="actions"><select id="collabMemberSelect" style="flex:1;min-width:180px"><option value="">Choose a member</option></select><button id="collabInviteMember" type="button" class="secondary">Invite</button></div><label for="collabContributionText">Add a note to your selected album</label><textarea id="collabContributionText" maxlength="1500" placeholder="Add a memory or a little context..."></textarea><label for="collabContributionPhoto">Or add a photo</label><input id="collabContributionPhoto" type="file" accept="image/jpeg,image/png,image/webp"><button id="collabContribute" type="button" class="secondary">Add contribution</button><div id="collabStatus" class="muted"></div></div><div id="collabContributions" class="read-list"></div></div></section>
+<section id="diary" data-page="diary" class="page-section section"><div class="eyebrow">Pages from real days</div><h2>Diaries</h2><p class="sub">Public diary entries shared by community members.</p><div id="diaryGrid" class="grid"></div></section>
+<section id="posts" data-page="posts" class="page-section section"><div class="eyebrow">From your people</div><h2>Posts</h2><p class="sub">Albums, diaries and records shared with you. Private entries stay private.</p><div id="postsFeed" class="grid"><p class="muted">Loading posts…</p></div></section>
+<section id="friendsFeed" data-page="friends" class="page-section section hidden"><div class="eyebrow">Just for you</div><h2>From your close friends</h2><p class="sub">Posts people have shared with you as a close friend.</p><div id="friendsGrid" class="grid"></div></section>
+<section id="records" data-page="records" class="page-section section"><div class="eyebrow">Voices worth keeping</div><h2>Records</h2><p class="sub">Voice recordings appear here by title. Open one to listen. Guest recordings are public after approval.</p><div id="recordComposer" class="panel"><label for="recordTitle">Recording title</label><input id="recordTitle" maxlength="100" placeholder="A little thought from today"><div id="recordVisibilityWrap"><label for="recordVisibility">Who can listen?</label><select id="recordVisibility"><option value="public">Public — after approval</option><option value="friends">Close friends — after approval</option><option value="private">Private — only you</option></select></div><div class="actions"><button id="startRecording" type="button"><span aria-hidden="true">●</span> Start recording</button><button id="pauseRecording" type="button" class="secondary" disabled>Pause</button><button id="resumeRecording" type="button" class="secondary hidden" disabled>Resume</button><button id="stopRecording" type="button" class="secondary" disabled>Stop</button></div><p id="recordTimer" class="muted">Maximum 10 minutes per recording.</p><p id="recordHint" class="muted" style="font-size:13px">Your browser will ask for microphone permission when you start.</p><button id="saveRecording" type="button" disabled>Submit recording for review</button></div><div id="recordsGrid" class="read-list"><p class="muted">No approved voice records yet.</p></div></section>
+<section id="share" data-page="share" class="page-section section"><div class="eyebrow">Add to the collection</div><h2>Share a moment</h2><p class="sub">Create a name-only profile to share memories and manage your personal space. Public submissions are reviewed before they appear.</p>
+<div id="submitPanel" class="panel"><div class="row"><div><label for="kind">What are you sharing?</label><select id="kind"><option value="memory">Photo album</option><option value="diary">Diary entry</option></select></div><div><label for="title">Title</label><input id="title" maxlength="100" placeholder="Give this moment a title"></div></div><label for="body">Your words</label><textarea id="body" maxlength="10000" placeholder="What would you like people to know?"></textarea><div id="photoField"><label for="photo">Photos (JPG, PNG or WebP, up to 20)</label><input id="photo" type="file" multiple accept="image/jpeg,image/png,image/webp"><div id="photoPreview" class="thumbs"></div><p class="muted" style="font-size:13px;margin:8px 0 0">Large photos are automatically resized before upload.</p></div><div id="visibilityWrap"><label for="visibility">Who can read this?</label><select id="visibility"><option value="public">Public — after approval</option><option value="friends">Close friends — after approval</option><option value="private">Private — only you</option></select></div><div class="actions"><button id="submitPost">Submit for review</button><button id="signOut" class="secondary hidden">Sign out</button></div><p class="muted" id="profileLine"></p></div></section>
+<section id="messages" data-page="messages" class="page-section section chat-page">
+ <div class="chat-heading"><div><div class="chat-kicker">YOUR PRIVATE CORNER</div><h2>Messages</h2><p>Little conversations, just between you and them.</p></div><div class="chat-status"><i></i> private chats</div></div>
+ <div id="chatShell" class="chat-shell">
+  <aside class="chat-sidebar"><div class="chat-sidebar-top"><strong>Conversations</strong></div>
+   <div class="new-chat-box"><strong>Message the creator</strong><small>Anyone can start a direct message with the ROHS48 creator using their name-only profile.</small></div><div id="chatConversationList" class="chat-conversation-list"><div class="chat-empty-side">Your conversations will appear here.</div></div>
+  </aside>
+  <section class="chat-main"><div id="chatWelcome" class="chat-welcome"><div class="chat-orbit">✦</div><h3>A little space to connect.</h3><p>Pick a conversation or start a new one. A private Rohith-Admin chat is available in your list.</p></div>
+   <div id="chatActive" class="chat-active hidden"><header class="chat-topbar"><div class="chat-avatar" id="chatAvatar">✦</div><div><strong id="chatPeerName">Conversation</strong><small>Private one-to-one chat</small></div><div class="chat-profile-menu-wrap"><button id="chatProfileMenuBtn" class="chat-profile-menu-btn" type="button" aria-label="Chat profile options">⋯</button><div id="chatProfileMenu" class="chat-profile-menu hidden"><button type="button" data-profile-action="view">View Profile</button><button type="button" data-profile-action="erase">Erase History</button><button type="button" data-profile-action="delete">Delete Profile</button></div></div><button id="chatBackBtn" class="chat-back-btn" type="button">Back</button></header>
+    <div id="chatMessages" class="chat-messages"><div class="chat-date-chip">This is the beginning</div></div><div id="chatTyping" class="chat-typing" aria-live="polite"></div>
+    <div class="chat-composer"><div class="chat-attach-row"><label class="chat-attach" title="Send a photo">▧<input id="chatPhotoInput" type="file" accept="image/jpeg,image/png,image/webp" hidden></label><button id="chatVoiceBtn" class="chat-attach" type="button" title="Record a voice note">♫</button><span id="chatRecordHint">Photos · voice notes</span></div>
+     <div id="chatReplyBar" class="chat-reply-bar hidden"><span id="chatReplyText"></span><button id="chatReplyCancel" type="button" aria-label="Cancel reply">✕</button></div><div class="chat-compose-line"><textarea id="chatTextInput" rows="1" maxlength="5000" placeholder="Write a message…"></textarea><button id="chatSendBtn" class="chat-send-btn" type="button" aria-label="Send message">➤</button></div>
+     <div id="chatVoicePreview" class="chat-voice-preview hidden"><span>Voice note ready</span><button id="chatSendVoice" type="button">Send voice note</button><button id="chatDiscardVoice" class="chat-discard" type="button">Discard</button></div>
+    </div>
+   </div>
+  </section>
+ </div>
+ <p class="chat-footnote">Your chats are private to their participants. Your name-only profile lets you message the creator directly.</p>
+</section>
+
+<section id="profile" data-page="profile" class="page-section section"><div class="eyebrow">Your identity on ROHS48</div><h2>Profile</h2><div class="panel profile-layout"><img id="profileAvatar" class="profile-avatar" alt="Your profile picture"><div style="flex:1;min-width:220px"><label for="profileDisplayName">Display name</label><input id="profileDisplayName" maxlength="60"><label for="profilePhoto">Profile picture</label><input id="profilePhoto" type="file" accept="image/jpeg,image/png,image/webp"><p class="muted">Choose a photo, then crop, zoom and reposition it before saving.</p><button id="saveProfile" type="button">Save profile</button><p class="muted" id="profileSaveHint">Your profile is tied to this browser session. Keep your browser data to retain access.</p></div></div><div class="panel"><h3>Profile details</h3><p class="muted">View your profile as other members can see it, including your join date and shared albums, diaries and records.</p><button id="viewOwnProfile" type="button" class="secondary">View my profile</button></div><div class="panel"><h3>Account and chat controls</h3><p class="muted">Erase your chat history or permanently remove your profile and content.</p><div class="actions"><button id="eraseOwnHistory" type="button" class="secondary">Erase my chat history</button><button id="deleteOwnProfile" type="button" class="secondary">Delete my profile</button></div></div></section>
+<section id="viewProfile" data-page="viewProfile" class="page-section section"><div class="eyebrow">Community member</div><h2 id="viewProfileName">Profile</h2><div id="viewProfileBody" class="panel"><p class="muted">Choose a profile to view.</p></div></section>
+<section id="members" data-page="members" class="page-section section hidden"><div class="eyebrow">Find your people</div><h2>Members</h2><p class="sub">Discover members and add people to your close-friends circle.</p><label for="memberSearch">Search members</label><input id="memberSearch" type="search" placeholder="Search by display name"><div id="memberDirectory" class="grid"></div></section>
+<section id="mine" data-page="mine" class="page-section section hidden"><div class="eyebrow">Only visible to you</div><h2>My Space</h2><p class="sub">Your entries, shown as titles until you open them.</p><h3 class="mine-heading">Your posts</h3><div id="mineGrid" class="read-list"></div><h3 class="mine-heading">Your voice records</h3><div id="myRecordsGrid" class="read-list"></div><div class="actions"><a class="button secondary" href="#friends">Close friends</a></div></section>
+<section id="friends" data-page="friends" class="page-section section hidden"><div class="eyebrow">Your circle</div><h2>Close friends</h2><p class="sub">People you add from Members can read the posts and records you share with &ldquo;Close friends&rdquo; once approved.</p><div class="panel"><p class="muted">Add people by their ROHS48 profile name from the Members page. This is your current close-friends list.</p><a class="button secondary" href="#members">Find members</a><div id="friendList" style="margin-top:14px"></div></div></section>
+<section id="admin" data-page="admin" class="page-section section hidden"><div class="eyebrow">For the site owner</div><h2>Review desk</h2><p class="sub">Approve submissions before they appear publicly.</p><div id="pendingGrid" class="grid"></div><h3 style="margin-top:28px">Voice records awaiting review</h3><div id="pendingRecordsGrid" class="grid"></div><h3 style="margin-top:28px">Messages from visitors</h3><div id="adminVisitorMessages" class="read-list"></div></section>
+</main>
+<div id="cropModal" class="crop-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="cropTitle"><div class="crop-card"><div class="crop-head"><div><div class="eyebrow">Profile photo</div><h2 id="cropTitle">Adjust your picture</h2></div><button type="button" id="cropCancel" class="secondary">Cancel</button></div><div class="crop-stage"><canvas id="cropCanvas" width="640" height="640" aria-label="Profile picture crop preview"></canvas></div><label for="cropZoom">Zoom</label><input id="cropZoom" type="range" min="1" max="3" step="0.01" value="1"><label for="cropX">Move left / right</label><input id="cropX" type="range" min="-1" max="1" step="0.01" value="0"><label for="cropY">Move up / down</label><input id="cropY" type="range" min="-1" max="1" step="0.01" value="0"><div class="actions"><button type="button" id="cropApply">Use this photo</button></div></div></div>
+<div id="albumViewer" class="album-viewer hidden" role="dialog" aria-modal="true" aria-label="Fullscreen album"><button id="albumClose" class="album-close" type="button" aria-label="Close gallery">✕</button><button id="albumPrev" class="album-arrow album-prev" type="button" aria-label="Previous photo">‹</button><img id="albumViewerImage" alt="Album photo"><button id="albumNext" class="album-arrow album-next" type="button" aria-label="Next photo">›</button><div id="albumCounter" class="album-counter"></div></div>
+<div id="readingView" class="reading-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="readingTitle">
+ <article class="reading-sheet"><button type="button" class="secondary" id="closeReading">← Back</button><div class="eyebrow" id="readingDate"></div><h2 id="readingTitle"></h2><div class="reading-content" id="readingContent"></div><div class="actions hidden" id="readingActions"></div><div id="readingInteractions"></div></article>
+</div>
+<footer>rohs48. · A place where memories live. <button id="adminLoginLink" class="secondary" type="button">Admin</button></footer><div id="adminLoginModal" class="admin-login-panel hidden"><div class="admin-login-card"><h3>Administrator access</h3><label for="adminEmail">Admin email</label><input id="adminEmail" type="email" autocomplete="username"><label for="adminPassword">Password</label><input id="adminPassword" type="password" autocomplete="current-password"><div class="actions"><button id="adminSignIn" type="button">Sign in</button><button id="closeAdminLogin" class="secondary" type="button">Cancel</button></div></div></div>
+<script>
+const SUPABASE_URL = "https://ohgtovsmdwcktftcqivk.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9oZ3RvdnNtZHdja3RmdGNxaXZrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM1MjUxMzMsImV4cCI6MjEwOTEwMTEzM30.64mLHe7mpNWhXqyFNz2pqI1rKofA0G-G0zGzEezp6ac";
+const configured = !SUPABASE_URL.startsWith("YOUR_") && !SUPABASE_ANON_KEY.startsWith("YOUR_");
+const client = configured ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+const $ = id => document.getElementById(id);
+// Fixed overlays must be direct body children: the sticky header's backdrop-filter
+// otherwise becomes the containing block and clips the drawer to header height.
+(()=>{const backdrop=$("moreMenuBackdrop"),drawer=$("moreMenu");if(backdrop&&drawer){document.body.append(backdrop,drawer);}})();
+function notice(text, bad=false){$("message").textContent=text;$("message").classList.remove("hidden","error");if(bad)$("message").classList.add("error");window.scrollTo({top:0,behavior:"smooth"});}
+function esc(s=""){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+let currentUser=null, isAdmin=false, currentProfile=null, replyTarget=null;
+const PAGE_IDS={home:"home",memories:"memories",diary:"diary",records:"records",messages:"messages",posts:"posts",share:"share",profile:"profile",viewProfile:"viewProfile","about-website":"home","about-creator":"home",members:"members",mine:"mine",friends:"friends",admin:"admin"};
+function showRoute(){const raw=(location.hash||"#home").slice(1);let page=PAGE_IDS[raw]||((raw==="mess"||raw==="chat")?"messages":"home");document.body.classList.toggle("chat-route",page==="messages");if(page!=="messages")document.body.classList.remove("chat-conversation-open");if(page==="admin"&&!isAdmin)page="home";if(["members","mine","friends"].includes(page)&&!currentProfile?.display_name)page="home";document.querySelectorAll(".page-section").forEach(el=>{const active=el.dataset.page===page;el.classList.toggle("route-active",active);if(active){const restricted=(el.id==="admin"&&!isAdmin)||(["members","mine","friends","friendsFeed"].includes(el.id)&&!currentProfile?.display_name);el.classList.toggle("hidden",restricted);} });if(page!=="share")$("authPanel")?.classList.add("hidden");if(raw==="about-website"||raw==="about-creator")setTimeout(()=>$ (raw)?.scrollIntoView({behavior:"smooth",block:"start"}),0);else window.scrollTo({top:0,behavior:"instant"});}
+window.addEventListener("hashchange",()=>{showRoute();if((location.hash||"").slice(1)==="messages"||["mess","chat"].includes((location.hash||"").slice(1)))loadChatConversations();});
+
+async function getSigned(path){const {data,error}=await client.storage.from("rohs-media").createSignedUrl(path,3600);return error?"":data.signedUrl;}
+function gallery(u,title){const a=(Array.isArray(u)?u:[u]).filter(Boolean);if(!a.length)return "";const imgs=a.map((x,i)=>`<img src="${x}" alt="${esc(title||"Shared memory")}" loading="lazy" data-gallery-index="${i}">`).join("");return `<div class="gwrap"><div class="gallery">${imgs}</div><button class="gallery-open" type="button" data-gallery-open="${esc(JSON.stringify(a))}">View fullscreen · ${a.length} photo${a.length===1?"":"s"}</button></div>`;}
+let albumImages=[],albumIndex=0,albumTouchX=0,galleryHoldTimer=null;document.addEventListener('click',e=>{const b=e.target.closest('[data-gallery-open]');if(b){try{showAlbum(JSON.parse(b.dataset.galleryOpen),0);}catch(_){}}});document.addEventListener('dblclick',e=>{const g=e.target.closest('.gwrap');if(g){const imgs=[...g.querySelectorAll('.gallery img')].map(i=>i.src);showAlbum(imgs,0);}});document.addEventListener('pointerdown',e=>{const g=e.target.closest('.gwrap');if(!g)return;galleryHoldTimer=setTimeout(()=>{showAlbum([...g.querySelectorAll('.gallery img')].map(i=>i.src),0);galleryHoldTimer=null;},560);});['pointerup','pointercancel','pointerleave'].forEach(ev=>document.addEventListener(ev,()=>{if(galleryHoldTimer){clearTimeout(galleryHoldTimer);galleryHoldTimer=null;}}));function showAlbum(images,index=0){albumImages=(Array.isArray(images)?images:[images]).filter(Boolean);if(!albumImages.length)return;albumIndex=Math.max(0,Math.min(index,albumImages.length-1));renderAlbumViewer();$('albumViewer').classList.remove('hidden');document.body.style.overflow='hidden';}function renderAlbumViewer(){$('albumViewerImage').src=albumImages[albumIndex];$('albumCounter').textContent=`${albumIndex+1} / ${albumImages.length}`;$('albumPrev').disabled=albumIndex===0;$('albumNext').disabled=albumIndex===albumImages.length-1;}function closeAlbum(){ $('albumViewer').classList.add('hidden');$('albumViewerImage').removeAttribute('src');if($('readingView').classList.contains('hidden'))document.body.style.overflow='';}function moveAlbum(delta){albumIndex=Math.max(0,Math.min(albumImages.length-1,albumIndex+delta));renderAlbumViewer();}$('albumClose').onclick=closeAlbum;$('albumPrev').onclick=()=>moveAlbum(-1);$('albumNext').onclick=()=>moveAlbum(1);$('albumViewer').addEventListener('click',e=>{if(e.target===$('albumViewer'))closeAlbum();else if(e.target===$('albumViewerImage')){const r=e.target.getBoundingClientRect();moveAlbum(e.clientX>r.left+r.width/2?1:-1);}});$('albumViewer').addEventListener('touchstart',e=>albumTouchX=e.changedTouches[0].clientX,{passive:true});$('albumViewer').addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-albumTouchX;if(Math.abs(dx)>45)moveAlbum(dx<0?1:-1);},{passive:true});document.addEventListener('keydown',e=>{if($('albumViewer').classList.contains('hidden'))return;if(e.key==='ArrowRight')moveAlbum(1);if(e.key==='ArrowLeft')moveAlbum(-1);if(e.key==='Escape')closeAlbum();});
+const photoPaths=p=>p.media_paths?.length?p.media_paths:(p.media_path?[p.media_path]:[]);
+async function getSignedAll(p){return Promise.all(photoPaths(p).map(getSigned));}
+function card(p,url="",badge=""){return `<article class="card">${gallery(url,p.title)}<div class="card-body">${badge?`<span class="badge">${esc(badge)}</span>`:""}<div class="meta">${esc(p.kind)} · ${new Date(p.created_at).toLocaleDateString()}</div><h3>${esc(p.title||"Untitled")}</h3><p>${esc(p.body||"")}</p><div class="meta">by ${esc(p.display_name||"rohs member")}</div><div class="interaction-tools"><button type="button" class="like-btn" data-like-type="post" data-like-id="${esc(p.id)}">♡ Like <span class="like-count">…</span></button><button type="button" class="secondary" data-open-post="${esc(p.id)}">Open album & comments</button></div></div></article>`;}
+function openReading(p,images=[]){
+ $("readingDate").textContent=new Date(p.created_at).toLocaleDateString();
+ $("readingTitle").textContent=p.title||"Untitled";
+ $("readingContent").textContent=p.body||"";
+ (Array.isArray(images)?images:[images]).filter(Boolean).forEach(src=>{const im=document.createElement("img");im.src=src;im.alt=p.title||"Shared photo";im.loading="lazy";im.style.cssText="display:block;width:100%;max-height:560px;object-fit:contain;margin:18px auto;border-radius:12px";$("readingContent").appendChild(im);});
+ $("readingActions").classList.add("hidden");$("readingActions").innerHTML="";
+ $("readingView").classList.remove("hidden");
+ document.body.style.overflow="hidden";
+ mountPostInteractions(p);if(p.kind==="memory"&&Array.isArray(images)&&images.length){const b=document.createElement("button");b.type="button";b.className="secondary";b.textContent="Open fullscreen gallery";b.onclick=()=>showAlbum(images,0);$("readingActions").appendChild(b);$("readingActions").classList.remove("hidden");$("readingContent").querySelectorAll("img").forEach((im,i)=>{im.style.cursor="zoom-in";im.onclick=()=>showAlbum(images,i);});}
+}
+function openVoiceReading(r,url,owner=false){
+ $("readingDate").textContent=new Date(r.created_at).toLocaleDateString()+" · "+formatRecordTime(r.duration_seconds||0);
+ $("readingTitle").textContent=r.title||"Untitled recording";
+ $("readingContent").innerHTML=url?`<audio controls preload="none" src="${esc(url)}"></audio><div class="record-controls"><button type="button" class="secondary" data-skip="-15">−15s</button><button type="button" class="secondary" data-skip="15">+15s</button><label style="margin:0">Speed <select data-speed><option value="0.75">0.75×</option><option value="1" selected>1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></label></div>`:"<p class='muted'>Audio is not available.</p>";
+ const audio=$("readingContent").querySelector("audio");if(audio){$("readingContent").querySelectorAll("[data-skip]").forEach(b=>b.onclick=()=>{audio.currentTime=Math.max(0,Math.min(audio.duration||0,audio.currentTime+Number(b.dataset.skip)));});$("readingContent").querySelector("[data-speed]").onchange=e=>audio.playbackRate=Number(e.target.value);}
+ const actions=$("readingActions");actions.innerHTML="";actions.classList.toggle("hidden",!owner);if(owner){const e=document.createElement("button");e.className="secondary";e.textContent="Edit title / visibility";e.onclick=()=>{closeReading();editVoice(r);};const d=document.createElement("button");d.className="secondary";d.textContent="Delete recording";d.onclick=()=>{closeReading();deleteVoice(r);};actions.append(e,d);}
+ $("readingView").classList.remove("hidden");document.body.style.overflow="hidden";
+ mountVoiceInteractions(r);
+}
+function closeReading(){$("readingView").classList.add("hidden");document.body.style.overflow="";$("readingActions").classList.add("hidden");$("readingInteractions").innerHTML="";}
+$("closeReading").onclick=closeReading;
+$("readingView").addEventListener("click",e=>{if(e.target===$("readingView"))closeReading();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeReading();});
+function readingList(p,images=[]){
+ const b=document.createElement("button");b.type="button";b.className="read-item compact-content-row";
+ const dt=new Date(p.created_at),visibility=p.visibility==="private"?"Private":p.visibility==="friends"?"Close friends":"Public";
+ b.innerHTML=`<strong>${esc(p.title||"Untitled")}</strong><span>${dt.toLocaleDateString()} · ${dt.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})} · ${esc(p.display_name||"ROHS48 member")} · ${visibility}</span>`;
+ b.onclick=()=>openReading(p,images);return b;
+}
+
+const publicPostCache=new Map();
+function visitorKey(){let k=localStorage.getItem("rohs_visitor_key");if(!k){k=crypto.randomUUID();localStorage.setItem("rohs_visitor_key",k);}return k;}
+async function likeState(type,id){const {data,error}=await client.rpc("rohs_like_state",{p_target_type:type,p_target_id:id,p_actor_key:visitorKey()});if(error)throw error;return data?.[0]||data||{like_count:0,liked:false};}
+async function refreshLikeButton(btn){if(!btn||!client)return;try{const d=await likeState(btn.dataset.likeType,btn.dataset.likeId);btn.classList.toggle("liked",!!d.liked);btn.innerHTML=`${d.liked?"♥ Liked":"♡ Like"} <span class="like-count">${Number(d.like_count||0)}</span>`;}catch(e){btn.querySelector(".like-count")?.replaceChildren(document.createTextNode("—"));}}
+async function toggleLike(btn){if(!client)return;btn.disabled=true;try{const {data,error}=await client.rpc("rohs_toggle_like",{p_target_type:btn.dataset.likeType,p_target_id:btn.dataset.likeId,p_actor_key:visitorKey()});if(error)throw error;await refreshLikeButton(btn);}catch(e){notice(e.message||"Could not update like.",true);}finally{btn.disabled=false;}}
+async function mountPostInteractions(p){const box=$("readingInteractions");if(p.visibility!=="public"||p.status!=="approved"){box.innerHTML="";return;}box.innerHTML=`<div class="interaction-panel"><div class="interaction-tools"><button type="button" class="like-btn" data-like-type="post" data-like-id="${esc(p.id)}">♡ Like <span class="like-count">…</span></button></div>${p.kind==="memory"?`<div class="interaction-panel"><h3>Album comments</h3><div class="comment-list" id="albumComments"><p class="muted">Loading comments…</p></div><label for="commentName">Your name</label><input id="commentName" maxlength="60" placeholder="Display name" value="${esc(currentUser?.user_metadata?.display_name||"")}"><label for="commentBody">Add a comment</label><textarea id="commentBody" maxlength="2000" placeholder="Write something kind..."></textarea><button id="postComment" type="button">Post comment</button></div>`:""}</div>`;
+ const like=box.querySelector(".like-btn");await refreshLikeButton(like);
+ if(p.kind==="memory"){await loadAlbumComments(p.id);$("postComment").onclick=()=>submitAlbumComment(p.id);}
+}
+async function mountVoiceInteractions(r){const box=$("readingInteractions");if(r.visibility!=="public"||r.status!=="approved"){box.innerHTML="";return;}box.innerHTML=`<div class="interaction-panel"><div class="interaction-tools"><button type="button" class="like-btn" data-like-type="voice" data-like-id="${esc(r.id)}">♡ Like <span class="like-count">…</span></button></div></div>`;await refreshLikeButton(box.querySelector(".like-btn"));}
+async function loadAlbumComments(postId){const box=$("albumComments");if(!box)return;const {data,error}=await client.from("rohs_album_comments").select("id,display_name,body,created_at").eq("post_id",postId).order("created_at",{ascending:true}).limit(100);if(error){box.innerHTML='<p class="muted">Comments are not available yet. Run the community SQL migration.</p>';return;}box.innerHTML=(data||[]).map(c=>`<article class="comment-item"><strong>${esc(c.display_name||"Guest")}</strong><small class="muted"> · ${new Date(c.created_at).toLocaleString()}</small><p>${esc(c.body)}</p></article>`).join("")||'<p class="muted">No comments yet. Start the conversation.</p>';}
+async function submitAlbumComment(postId){const name=$("commentName").value.trim()||"Guest",body=$("commentBody").value.trim();if(!body)return notice("Write a comment first.",true);const {error}=await client.from("rohs_album_comments").insert({post_id:postId,user_id:currentUser?.id||null,actor_key:visitorKey(),display_name:name.slice(0,60),body:body.slice(0,2000)});if(error)return notice(error.message,true);$("commentBody").value="";await loadAlbumComments(postId);notice("Comment posted.");}
+document.addEventListener("click",e=>{const like=e.target.closest("[data-like-type]");if(like){toggleLike(like);return;}const open=e.target.closest("[data-open-post]");if(open){const item=publicPostCache.get(open.dataset.openPost);if(item)openReading(item.post,item.images);}});
+async function hydrateLikeButtons(root=document){for(const b of root.querySelectorAll(".like-btn"))refreshLikeButton(b);}
+
+async function loadPublic(){
+ if(!client)return;
+ for(const [kind,target] of [["memory","memoryGrid"],["diary","diaryGrid"]]){
+  const {data,error}=await client.from("posts").select("id,kind,title,body,media_paths,media_path,created_at,display_name,visibility,status,user_id").eq("status","approved").eq("visibility","public").eq("kind",kind).order("created_at",{ascending:false}).limit(30);
+  if(error){$(target).innerHTML='<p class="muted">Could not load this section yet.</p>';continue;}
+  $(target).classList.add("read-list");$(target).innerHTML="";
+  for(const p of (data||[])){
+   const images=kind==="memory"?await getSignedAll(p):[];
+   if(kind==="memory")publicPostCache.set(p.id,{post:p,images});
+   $(target).appendChild(readingList(p,images));
+  }
+  if(!data?.length)$(target).innerHTML=kind==="memory"?'<p class="muted">No public albums yet. Be the first to share one.</p>':'<p class="muted">No public entries yet.</p>';
+ }
+ await hydrateLikeButtons($("memories"));
+}
+async function loadPostsFeed(){
+ const box=$("postsFeed");if(!box||!client)return;box.innerHTML='<p class="muted">Loading your feed…</p>';
+ let rows=[];
+ const pub=await client.from("posts").select("id,kind,title,body,media_paths,media_path,created_at,display_name,visibility,status,user_id").eq("status","approved").eq("visibility","public").in("kind",["memory","diary"]).order("created_at",{ascending:false}).limit(50);
+ if(!pub.error)rows.push(...(pub.data||[]));
+ if(currentUser){const fr=await client.rpc("friends_feed");if(!fr.error)rows.push(...(fr.data||[]).filter(p=>p.kind==="memory"||p.kind==="diary").map(p=>({...p,display_name:p.author_name||p.display_name,feed_visibility:"Close friends"})));}
+ const vr=await client.from("voice_records").select("id,user_id,title,audio_path,duration_seconds,created_at,visibility,status").eq("status","approved").in("visibility",["public","friends"]).order("created_at",{ascending:false}).limit(40);
+ if(!vr.error)rows.push(...(vr.data||[]).map(r=>({...r,kind:"record",body:"",media_paths:[],feed_visibility:r.visibility==="friends"?"Close friends":"Public"})));
+ const unique=[...new Map(rows.map(p=>[p.id,p])).values()].sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
+ const directory=currentUser?((await client.rpc("rohs_member_directory")).data||[]):[];const profileById=new Map(directory.map(m=>[m.id,m]));if(currentUser&&currentProfile)profileById.set(currentUser.id,currentProfile);
+ if(!unique.length){box.innerHTML='<p class="muted">No shared posts yet. Public posts and close-friends posts shared with you will appear here.</p>';return;}
+ box.innerHTML="";box.classList.add("read-list");
+ for(const p of unique){const prof=profileById.get(p.user_id)||{};const name=p.display_name||prof.display_name||"ROHS48 member";const dt=new Date(p.created_at);const row=document.createElement("button");row.type="button";row.className="read-item compact-content-row";const kind=p.kind==="memory"?"Album":p.kind==="diary"?"Diary":"Record";const visibility=p.feed_visibility||(p.visibility==="friends"?"Close friends":"Public");row.innerHTML=`<strong>${esc(p.title||"Untitled")}</strong><span>${dt.toLocaleDateString()} · ${dt.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})} · ${esc(name)} · ${kind} · ${esc(visibility)}</span>`;
+  row.addEventListener("click",async()=>{if(p.kind==="record"){openVoiceReading(p,await signedVoice(p.audio_path),false);}else{openReading(p,await getSignedAll(p));}});box.appendChild(row);
+ }
+}
+
+async function refresh(){
+ if(!client){notice("Setup needed: add your Supabase URL and anon key to index.html, then run the SQL setup in README.md.",true);return;}
+ const {data:{session}}=await client.auth.getSession();currentUser=session?.user||null;currentProfile=null;isAdmin=false;
+ if(!currentUser){const anon=await client.auth.signInAnonymously();if(!anon.error)currentUser=anon.data.user;else console.warn('Anonymous sign-in is not enabled:',anon.error.message);}
+ if(currentUser){const {data:pr}=await client.from("profiles").select("display_name,role,avatar_path").eq("id",currentUser.id).maybeSingle();currentProfile=pr||null;}
+ $("submitPanel").classList.remove("hidden");
+ $("accountBtn").textContent=currentUser?"My Profile":"Create profile";
+ $("signOut").classList.add("hidden");
+ $("nameGate").classList.toggle("hidden",!!(currentProfile?.display_name));
+ if(currentProfile?.display_name){$("visitorName").value=currentProfile.display_name;$("profileDisplayName").value=currentProfile.display_name;$("profileLine").textContent="Posting as "+currentProfile.display_name;}
+ if(currentProfile?.avatar_path){const {data:av}=await client.storage.from("rohs-avatars").createSignedUrl(currentProfile.avatar_path,3600);if(av?.signedUrl){$("profileAvatar").src=av.signedUrl;}}
+ 
+ $("visibilityWrap").classList.toggle("hidden",!currentProfile?.display_name);
+ $("recordVisibilityWrap").classList.toggle("hidden",!currentProfile?.display_name);
+ if(currentUser){
+  const {data:profile}=await client.from("profiles").select("display_name,role").eq("id",currentUser.id).maybeSingle();
+  isAdmin=profile?.role==="admin";$("adminLink").classList.toggle("hidden",!isAdmin);$("profileLine").textContent="Posting as "+(profile?.display_name||"Visitor");
+  $("admin").classList.toggle("hidden",!isAdmin);if(isAdmin){await loadPending();await loadPendingRecords();await loadAdminVisitorMessages();}$("notificationWrap").classList.remove("hidden");await loadNotifications();subscribeNotifications();
+ } else {$("admin").classList.add("hidden");$("adminLink").classList.add("hidden");isAdmin=false;$ ("notificationWrap").classList.add("hidden");if(notificationChannel){client.removeChannel(notificationChannel);notificationChannel=null;notificationChannelUserId=null;}}
+ await loadMine();
+ await loadFriends();
+ await loadPublic();
+  await loadPostsFeed();
+  await loadRecords();
+  await loadCreatorAbout();if(currentUser&&currentProfile?.display_name){await loadChatConversations();await loadMemberDirectory();await loadOnThisDay();await loadCollaborativeAlbums();}else{$("chatConversationList").innerHTML="<div class='chat-empty-side'>Enter your name on the homepage to start a chat.</div>";}
+ showRoute();
+}
+function statusLabel(p){
+ if(p.visibility==="private")return "Private · only you";
+ const where=p.visibility==="friends"?"Close friends":"Public";
+ if(p.status==="approved")return where+" · live";
+ if(p.status==="rejected")return where+" · not approved";
+ return where+" · waiting for approval";
+}
+function visOptions(sel){return [["public","Public — after approval"],["friends","Close friends — after approval"],["private","Private — only you"]].map(([v,t])=>`<option value="${v}"${v===sel?" selected":""}>${t}</option>`).join("");}
+function mineCard(p,url){
+ const wrap=document.createElement("div");
+ const show=()=>{
+  wrap.innerHTML=`<button type="button" class="read-item"><strong>${esc(p.title||"Untitled")}</strong><span>${new Date(p.created_at).toLocaleDateString()} · ${esc(statusLabel(p))}</span></button><div class="actions"><button class="secondary" data-a="edit">Edit</button><button class="secondary" data-a="del">Delete</button></div>`;
+  wrap.querySelector(".read-item").onclick=()=>openReading(p,url);
+  wrap.querySelector('[data-a="edit"]').onclick=edit;
+  wrap.querySelector('[data-a="del"]').onclick=del;
+ };
+ const edit=()=>{
+  const paths=photoPaths(p),isMem=p.kind==="memory",removed=new Set();
+  wrap.innerHTML='<article class="card"><div class="card-body"><label>Title</label><input class="e-title" maxlength="100"><label>Your words</label><textarea class="e-body" maxlength="10000"></textarea>'
+   +(isMem?'<label>Photos</label><div class="thumbs e-photos"></div><input class="e-new" type="file" multiple accept="image/jpeg,image/png,image/webp" style="margin-top:10px"><div class="thumbs e-newprev"></div><p class="muted" style="font-size:13px">Tap a photo to remove it (tap again to undo). New photos are resized automatically.</p>':'')
+   +'<label>Who can read this?</label><select class="e-vis">'+visOptions(p.visibility)+'</select><p class="muted" style="font-size:13px">Saving a public or close-friends post sends it back for approval.</p><div class="actions"><button data-a="save">Save</button><button class="secondary" data-a="cancel">Cancel</button></div></div></article>';
+  wrap.querySelector(".e-title").value=p.title||"";
+  wrap.querySelector(".e-body").value=p.body||"";
+  if(isMem){
+   const box=wrap.querySelector(".e-photos");
+   paths.forEach((path,i)=>{
+    const b=document.createElement("button");b.type="button";b.className="thumb";b.title="Remove this photo";
+    b.innerHTML='<img alt="" src="'+(url[i]||"")+'"><span>✕</span>';
+    b.onclick=()=>{removed.has(i)?removed.delete(i):removed.add(i);b.classList.toggle("removed",removed.has(i));};
+    box.appendChild(b);
+   });
+   wrap.querySelector(".e-new").onchange=ev=>{
+    const pv=wrap.querySelector(".e-newprev");pv.innerHTML="";
+    [...ev.target.files].slice(0,MAX_PHOTOS).forEach(f=>{const im=document.createElement("img");im.alt="";im.src=URL.createObjectURL(f);im.onload=()=>URL.revokeObjectURL(im.src);pv.appendChild(im);});
+   };
+  }
+  wrap.querySelector('[data-a="cancel"]').onclick=show;
+  wrap.querySelector('[data-a="save"]').onclick=async ev=>{
+   const btn=ev.currentTarget;
+   const title=wrap.querySelector(".e-title").value.trim(),body=wrap.querySelector(".e-body").value.trim(),visibility=wrap.querySelector(".e-vis").value;
+   if(!title||!body)return notice("Please keep a title and some words.",true);
+   const keep=paths.filter((_,i)=>!removed.has(i));
+   const newFiles=isMem?[...wrap.querySelector(".e-new").files].slice(0,MAX_PHOTOS):[];
+   if(isMem&&keep.length+newFiles.length===0)return notice("A photo memory needs at least one photo.",true);
+   if(isMem&&keep.length+newFiles.length>MAX_PHOTOS)return notice("A post can have up to "+MAX_PHOTOS+" photos. Remove some first.",true);
+   if(newFiles.some(f=>!PHOTO_TYPES.includes(f.type)))return notice("Photos must be JPG, PNG or WebP.",true);
+   btn.disabled=true;
+   const uploaded=[];
+   try{
+    for(let i=0;i<newFiles.length;i++){
+     $("message").textContent="Uploading photo "+(i+1)+" of "+newFiles.length+"…";$("message").classList.remove("hidden","error");
+     uploaded.push(await uploadPhoto(newFiles[i]));
+    }
+    const patch={title,body,visibility,status:visibility==="private"?"approved":"pending"};
+    if(isMem){const all=[...keep,...uploaded];patch.media_paths=all;patch.media_path=all[0];}
+    const {data,error}=await client.from("posts").update(patch).eq("id",p.id).select("id");
+    if(error||!data?.length)throw error||new Error("Could not save your changes.");
+    uploaded.length=0;
+    const gone=paths.filter((_,i)=>removed.has(i));
+    if(gone.length)await client.storage.from("rohs-media").remove(gone);
+    notice(visibility==="private"?"Changes saved.":"Changes saved. Your post is back in the review queue.");
+    await refresh();
+   }catch(e){
+    if(uploaded.length)await client.storage.from("rohs-media").remove(uploaded);
+    btn.disabled=false;notice(e.message||"Could not save your changes.",true);
+   }
+  };
+ };
+ const del=async()=>{
+  if(!confirm("Delete this post? This can't be undone."))return;
+  const {data,error}=await client.from("posts").delete().eq("id",p.id).select("id");
+  if(error||!data?.length)return notice(error?.message||"Could not delete this post.",true);
+  if(photoPaths(p).length)await client.storage.from("rohs-media").remove(photoPaths(p));
+  notice("Post deleted.");await refresh();
+ };
+ show();
+ return wrap;
+}
+async function loadMine(){
+ const box=$("mine");
+ if(!currentUser||!currentProfile?.display_name){box.classList.add("hidden");$("mineGrid").innerHTML="";$("myRecordsGrid").innerHTML="";return;}
+ box.classList.remove("hidden");
+ const {data,error}=await client.from("posts").select("id,kind,title,body,media_paths,media_path,created_at,display_name,visibility,status").eq("user_id",currentUser.id).in("kind",["memory","diary"]).order("created_at",{ascending:false}).limit(100);
+ if(error){$("mineGrid").innerHTML='<p class="muted">Could not load your posts yet.</p>';return;}
+ const urls=await Promise.all((data||[]).map(p=>getSignedAll(p)));
+ const grid=$("mineGrid");grid.innerHTML="";
+ (data||[]).forEach((p,i)=>grid.appendChild(mineCard(p,urls[i])));
+ if(!data?.length)grid.innerHTML='<p class="muted">You haven\'t shared anything yet.</p>';
+ const vr=$("myRecordsGrid");vr.innerHTML="";
+ const {data:voiceRows}=await client.from("voice_records").select("id,user_id,title,audio_path,duration_seconds,visibility,status,created_at").eq("user_id",currentUser.id).order("created_at",{ascending:false}).limit(100);
+ for(const r of voiceRows||[]){const item=document.createElement("div");item.innerHTML=`<button type="button" class="read-item"><strong>${esc(r.title||"Untitled recording")}</strong><span>${new Date(r.created_at).toLocaleDateString()} · ${esc(statusLabel(r))}</span></button>`;item.querySelector("button").onclick=async()=>openVoiceReading(r,await signedVoice(r.audio_path),true);vr.appendChild(item);}
+ if(!voiceRows?.length)vr.innerHTML='<p class="muted">No voice records yet.</p>';
+}
+async function loadFriends(){
+ const box=$("friends"),feed=$("friendsFeed");
+ if(!currentUser||!currentProfile?.display_name){box.classList.add("hidden");feed.classList.add("hidden");$("friendList").innerHTML="";$("friendsGrid").innerHTML="";return;}
+ box.classList.remove("hidden");feed.classList.remove("hidden");
+ const fl=$("friendList");
+ const {data:list,error:e1}=await client.rpc("list_close_friends");
+ if(e1){fl.innerHTML='<p class="muted">Could not load your close friends yet.</p>';}
+ else if(!list?.length){fl.innerHTML='<p class="muted">No one added yet.</p>';}
+ else{
+  fl.innerHTML="";
+  for(const f of list){
+   const row=document.createElement("div");row.className="friend";
+   row.innerHTML='<span><strong>'+esc(f.display_name||"rohs member")+'</strong></span><button class="secondary">Remove</button>';
+   row.querySelector("button").onclick=async()=>{
+    const {error}=await client.from("close_friends").delete().eq("owner_id",currentUser.id).eq("friend_id",f.friend_id);
+    if(error)return notice(error.message,true);
+    notice("Removed from your close friends.");await loadFriends();
+   };
+   fl.appendChild(row);
+  }
+ }
+ const {data:posts,error:e2}=await client.rpc("friends_feed");
+ const grid=$("friendsGrid");
+ if(e2){grid.innerHTML='<p class="muted">Could not load this section yet.</p>';return;}
+ const visiblePosts=(posts||[]).filter(p=>p.kind==='memory'||p.kind==='diary');const urls=await Promise.all(visiblePosts.map(p=>getSignedAll(p)));
+ grid.innerHTML="";grid.classList.add("read-list");
+ visiblePosts.forEach((p,i)=>{const item=readingList({...p,display_name:p.author_name});item.querySelector("span").textContent=new Date(p.created_at).toLocaleDateString()+" · Close friends";item.onclick=()=>openReading(p,urls[i]);grid.appendChild(item);});
+ if(!visiblePosts.length)grid.innerHTML='<p class="muted">Nothing from your close friends yet.</p>';
+}
+async function adminAuth(){const email=$("adminEmail").value.trim(),password=$("adminPassword").value;if(!email||!password)return notice("Enter the administrator credentials.",true);const {data,error}=await client.auth.signInWithPassword({email,password});if(error)return notice(error.message,true);$("adminLoginModal").classList.add("hidden");await refresh();if(!isAdmin){await client.auth.signOut();await refresh();return notice("This account is not marked as the site administrator.",true);}notice("Administrator signed in.");}
+$("adminLoginLink").onclick=()=>$("adminLoginModal").classList.remove("hidden");$("closeAdminLogin").onclick=()=>$("adminLoginModal").classList.add("hidden");$("adminSignIn").onclick=adminAuth;
+$("accountBtn").onclick=()=>{location.hash=currentProfile?.display_name?"#profile":"#home";$("visitorName")?.focus();};
+$("createVisitorProfile").onclick=saveNameProfile;
+async function saveNameProfile(){const name=$("visitorName").value.trim().slice(0,60);if(!name)return notice("Enter your name first.",true);if(!currentUser){const a=await client.auth.signInAnonymously();if(a.error)return notice(a.error.message,true);currentUser=a.data.user;}const {error}=await client.rpc("rohs_save_my_profile",{p_display_name:name,p_avatar_path:null});if(error)return notice(error.message,true);currentProfile={...(currentProfile||{}),display_name:name};$("nameGate").classList.add("hidden");$("profileDisplayName").value=name;$("profileLine").textContent="Posting as "+name;$("visitorMessageName").value=name;notice("Your profile is ready.");await refresh();}
+let cropSource=null,croppedAvatarFile=null,profilePreviewUrl=null;function drawCrop(){if(!cropSource)return;const c=$('cropCanvas'),ctx=c.getContext('2d'),w=c.width,h=c.height,z=Number($('cropZoom').value),ox=Number($('cropX').value),oy=Number($('cropY').value);const scale=Math.max(w/cropSource.width,h/cropSource.height)*z,sw=Math.min(cropSource.width,w/scale),sh=Math.min(cropSource.height,h/scale),maxX=cropSource.width-sw,maxY=cropSource.height-sh,sx=Math.max(0,Math.min(maxX,maxX/2+ox*maxX/2)),sy=Math.max(0,Math.min(maxY,maxY/2+oy*maxY/2));ctx.clearRect(0,0,w,h);ctx.save();ctx.beginPath();ctx.arc(w/2,h/2,w/2,0,Math.PI*2);ctx.clip();ctx.drawImage(cropSource,sx,sy,sw,sh,0,0,w,h);ctx.restore();}['cropZoom','cropX','cropY'].forEach(id=>$(id).addEventListener('input',drawCrop));$('profilePhoto').onchange=async e=>{const f=e.target.files?.[0];if(!f)return;if(!['image/jpeg','image/png','image/webp'].includes(f.type)){e.target.value='';return notice('Choose a JPG, PNG or WebP image.',true);}if(f.size>12*1024*1024){e.target.value='';return notice('Choose an image smaller than 12 MB.',true);}try{if(window.createImageBitmap){cropSource=await createImageBitmap(f);}else{const u=URL.createObjectURL(f);cropSource=await new Promise((resolve,reject)=>{const im=new Image();im.onload=()=>resolve(im);im.onerror=reject;im.src=u;});URL.revokeObjectURL(u);}}catch(err){e.target.value='';return notice('This image could not be opened. Try another JPG, PNG or WebP file.',true);}$('cropZoom').value=1;$('cropX').value=0;$('cropY').value=0;drawCrop();$('cropModal').classList.remove('hidden');document.body.style.overflow='hidden';};$('cropCancel').onclick=async()=>{$('cropModal').classList.add('hidden');$('profilePhoto').value='';cropSource=null;croppedAvatarFile=null;if(profilePreviewUrl){URL.revokeObjectURL(profilePreviewUrl);profilePreviewUrl=null;}if(currentProfile?.avatar_path){const av=await client.storage.from('rohs-avatars').createSignedUrl(currentProfile.avatar_path,1800);if(av.data?.signedUrl)$('profileAvatar').src=av.data.signedUrl;else $('profileAvatar').removeAttribute('src');}else $('profileAvatar').removeAttribute('src');document.body.style.overflow='';};$('cropApply').onclick=()=>{$('cropCanvas').toBlob(blob=>{if(!blob)return notice('Could not prepare the cropped image.',true);croppedAvatarFile=new File([blob],'profile-photo.jpg',{type:'image/jpeg'});if(profilePreviewUrl)URL.revokeObjectURL(profilePreviewUrl);profilePreviewUrl=URL.createObjectURL(croppedAvatarFile);$('profileAvatar').src=profilePreviewUrl;$('cropModal').classList.add('hidden');document.body.style.overflow='';cropSource=null;notice('Photo crop ready. Save your profile to upload it.');},'image/jpeg',0.92);};
+$("saveProfile").onclick=async()=>{if(!currentUser)return notice("Create your name-only profile first.",true);const name=$("profileDisplayName").value.trim().slice(0,60);if(!name)return notice("Enter a display name.",true);let avatar=currentProfile?.avatar_path||null,uploadedPath=null;const previousAvatar=currentProfile?.avatar_path||null;const file=croppedAvatarFile;try{if(file){uploadedPath=`${currentUser.id}/${crypto.randomUUID()}.jpg`;const up=await client.storage.from("rohs-avatars").upload(uploadedPath,file,{upsert:false,contentType:"image/jpeg"});if(up.error)throw up.error;avatar=uploadedPath;}const {error}=await client.rpc("rohs_save_my_profile",{p_display_name:name,p_avatar_path:avatar});if(error)throw error;currentProfile={...(currentProfile||{}),display_name:name,avatar_path:avatar};if(uploadedPath&&previousAvatar&&previousAvatar!==uploadedPath)await client.storage.from("rohs-avatars").remove([previousAvatar]);croppedAvatarFile=null;if(profilePreviewUrl){URL.revokeObjectURL(profilePreviewUrl);profilePreviewUrl=null;}$("profilePhoto").value="";notice("Profile updated.");await refresh();}catch(err){if(uploadedPath)await client.storage.from("rohs-avatars").remove([uploadedPath]);notice(err.message||"Could not save your profile.",true);}};
+$("kind").onchange=()=>{$("photoField").classList.toggle("hidden",$("kind").value!=="memory");};
+
+const PHOTO_TYPES=["image/jpeg","image/png","image/webp"];
+async function uploadPhoto(file){
+ const f=await prepareImage(file);
+ const ext=f.type==="image/png"?"png":f.type==="image/webp"?"webp":"jpg";
+ const path=`${currentUser?currentUser.id:"guest"}/${crypto.randomUUID()}.${ext}`;
+ const {error}=await client.storage.from("rohs-media").upload(path,f,{contentType:f.type||"image/jpeg",upsert:false});
+ if(error)throw error;
+ return path;
+}
+const MAX_PHOTOS=20,MAX_EDGE=2560,KEEP_AS_IS=1.5*1024*1024;
+async function prepareImage(file){
+ try{
+  const bmp=await createImageBitmap(file,{imageOrientation:"from-image"});
+  const scale=Math.min(1,MAX_EDGE/Math.max(bmp.width,bmp.height));
+  if(scale===1&&file.size<=KEEP_AS_IS){bmp.close?.();return file;}
+  const c=document.createElement("canvas");c.width=Math.round(bmp.width*scale);c.height=Math.round(bmp.height*scale);
+  const g=c.getContext("2d");g.fillStyle="#fff";g.fillRect(0,0,c.width,c.height);g.drawImage(bmp,0,0,c.width,c.height);bmp.close?.();
+  const blob=await new Promise(r=>c.toBlob(r,"image/jpeg",0.86));
+  return blob&&blob.size<file.size?blob:file;
+ }catch(e){return file;}
+}
+$("photo").onchange=()=>{
+ const box=$("photoPreview");box.innerHTML="";
+ const files=[...$("photo").files];
+ if(files.length>MAX_PHOTOS)notice("You can add up to "+MAX_PHOTOS+" photos per post, so only the first "+MAX_PHOTOS+" will be used.",true);
+ files.slice(0,MAX_PHOTOS).forEach(f=>{const i=document.createElement("img");i.alt="";i.src=URL.createObjectURL(f);i.onload=()=>URL.revokeObjectURL(i.src);box.appendChild(i);});
+};
+$("submitPost").onclick=async()=>{
+ if(!currentProfile?.display_name)return notice("Enter your name on the homepage before sharing.",true);
+ const kind=$("kind").value,title=$("title").value.trim(),body=$("body").value.trim(),visibility=currentUser?$("visibility").value:"public";
+ const files=kind==="memory"?[...$("photo").files].slice(0,MAX_PHOTOS):[];
+ if(!title||!body)return notice("Please add a title and some words.",true);
+ if(kind==="memory"&&!files.length)return notice("Please choose at least one photo for your memory.",true);
+ if(files.some(f=>!["image/jpeg","image/png","image/webp"].includes(f.type)))return notice("Photos must be JPG, PNG or WebP.",true);
+ $("submitPost").disabled=true;
+ const uploaded=[];
+ const progress=t=>{$("message").textContent=t;$("message").classList.remove("hidden","error");};
+ try{
+  for(let i=0;i<files.length;i++){
+   progress("Uploading photo "+(i+1)+" of "+files.length+"…");
+   uploaded.push(await uploadPhoto(files[i]));
+  }
+  const {error}=await client.from("posts").insert({user_id:currentUser?.id||null,kind,title,body,visibility,status:visibility==="private"?"approved":"pending",display_name:currentProfile?.display_name||"Visitor",media_path:uploaded[0]||null,media_paths:[...uploaded]});
+  if(error)throw error;
+  uploaded.length=0;
+  $("title").value="";$("body").value="";$("photo").value="";$("photoPreview").innerHTML="";
+  notice(visibility==="private"?"Your private entry has been saved.":"Thanks! Your post is waiting for the site owner's approval.");
+  await refresh();
+ }catch(e){
+  if(uploaded.length)await client.storage.from("rohs-media").remove(uploaded);
+  notice(e.message||"Something went wrong while submitting.",true);
+ }
+ finally{$("submitPost").disabled=false;}
+};
+async function loadPending(){
+ const {data,error}=await client.from("posts").select("id,kind,title,body,media_paths,media_path,created_at,user_id,visibility,status").eq("status","pending").in("kind",["memory","diary"]).order("created_at",{ascending:true});
+ if(error){$("pendingGrid").innerHTML='<p class="muted">Could not load pending posts.</p>';return;}
+ $("pendingGrid").innerHTML="";
+ for(const p of data||[]){
+  const url=await getSignedAll(p);
+  const el=document.createElement("article");el.className="card";
+  el.innerHTML=card(p,url,statusLabel(p))+`<div class="card-body"><button data-action="approve">Approve</button> <button class="secondary" data-action="reject">Reject</button></div>`;
+  el.querySelector('[data-action="approve"]').onclick=()=>moderate(p.id,"approved");
+  el.querySelector('[data-action="reject"]').onclick=()=>moderate(p.id,"rejected");
+  $("pendingGrid").appendChild(el);
+ }
+ if(!data?.length)$("pendingGrid").innerHTML='<p class="muted">Nothing waiting for review. Lovely.</p>';
+}
+async function moderate(id,status){
+ const {error}=await client.from("posts").update({status}).eq("id",id);
+ if(error)return notice(error.message,true);
+ notice(status==="approved"?"Post approved.":"Post rejected.");await loadPending();await loadPublic();
+  await loadRecords();
+}
+
+// Voice Records — stored separately from photo uploads.
+let recorder=null,recordStream=null,recordChunks=[],recordBlob=null,recordStartedAt=0,recordElapsedBeforePause=0,recordTick=null;
+const RECORD_LIMIT_SECONDS=600;
+function formatRecordTime(seconds){const n=Math.max(0,Math.floor(seconds));return String(Math.floor(n/60)).padStart(2,"0")+":"+String(n%60).padStart(2,"0");}
+function recordElapsed(){return recordElapsedBeforePause+(recorder&&recorder.state==="recording"?(Date.now()-recordStartedAt)/1000:0);}
+function updateRecordTimer(){const elapsed=recordElapsed();$("recordTimer").textContent=formatRecordTime(elapsed)+" / 10:00";if(elapsed>=RECORD_LIMIT_SECONDS&&recorder&&recorder.state==="recording")stopVoiceRecording();}
+function releaseRecordStream(){if(recordStream){recordStream.getTracks().forEach(t=>t.stop());recordStream=null;}}
+async function startVoiceRecording(){
+ if(!currentProfile?.display_name)return notice("Create your name-only profile before recording.",true);
+ if(!navigator.mediaDevices?.getUserMedia||!window.MediaRecorder)return notice("Voice recording isn't supported in this browser. Try an updated Chrome, Edge or Firefox.",true);
+ try{
+  recordStream=await navigator.mediaDevices.getUserMedia({audio:true});recordChunks=[];recordBlob=null;recordElapsedBeforePause=0;
+  const options={};if(MediaRecorder.isTypeSupported("audio/webm;codecs=opus"))options.mimeType="audio/webm;codecs=opus";else if(MediaRecorder.isTypeSupported("audio/mp4"))options.mimeType="audio/mp4";
+  recorder=new MediaRecorder(recordStream,options);recorder.ondataavailable=e=>{if(e.data&&e.data.size)recordChunks.push(e.data);};
+  recorder.onstop=()=>{recordBlob=new Blob(recordChunks,{type:recorder.mimeType||"audio/webm"});releaseRecordStream();$("saveRecording").disabled=!recordBlob.size;$("recordHint").textContent="Recording ready. Listen to it before saving, or record again.";};
+  recorder.start(1000);recordStartedAt=Date.now();$("startRecording").disabled=true;$("pauseRecording").disabled=false;$("stopRecording").disabled=false;$("recordHint").textContent="Recording… Keep this page open until you stop.";
+  clearInterval(recordTick);recordTick=setInterval(updateRecordTimer,250);
+ }catch(e){releaseRecordStream();notice(e.message||"Microphone access was not available.",true);}
+}
+function pauseVoiceRecording(){if(!recorder||recorder.state!=="recording")return;recordElapsedBeforePause+=(Date.now()-recordStartedAt)/1000;recorder.pause();$("pauseRecording").disabled=true;$("resumeRecording").classList.remove("hidden");$("resumeRecording").disabled=false;updateRecordTimer();}
+function resumeVoiceRecording(){if(!recorder||recorder.state!=="paused")return;recordStartedAt=Date.now();recorder.resume();$("pauseRecording").disabled=false;$("resumeRecording").classList.add("hidden");$("resumeRecording").disabled=true;}
+function stopVoiceRecording(){if(recorder&&recorder.state!=="inactive"){if(recorder.state==="recording")recordElapsedBeforePause+=(Date.now()-recordStartedAt)/1000;recorder.stop();}clearInterval(recordTick);["pauseRecording","resumeRecording","stopRecording"].forEach(id=>$(id).disabled=true);$("resumeRecording").classList.add("hidden");$("startRecording").disabled=false;updateRecordTimer();}
+$("startRecording").onclick=startVoiceRecording;$("pauseRecording").onclick=pauseVoiceRecording;$("resumeRecording").onclick=resumeVoiceRecording;$("stopRecording").onclick=stopVoiceRecording;
+$("saveRecording").onclick=async()=>{
+ if(!currentProfile?.display_name)return notice("Create your name-only profile before saving a recording.",true);
+ if(!recordBlob)return notice("Make a recording first.",true);
+ const title=$("recordTitle").value.trim(),visibility=currentUser?$("recordVisibility").value:"public",duration=Math.min(RECORD_LIMIT_SECONDS,Math.ceil(recordElapsed()));
+ if(!title)return notice("Please give your recording a title.",true);if(!duration)return notice("Your recording is empty.",true);
+ const btn=$("saveRecording");btn.disabled=true;const ext=recordBlob.type.includes("mp4")?"m4a":recordBlob.type.includes("ogg")?"ogg":"webm";const path=(currentUser?currentUser.id:"guest")+"/"+crypto.randomUUID()+"."+ext;const canonicalType=ext==="m4a"?"audio/mp4":ext==="ogg"?"audio/ogg":"audio/webm";
+ try{
+  const {error:upErr}=await client.storage.from("rohs-voice").upload(path,recordBlob,{contentType:canonicalType,upsert:false});if(upErr)throw upErr;
+  const {error}=await client.from("voice_records").insert({user_id:currentUser?.id||null,title,audio_path:path,duration_seconds:duration,mime_type:canonicalType,visibility,status:visibility==="private"?"approved":"pending"});if(error){await client.storage.from("rohs-voice").remove([path]);throw error;}
+  recordBlob=null;recordChunks=[];$("recordTitle").value="";$("recordTimer").textContent="Maximum 10 minutes per recording.";$("recordHint").textContent="Saved! You can make another recording.";notice("Your voice recording is waiting for approval.");await loadRecords();if(isAdmin)await loadPendingRecords();
+ }catch(e){notice(e.message||"Could not save the voice record.",true);}finally{btn.disabled=!recordBlob;}
+};
+async function signedVoice(path){const {data,error}=await client.storage.from("rohs-voice").createSignedUrl(path,3600);return error?"":data.signedUrl;}
+function voiceCard(r,url,adminMode=false){
+ const el=document.createElement("div");
+ const owner=!!currentUser&&r.user_id===currentUser.id;
+ const status=adminMode?"Awaiting approval":(r.visibility==="private"?"Private":r.visibility==="friends"?"Close friends":r.status==="approved"?"Public":"Awaiting approval");
+ el.innerHTML=`<button type="button" class="read-item compact-content-row"><strong>${esc(r.title||"Untitled recording")}</strong><span>${new Date(r.created_at).toLocaleDateString()} · ${new Date(r.created_at).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})} · ${esc(status)}</span></button>`;
+ el.querySelector("button").onclick=()=>openVoiceReading(r,url,owner);
+ if(adminMode){const actions=document.createElement("div");actions.className="actions";actions.innerHTML='<button data-review="approved">Approve</button><button class="secondary" data-review="rejected">Reject</button>';actions.querySelectorAll("button").forEach(btn=>btn.onclick=()=>moderateVoice(r.id,btn.dataset.review));el.appendChild(actions);}
+ return el;
+}
+async function editVoice(r){
+ const title=prompt("Recording title:",r.title||"");if(title===null)return;
+ const clean=title.trim();if(!clean)return notice("Please enter a title.",true);
+ const visibility=prompt("Visibility: public, friends, or private",r.visibility||"private");if(visibility===null)return;
+ if(!["public","friends","private"].includes(visibility))return notice("Choose public, friends, or private.",true);
+ const status=visibility==="private"?"approved":"pending";
+ const {data,error}=await client.from("voice_records").update({title:clean,visibility,status}).eq("id",r.id).eq("user_id",currentUser.id).select("id");
+ if(error||!data?.length)return notice(error?.message||"Could not update this recording.",true);
+ notice(visibility==="private"?"Recording updated.":"Recording updated and sent for approval.");await loadRecords();await loadMine();if(isAdmin)await loadPendingRecords();
+}
+async function loadRecords(){
+ const grid=$("recordsGrid");if(!client){grid.innerHTML='<p class="muted">Connect Supabase to load voice records.</p>';return;}
+
+ const {data:publicRows,error}=await client.from("voice_records").select("id,user_id,title,audio_path,duration_seconds,visibility,status,created_at").eq("status","approved").eq("visibility","public").order("created_at",{ascending:false}).limit(100);
+ if(error){grid.innerHTML='<p class="muted">Records are not set up yet. Apply the voice-record SQL migration first.</p>';return;}
+ const rows=[...(publicRows||[])];
+ if(currentUser){
+  const {data:friendRows}=await client.rpc("friends_voice_feed");
+  if(friendRows)rows.push(...friendRows);
+ }
+ const unique=[...new Map(rows.map(r=>[r.id,r])).values()].sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
+ grid.innerHTML="";for(const r of unique){const url=await signedVoice(r.audio_path);grid.appendChild(voiceCard(r,url));}
+ if(!unique.length)grid.innerHTML='<p class="muted">No voice records available yet.</p>';
+}
+async function deleteVoice(r){if(!confirm("Delete this voice recording? This cannot be undone."))return;const {data,error}=await client.from("voice_records").delete().eq("id",r.id).select("id");if(error||!data?.length)return notice(error?.message||"Could not delete this recording.",true);await client.storage.from("rohs-voice").remove([r.audio_path]);notice("Voice record deleted.");await loadRecords();await loadMine();}
+async function loadPendingRecords(){if(!isAdmin)return;const grid=$("pendingRecordsGrid");const {data,error}=await client.from("voice_records").select("id,user_id,title,audio_path,duration_seconds,visibility,status,created_at").eq("status","pending").order("created_at",{ascending:true});if(error){grid.innerHTML='<p class="muted">Could not load pending voice records.</p>';return;}grid.innerHTML="";for(const r of data||[]){grid.appendChild(voiceCard(r,await signedVoice(r.audio_path),true));}if(!data?.length)grid.innerHTML='<p class="muted">No voice records waiting for review.</p>';}
+async function moderateVoice(id,status){const {error}=await client.from("voice_records").update({status}).eq("id",id);if(error)return notice(error.message,true);notice(status==="approved"?"Voice record approved.":"Voice record rejected.");await loadPendingRecords();await loadRecords();}
+
+
+// One-to-one member chat replaces the former email-style message box.
+
+// Direct-message experience: private one-to-one text, photo, voice notes, edits, deletes and reactions.
+let activeChatId=null, activePeerId=null, chatRealtime=null, chatListRealtime=null, chatRecorder=null, chatVoiceBlob=null, chatVoiceChunks=[];
+const chatEmoji=['❤️','😂','😮','😢','🔥','👏'];
+function chatTime(v){return new Date(v).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});}
+function chatFileExt(file){const t=(file.type||'').toLowerCase();return t.includes('png')?'png':t.includes('webp')?'webp':t.includes('jpeg')||t.includes('jpg')?'jpg':t.includes('mp4')?'m4a':t.includes('ogg')?'ogg':'webm';}
+function ensureChatListRealtime(){if(!currentUser||chatListRealtime)return;chatListRealtime=client.channel('rohs-chat-list-'+currentUser.id).on('postgres_changes',{event:'INSERT',schema:'public',table:'rohs_chat_messages'},async payload=>{await loadChatConversations();if(activeChatId===payload.new.conversation_id)await loadChatMessages();}).subscribe();}
+async function loadChatConversations(){
+ const list=$('chatConversationList');if(!list)return;
+ if(!currentUser||!currentProfile?.display_name){list.innerHTML='<div class="chat-empty-side">Enter your name on the homepage to message the creator.</div>';return;}
+ ensureChatListRealtime();
+ if(!isAdmin){const {error:adminErr}=await client.rpc('rohs_start_admin_conversation');if(adminErr&&adminErr.code!=='PGRST116')console.warn('Admin chat setup:',adminErr.message);}
+ const [{data,error},{data:directory}]=await Promise.all([client.rpc('rohs_list_conversations'),client.rpc('rohs_member_directory')]);
+ if(error){list.innerHTML='<div class="chat-empty-side">Chat setup is waiting for the Direct Messages SQL migration.</div>';return;}
+ const people=new Map((directory||[]).map(m=>[m.id,m]));if(currentProfile)people.set(currentUser.id,currentProfile);
+ const rows=data||[];const html=await Promise.all(rows.map(async c=>{const person=people.get(c.other_user_id)||{};let avatar=`<span class="chat-avatar">${esc((c.other_name||'R').slice(0,1).toUpperCase())}</span>`;if(person.avatar_path){const signed=await client.storage.from('rohs-avatars').createSignedUrl(person.avatar_path,1800);if(signed.data?.signedUrl)avatar=`<img class="chat-avatar-image" src="${signed.data.signedUrl}" alt="">`;}return `<div class="chat-conversation ${c.conversation_id===activeChatId?'active':''}"><button class="chat-conversation-open" type="button" data-chat-open="${esc(c.conversation_id)}" data-peer-id="${esc(c.other_user_id)}" data-peer-name="${esc(c.other_name||'rohs member')}">${avatar}<span class="chat-conv-copy"><strong>${esc(c.other_name||'rohs member')}${c.other_name==='Rohith-Admin'?'<i class="chat-admin-mark">ADMIN</i>':''}</strong><span>${esc(c.last_message||'Start a conversation')}</span></span><small class="chat-conv-time">${c.last_at?chatTime(c.last_at):''}</small></button><button class="chat-conv-more" type="button" data-chat-more="${esc(c.conversation_id)}" aria-label="More options">⋯</button><div class="chat-conv-menu hidden"><button type="button" data-profile-action="view" data-peer-id="${esc(c.other_user_id)}" data-chat-id="${esc(c.conversation_id)}">View Profile</button><button type="button" data-profile-action="erase" data-peer-id="${esc(c.other_user_id)}" data-chat-id="${esc(c.conversation_id)}">Erase History</button><button type="button" data-profile-action="delete" data-peer-id="${esc(c.other_user_id)}" data-chat-id="${esc(c.conversation_id)}">Delete Profile</button></div></div>`;}));
+ list.innerHTML=html.join('')||'<div class="chat-empty-side">No conversations yet.<br>Message the creator or find a member to start one.</div>';
+}
+function openChat(id,peer,name){if(activeChatId&&activeChatId!==id)setChatTyping(false);activeChatId=id;chatTypingActive=false;activePeerId=peer;$('chatWelcome').classList.add('hidden');$('chatActive').classList.remove('hidden');$('chatPeerName').textContent=name||'rohs member';$('chatAvatar').textContent=(name||'R').slice(0,1).toUpperCase();$('chatShell')?.classList.add('chat-open');document.body.classList.add('chat-conversation-open');loadChatMessages();loadChatConversations();if(chatTypingPoll)clearInterval(chatTypingPoll);chatTypingPoll=setInterval(pollChatTyping,1800);pollChatTyping();if(chatRealtime)client.removeChannel(chatRealtime);chatRealtime=client.channel('rohs-chat-'+id).on('postgres_changes',{event:'*',schema:'public',table:'rohs_chat_messages',filter:'conversation_id=eq.'+id},()=>loadChatMessages()).on('postgres_changes',{event:'*',schema:'public',table:'rohs_chat_reactions'},()=>loadChatMessages()).subscribe();}
+async function loadChatMessages(){
+ if(!activeChatId)return;const box=$('chatMessages');const {data,error}=await client.from('rohs_chat_messages').select('id,conversation_id,sender_id,body,message_type,media_path,created_at,edited_at,deleted_at,read_at,reply_to_message_id').eq('conversation_id',activeChatId).order('created_at',{ascending:true}).limit(300);
+ if(error){box.innerHTML='<div class="chat-date-chip">Could not load messages. Check the SQL migration.</div>';return;}
+ const rows=data||[];await client.rpc('rohs_mark_chat_read',{p_conversation_id:activeChatId});if(!rows.length){box.innerHTML='<div class="chat-date-chip">This is the beginning ✦</div>';return;}
+ const ids=rows.map(m=>m.id);const byId=Object.fromEntries(rows.map(m=>[m.id,m]));const {data:reacts}=await client.from('rohs_chat_reactions').select('message_id,user_id,emoji').in('message_id',ids);
+ const grouped={};(reacts||[]).forEach(r=>(grouped[r.message_id]??=[]).push(r));
+ const html=[];
+ for(const m of rows){const mine=m.sender_id===currentUser.id;let media='';
+  if(m.deleted_at){media='<p><i>This message was deleted</i></p>';}
+  else if(m.message_type==='image'&&m.media_path){const {data:u}=await client.storage.from('rohs-chat-media').createSignedUrl(m.media_path,3600);media=u?.signedUrl?`<img class="chat-photo" src="${u.signedUrl}" alt="Photo message">`:'<p>Photo unavailable</p>';}
+  else if(m.message_type==='voice'&&m.media_path){const {data:u}=await client.storage.from('rohs-chat-media').createSignedUrl(m.media_path,3600);media=u?.signedUrl?`<audio class="chat-audio" controls preload="metadata" src="${u.signedUrl}"></audio>`:'<p>Voice note unavailable</p>';}
+  else media=`<p>${esc(m.body||'')}</p>`;
+  const rr=grouped[m.id]||[];const counts={};rr.forEach(r=>counts[r.emoji]=(counts[r.emoji]||0)+1);
+  const reactions=Object.entries(counts).map(([em,n])=>`<button class="chat-reaction" type="button" data-chat-react="${esc(m.id)}" data-emoji="${esc(em)}">${em} ${n}</button>`).join('');
+  const actions=`<button type="button" data-chat-reply="${esc(m.id)}">Reply</button><button type="button" data-chat-emoji-toggle="${esc(m.id)}">😊</button>${mine&&!m.deleted_at?`${m.message_type==='text'?`<button type="button" data-chat-edit="${esc(m.id)}" data-chat-body="${esc(m.body||'')}">Edit</button>`:''}<button type="button" data-chat-delete="${esc(m.id)}">Delete</button>`:''}`;
+  const reply= m.reply_to_message_id ? byId[m.reply_to_message_id] : null;const replyPreview=reply?`<div class="chat-reply-preview">↪ ${esc(reply.body|| (reply.message_type==='image'?'Photo':reply.message_type==='voice'?'Voice note':'Message deleted'))}</div>`:'';
+  const reactPicker=`<span class="chat-emoji-pick">${chatEmoji.map(em=>`<button type="button" data-chat-react-add="${esc(m.id)}" data-emoji="${esc(em)}" title="React ${esc(em)}">${em}</button>`).join('')}</span>`;
+  html.push(`<div class="chat-bubble-row ${mine?'mine':''}"><div class="chat-bubble">${replyPreview}${media}<span class="chat-stamp">${chatTime(m.created_at)}${m.edited_at?' · edited':''}${mine&&m.read_at?'<span class=\"chat-read\">✓✓ Read</span>':''}</span>${reactions?`<div class="chat-reactions">${reactions}</div>`:''}</div><div class="chat-message-actions">${reactPicker}${actions}</div></div>`);
+ }
+ box.innerHTML=html.join('');box.scrollTop=box.scrollHeight;
+}
+let chatTypingTimer=null,chatTypingPoll=null,chatTypingActive=false;
+async function setChatTyping(isTyping){if(!activeChatId||!currentUser)return;if(chatTypingActive===isTyping)return;chatTypingActive=isTyping;await client.rpc('rohs_set_chat_typing',{p_conversation_id:activeChatId,p_is_typing:isTyping});}
+async function pollChatTyping(){if(!activeChatId)return;const {data}=await client.from('rohs_chat_typing').select('user_id,updated_at').eq('conversation_id',activeChatId).neq('user_id',currentUser.id);const active=(data||[]).some(x=>Date.now()-new Date(x.updated_at).getTime()<5000);$('chatTyping').textContent=active?'typing…':'';}
+$('chatTextInput').addEventListener('input',()=>{if(!activeChatId)return;setChatTyping(true);clearTimeout(chatTypingTimer);chatTypingTimer=setTimeout(()=>setChatTyping(false),1800);});
+async function sendChatMessage(body='',type='text',path=null){if(!activeChatId||!currentUser)return notice('Open a conversation first.',true);if(type==='text'&&!body.trim())return;const {error}=await client.from('rohs_chat_messages').insert({conversation_id:activeChatId,sender_id:currentUser.id,body:body.trim()||null,message_type:type,media_path:path,reply_to_message_id:replyTarget?.id||null});if(error)return notice(error.message||'Message could not be sent.',true);if(type==='text')$('chatTextInput').value='';replyTarget=null;$('chatReplyBar').classList.add('hidden');await setChatTyping(false);await loadChatMessages();await loadChatConversations();}
+async function uploadChatMedia(file,type){if(!activeChatId||!currentUser)return notice('Open a conversation first.',true);if(type==='image'&&!['image/jpeg','image/png','image/webp'].includes((file.type||'').split(';')[0]))return notice('Choose a JPG, PNG or WebP image.',true);if(file.size>15*1024*1024)return notice('Files must be smaller than 15 MB.',true);const path=`${activeChatId}/${currentUser.id}/${crypto.randomUUID()}.${chatFileExt(file)}`;const {error}=await client.storage.from('rohs-chat-media').upload(path,file,{contentType:(file.type||'application/octet-stream').split(';')[0],upsert:false});if(error)return notice(error.message||'Upload failed.',true);await sendChatMessage('',type,path);}
+async function recordChatVoice(){if(!navigator.mediaDevices?.getUserMedia||!window.MediaRecorder)return notice('Voice notes are not supported by this browser.',true);if(chatRecorder){chatRecorder.stop();$('chatVoiceBtn').textContent='♫';return;}try{const stream=await navigator.mediaDevices.getUserMedia({audio:true});chatVoiceChunks=[];chatRecorder=new MediaRecorder(stream);chatRecorder.ondataavailable=e=>{if(e.data.size)chatVoiceChunks.push(e.data);};chatRecorder.onstop=()=>{chatVoiceBlob=new Blob(chatVoiceChunks,{type:chatRecorder.mimeType||'audio/webm'});stream.getTracks().forEach(t=>t.stop());chatRecorder=null;$('chatVoiceBtn').textContent='♫';$('chatVoicePreview').classList.remove('hidden');$('chatRecordHint').textContent='Voice note recorded';};chatRecorder.start();$('chatVoiceBtn').textContent='■';$('chatRecordHint').textContent='Recording… tap ■ to stop';}catch(e){notice(e.message||'Microphone permission was denied.',true);}}
+$('chatReplyCancel').onclick=()=>{replyTarget=null;$('chatReplyBar').classList.add('hidden');};$('chatSendBtn').onclick=()=>sendChatMessage($('chatTextInput').value);$('chatTextInput').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChatMessage($('chatTextInput').value);}});$('chatPhotoInput').onchange=async e=>{const f=e.target.files?.[0];if(f)await uploadChatMedia(f,'image');e.target.value='';};$('chatVoiceBtn').onclick=recordChatVoice;$('chatSendVoice').onclick=async()=>{if(!chatVoiceBlob)return;const ext=chatFileExt(chatVoiceBlob);const file=new File([chatVoiceBlob],`voice-note.${ext}`,{type:chatVoiceBlob.type});await uploadChatMedia(file,'voice');chatVoiceBlob=null;$('chatVoicePreview').classList.add('hidden');};$('chatDiscardVoice').onclick=()=>{chatVoiceBlob=null;$('chatVoicePreview').classList.add('hidden');};$('chatBackBtn').onclick=()=>{document.querySelector('.chat-shell')?.classList.remove('chat-open');document.body.classList.remove('chat-conversation-open');if(chatTypingPoll)clearInterval(chatTypingPoll);setChatTyping(false);activeChatId=null;activePeerId=null;$('chatActive').classList.add('hidden');$('chatWelcome').classList.remove('hidden');loadChatConversations();};
+let chatPressTimer=null,chatTapCount=0,chatTapTimer=null,chatGestureOpened=false;
+const chatMessageSurface=$('chatMessages');
+chatMessageSurface?.addEventListener('pointerdown',e=>{const bubble=e.target.closest('.chat-bubble');if(!bubble)return;const row=bubble.closest('.chat-bubble-row');chatPressTimer=setTimeout(()=>{row.classList.add('actions-open');chatGestureOpened=true;chatTapCount=0;},520);});
+['pointerup','pointercancel','pointerleave'].forEach(ev=>chatMessageSurface?.addEventListener(ev,()=>clearTimeout(chatPressTimer)));
+chatMessageSurface?.addEventListener('click',e=>{const bubble=e.target.closest('.chat-bubble');if(!bubble)return;chatTapCount++;if(chatTapTimer)clearTimeout(chatTapTimer);chatTapTimer=setTimeout(()=>chatTapCount=0,650);if(chatTapCount>=3){bubble.closest('.chat-bubble-row').classList.add('actions-open');chatGestureOpened=true;chatTapCount=0;}});
+document.addEventListener('click',async e=>{
+ const open=e.target.closest('[data-chat-open]');if(open){openChat(open.dataset.chatOpen,open.dataset.peerId,open.dataset.peerName);return;}
+ const reply=e.target.closest('[data-chat-reply]');if(reply){const msgId=reply.dataset.chatReply;const row=reply.closest('.chat-bubble-row');const bubble=row?.querySelector('.chat-bubble');replyTarget={id:msgId,preview:bubble?.innerText?.slice(0,120)||'Message'};$('chatReplyText').textContent='Replying to: '+replyTarget.preview;$('chatReplyBar').classList.remove('hidden');$('chatTextInput').focus();document.querySelectorAll('.chat-bubble-row.actions-open').forEach(x=>x.classList.remove('actions-open'));return;}
+ const emojiToggle=e.target.closest('[data-chat-emoji-toggle]');if(emojiToggle){const menu=emojiToggle.closest('.chat-message-actions');menu.classList.toggle('emoji-open');return;}
+ const bubbleTap=e.target.closest('.chat-bubble');if(bubbleTap&&!e.target.closest('button,a,audio')){if(chatGestureOpened){chatGestureOpened=false;return;}const row=bubbleTap.closest('.chat-bubble-row');document.querySelectorAll('.chat-bubble-row.actions-open').forEach(x=>{if(x!==row)x.classList.remove('actions-open');});row.classList.toggle('actions-open');return;}
+ const edit=e.target.closest('[data-chat-edit]');if(edit){const next=prompt('Edit your message:',edit.dataset.chatBody||'');if(next===null)return;if(!next.trim())return notice('A text message cannot be empty.',true);const {error}=await client.from('rohs_chat_messages').update({body:next.trim(),edited_at:new Date().toISOString()}).eq('id',edit.dataset.chatEdit).eq('sender_id',currentUser.id);if(error)notice(error.message,true);else loadChatMessages();return;}
+ const del=e.target.closest('[data-chat-delete]');if(del){if(!confirm('Delete this message for everyone?'))return;const {data:msg}=await client.from('rohs_chat_messages').select('media_path').eq('id',del.dataset.chatDelete).eq('sender_id',currentUser.id).maybeSingle();const {error}=await client.from('rohs_chat_messages').update({deleted_at:new Date().toISOString(),body:null,media_path:null}).eq('id',del.dataset.chatDelete).eq('sender_id',currentUser.id);if(error)notice(error.message,true);else{if(msg?.media_path)await client.storage.from('rohs-chat-media').remove([msg.media_path]);await loadChatMessages();}return;}
+ const addReact=e.target.closest('[data-chat-react-add]');if(addReact){const id=addReact.dataset.chatReactAdd,chosen=addReact.dataset.emoji;const {data:existing}=await client.from('rohs_chat_reactions').select('message_id').eq('message_id',id).eq('user_id',currentUser.id).eq('emoji',chosen).maybeSingle();let result;if(existing)result=await client.from('rohs_chat_reactions').delete().eq('message_id',id).eq('user_id',currentUser.id).eq('emoji',chosen);else result=await client.from('rohs_chat_reactions').insert({message_id:id,user_id:currentUser.id,emoji:chosen});if(result.error)notice(result.error.message,true);else loadChatMessages();return;}
+ const react=e.target.closest('[data-chat-react]');if(react){const {error}=await client.from('rohs_chat_reactions').delete().eq('message_id',react.dataset.chatReact).eq('user_id',currentUser.id).eq('emoji',react.dataset.emoji);if(error)notice(error.message,true);else loadChatMessages();}
+});
+
+// 3) Member directory: no email addresses are exposed by the directory RPC.
+let memberRows=[];
+async function loadMemberDirectory(){if(!currentUser)return;const {data,error}=await client.rpc('rohs_member_directory');if(error){$('memberDirectory').innerHTML='<p class="muted">Member directory will be available after the community update is applied.</p>';return;}memberRows=data||[];renderMemberDirectory();}
+async function renderMemberDirectory(){const q=($('memberSearch')?.value||'').trim().toLowerCase();const rows=memberRows.filter(m=>(m.display_name||'rohs member').toLowerCase().includes(q));const cards=await Promise.all(rows.map(async m=>{let avatar=`<div class="member-avatar">${esc((m.display_name||'R').slice(0,1).toUpperCase())}</div>`;if(m.avatar_path){const signed=await client.storage.from('rohs-avatars').createSignedUrl(m.avatar_path,1800);if(signed.data?.signedUrl)avatar=`<img class="member-avatar-image" src="${signed.data.signedUrl}" alt="">`;}return `<article class="member-card">${avatar}<div style="min-width:0;flex:1"><strong>${esc(m.display_name||'rohs member')}</strong><p class="muted" style="margin:4px 0">${m.is_admin?'Site administrator':'rohs member'}</p><button type="button" data-member-chat="${esc(m.id)}" data-member-name="${esc(m.is_admin?'Rohith-Admin':m.display_name||'rohs member')}">Message</button> <button type="button" class="secondary" data-member-friend="${esc(m.id)}">Add close friend</button></div></article>`;}));$('memberDirectory').innerHTML=cards.join('')||'<p class="muted">No matching members found.</p>';}
+$('memberSearch')?.addEventListener('input',renderMemberDirectory);
+document.addEventListener('click',async e=>{const m=e.target.closest('[data-member-chat]');if(m){const {data,error}=await client.rpc('rohs_start_conversation_by_id',{p_peer_id:m.dataset.memberChat});if(error)return notice(error.message,true);const c=data?.[0]||data;if(c?.conversation_id){location.hash='#messages';openChat(c.conversation_id,c.other_user_id,m.dataset.memberName);}return;}const f=e.target.closest('[data-member-friend]');if(f){const {error}=await client.rpc('rohs_add_close_friend_by_id',{p_friend_id:f.dataset.memberFriend});if(error)return notice(error.message,true);notice('Member added to your close friends.');await loadFriends();}});
+
+// 4) On This Day — database RPC returns only content the signed-in member may view.
+async function loadOnThisDay(){const box=$('onThisDayGrid');if(!currentUser){box.innerHTML='<p class="muted">Enter your name to see memories from this day.</p>';return;}const {data,error}=await client.rpc('rohs_on_this_day');if(error){box.innerHTML='<p class="muted">On This Day will appear after the community update is applied.</p>';return;}const rows=(data||[]).filter(p=>p.kind==='memory'||p.kind==='diary');box.innerHTML=rows.map(p=>`<button class="read-item" type="button" data-memory-day="${esc(p.id)}"><strong>${esc(p.title||'Untitled memory')}</strong><span>${new Date(p.created_at).toLocaleDateString()} · ${esc(p.kind)}</span></button>`).join('')||'<p class="muted">No earlier memories from this date yet. Start collecting moments.</p>';box.querySelectorAll('[data-memory-day]').forEach(b=>b.onclick=async()=>{const {data}=await client.from('posts').select('id,kind,title,body,media_paths,media_path,created_at,display_name,visibility,status,user_id').eq('id',b.dataset.memoryDay).maybeSingle();if(data)openReading(data,await getSignedAll(data));});}
+
+// 5) Collaborative albums. Contributors add a note or photo contribution without
+// overwriting the album owner's original post/media array.
+async function loadCollaborativeAlbums(){if(!currentUser)return;const {data,error}=await client.rpc('rohs_list_collaborative_albums');if(error)return;const sel=$('collabAlbumSelect');sel.innerHTML=(data||[]).map(p=>`<option value="${esc(p.post_id)}" data-owner="${p.is_owner?'true':'false'}">${esc(p.title||'Untitled album')} · ${p.is_owner?'Owner':'Shared'}</option>`).join('');const members=await client.rpc('rohs_member_directory');$('collabMemberSelect').innerHTML='<option value="">Choose a member</option>'+(members.data||[]).map(m=>`<option value="${esc(m.id)}">${esc(m.display_name||'rohs member')}</option>`).join('');$('collabAlbumTools').classList.toggle('hidden',!(data||[]).length);$('collabInviteMember').disabled=sel.selectedOptions[0]?.dataset.owner!=='true';sel.onchange=()=>{$('collabInviteMember').disabled=sel.selectedOptions[0]?.dataset.owner!=='true';};const {data:contrib}=await client.from('rohs_album_contributions').select('id,post_id,contributor_id,body,media_path,created_at').order('created_at',{ascending:false}).limit(80);const rows=contrib||[];$('collabContributions').innerHTML=rows.map(c=>`<article class="contribution-card"><small>${new Date(c.created_at).toLocaleString()}</small><p>${esc(c.body||'Photo contribution')}</p>${c.media_path?`<button type="button" data-contribution-photo="${esc(c.media_path)}">View contributed photo</button>`:''}</article>`).join('')||'<p class="muted">Contributions to your shared albums will appear here.</p>';}
+$('collabInviteMember')?.addEventListener('click',async()=>{const postId=$('collabAlbumSelect').value,peerId=$('collabMemberSelect').value;if(!postId||!peerId)return notice('Choose an album and a member to invite.',true);const {error}=await client.rpc('rohs_invite_album_collaborator_by_id',{p_post_id:postId,p_collaborator_id:peerId});if(error)return notice(error.message,true);notice('Member invited to collaborate on this album.');await loadCollaborativeAlbums();});
+$('collabContribute')?.addEventListener('click',async()=>{const postId=$('collabAlbumSelect').value,body=$('collabContributionText').value.trim(),file=$('collabContributionPhoto').files?.[0];if(!postId||(!body&&!file))return notice('Add a note or choose a photo.',true);let media_path=null;if(file){if(!['image/jpeg','image/png','image/webp'].includes(file.type))return notice('Choose a JPG, PNG or WebP photo.',true);const prepared=await prepareImage(file),ext=prepared.type==='image/png'?'png':prepared.type==='image/webp'?'webp':'jpg';media_path=`${currentUser.id}/collab/${crypto.randomUUID()}.${ext}`;const up=await client.storage.from('rohs-media').upload(media_path,prepared,{contentType:prepared.type||'image/jpeg',upsert:false});if(up.error)return notice(up.error.message,true);}const {error}=await client.from('rohs_album_contributions').insert({post_id:postId,contributor_id:currentUser.id,body:body||null,media_path});if(error){if(media_path)await client.storage.from('rohs-media').remove([media_path]);return notice(error.message,true);}$('collabContributionText').value='';$('collabContributionPhoto').value='';notice('Your album contribution was added.');await loadCollaborativeAlbums();});
+document.addEventListener('click',async e=>{const b=e.target.closest('[data-contribution-photo]');if(b){const {data,error}=await client.storage.from('rohs-media').createSignedUrl(b.dataset.contributionPhoto,1800);if(error||!data?.signedUrl)return notice('Could not open this contribution.',true);window.open(data.signedUrl,'_blank','noopener');}});
+
+
+async function loadCreatorAbout(){const {data,error}=await client.from('rohs_site_content').select('content').eq('content_key','about_creator').maybeSingle();if(!error&&data?.content)$('creatorAboutText').textContent=data.content;$('editCreatorAbout').classList.toggle('hidden',!isAdmin);}
+$('editCreatorAbout').onclick=()=>{$('creatorAboutInput').value=$('creatorAboutText').textContent==='The creator has not added an introduction yet.'?'':$('creatorAboutText').textContent;$('creatorAboutEditor').classList.remove('hidden');};
+$('cancelCreatorAbout').onclick=()=>$('creatorAboutEditor').classList.add('hidden');
+$('deleteCreatorAbout').onclick=async()=>{if(!isAdmin)return;if(!confirm('Delete the About Creator content?'))return;const {error}=await client.from('rohs_site_content').delete().eq('content_key','about_creator');if(error)return notice(error.message,true);$('creatorAboutText').textContent='The creator has not added an introduction yet.';$('creatorAboutEditor').classList.add('hidden');notice('About Creator content deleted.');};
+$('saveCreatorAbout').onclick=async()=>{if(!isAdmin)return;const content=$('creatorAboutInput').value.trim();const {error}=await client.from('rohs_site_content').upsert({content_key:'about_creator',content,updated_by:currentUser.id},{onConflict:'content_key'});if(error)return notice(error.message,true);$('creatorAboutText').textContent=content||'The creator has not added an introduction yet.';$('creatorAboutEditor').classList.add('hidden');notice('About Creator updated.');};
+async function loadAdminVisitorMessages(){if(!isAdmin)return;const box=$('adminVisitorMessages');const {data,error}=await client.from('rohs_messages').select('id,sender_name,body,created_at,read_at').eq('recipient_id',currentUser.id).order('created_at',{ascending:false}).limit(100);if(error){box.innerHTML='<p class="muted">Could not load the visitor inbox.</p>';return;}box.innerHTML=(data||[]).map(m=>`<article class="message-entry"><strong>${esc(m.sender_name)}</strong><small class="muted"> · ${new Date(m.created_at).toLocaleString()} · ${m.read_at?'Read':'Unread'}</small><p>${esc(m.body)}</p>${!m.read_at?`<button type="button" data-message-read="${esc(m.id)}">Mark as read</button>`:''}</article>`).join('')||'<p class="muted">No visitor messages yet.</p>';}
+document.addEventListener('click',async e=>{const b=e.target.closest('[data-message-read]');if(!b||!isAdmin)return;const {error}=await client.from('rohs_messages').update({read_at:new Date().toISOString()}).eq('id',b.dataset.messageRead).eq('recipient_id',currentUser.id);if(error)return notice(error.message,true);await loadAdminVisitorMessages();});
+$('sendVisitorMessage').onclick=async()=>{const name=$('visitorMessageName').value.trim(),body=$('visitorMessageBody').value.trim();if(!name||!body)return notice('Enter your name and message.',true);const {data,error}=await client.rpc('rohs_send_message',{p_sender_name:name,p_sender_contact:null,p_body:body});if(error)return notice(error.message,true);if(!data)return notice('The message could not be delivered because no administrator profile is configured.',true);$('visitorMessageBody').value='';notice('Your message was sent to the creator.');};
+
+
+let notificationChannel=null,notificationChannelUserId=null;
+async function loadNotifications(){if(!currentUser)return;const {data,error}=await client.from("rohs_notifications").select("id,event_type,message,target_type,target_id,created_at,read_at").eq("recipient_id",currentUser.id).order("created_at",{ascending:false}).limit(40);if(error){$("notificationList").innerHTML='<p class="muted">Notifications are not set up yet. Run the community SQL migration.</p>';return;}const rows=data||[],unread=rows.filter(n=>!n.read_at).length;$("notificationCount").textContent=unread>99?"99+":String(unread);$("notificationCount").classList.toggle("hidden",!unread);$("notificationList").innerHTML=rows.map(n=>`<button class="notification-item ${n.read_at?"":"unread"}" type="button" data-notification="${esc(n.id)}" data-target-type="${esc(n.target_type||"")}" data-target-id="${esc(n.target_id||"")}">${esc(n.message)}<small>${new Date(n.created_at).toLocaleString()}</small></button>`).join("")||'<p class="muted">You are all caught up.</p>';}
+async function subscribeNotifications(){if(!currentUser)return;if(notificationChannel&&notificationChannelUserId===currentUser.id)return;if(notificationChannel){await client.removeChannel(notificationChannel);notificationChannel=null;}notificationChannelUserId=currentUser.id;notificationChannel=client.channel("rohs-notifications-"+currentUser.id).on("postgres_changes",{event:"INSERT",schema:"public",table:"rohs_notifications",filter:"recipient_id=eq."+currentUser.id},async()=>{await loadNotifications();}).subscribe();}
+$("notificationBell").onclick=async()=>{$("notificationPanel").classList.toggle("hidden");if(!$ ("notificationPanel").classList.contains("hidden"))await loadNotifications();};
+$("clearNotifications").onclick=async()=>{if(!currentUser)return;const {error}=await client.rpc("rohs_clear_my_notifications");if(error)return notice(error.message||"Could not clear notifications.",true);await loadNotifications();notice("Notifications cleared.");};
+document.addEventListener("click",async e=>{const n=e.target.closest("[data-notification]");if(n){const id=n.dataset.notification;await client.from("rohs_notifications").update({read_at:new Date().toISOString()}).eq("id",id);$("notificationPanel").classList.add("hidden");await loadNotifications();const type=n.dataset.targetType,target=n.dataset.targetId;if(type==="post"&&target){const {data}=await client.from("posts").select("id,kind,title,body,media_paths,media_path,created_at,display_name,visibility,status,user_id").eq("id",target).maybeSingle();if(data){location.hash=data.kind==="memory"?"#memories":"#diary";openReading(data,await getSignedAll(data));}}else if(type==="voice"&&target){const {data}=await client.from("voice_records").select("id,user_id,title,audio_path,duration_seconds,visibility,status,created_at").eq("id",target).maybeSingle();if(data){location.hash="#records";openVoiceReading(data,await signedVoice(data.audio_path),true);}}else if(type==="message"){location.hash="#messages";}else if(type==="chat"&&target){location.hash="#messages";await loadChatConversations();const {data:chats}=await client.rpc("rohs_list_conversations");const chat=(chats||[]).find(c=>c.conversation_id===target);if(chat)openChat(chat.conversation_id,chat.other_user_id,chat.other_name);}return;}
+});
+
+async function viewMemberProfile(userId){if(!userId)return;const {data,error}=await client.rpc('rohs_get_profile_details',{p_user_id:userId});if(error||!data)return notice(error?.message||'This profile is not available.',true);const d=data;if(d.avatar_path){const av=await client.storage.from('rohs-avatars').createSignedUrl(d.avatar_path,1800);d.avatar_url=av.data?.signedUrl||'';}for(const post of (d.posts||[])){const paths=Array.isArray(post.media_paths)?post.media_paths:[];post.media_urls=await Promise.all(paths.map(async path=>(await client.storage.from('rohs-media').createSignedUrl(path,1800)).data?.signedUrl||''));}for(const record of (d.records||[])){record.audio_url=(await client.storage.from('rohs-voice').createSignedUrl(record.audio_path,1800)).data?.signedUrl||'';} $('viewProfileName').textContent=d.display_name||'ROHS48 member';let html=`<div class="profile-layout">${d.avatar_url?`<img class="profile-avatar" src="${d.avatar_url}" alt="">`:`<div class="member-avatar">${esc((d.display_name||'R').slice(0,1).toUpperCase())}</div>`}<div><h3>${esc(d.display_name||'ROHS48 member')}</h3><p class="muted">Joined ${d.created_at?new Date(d.created_at).toLocaleString():'date unavailable'}</p></div></div><h3 class="mine-heading">Albums</h3><div class="profile-shared-grid">${(d.posts||[]).filter(x=>x.kind==='memory').map(x=>`<article class="profile-shared-item"><strong>${esc(x.title||'Untitled album')}</strong><small>${new Date(x.created_at).toLocaleDateString()}</small>${x.media_urls?.map(u=>`<img src="${u}" alt="Shared album photo">`).join('')||''}<p>${esc(x.body||'')}</p></article>`).join('')||'<p class="muted">No albums visible to you.</p>'}</div><h3 class="mine-heading">Diaries</h3><div class="profile-shared-grid">${(d.posts||[]).filter(x=>x.kind==='diary').map(x=>`<article class="profile-shared-item"><strong>${esc(x.title||'Untitled diary')}</strong><small>${new Date(x.created_at).toLocaleDateString()}</small><p>${esc(x.body||'')}</p></article>`).join('')||'<p class="muted">No diaries visible to you.</p>'}</div><h3 class="mine-heading">Records</h3><div class="profile-shared-grid">${(d.records||[]).map(x=>`<article class="profile-shared-item"><strong>${esc(x.title||'Untitled record')}</strong><small>${new Date(x.created_at).toLocaleDateString()}</small>${x.audio_url?`<audio controls preload="none" src="${x.audio_url}"></audio>`:''}</article>`).join('')||'<p class="muted">No records visible to you.</p>'}</div>`;$('viewProfileBody').innerHTML=html;location.hash='#viewProfile';}
+$('chatProfileMenuBtn').onclick=()=>{$('chatProfileMenu').classList.toggle('hidden');};
+document.addEventListener('click',async e=>{
+ const more=e.target.closest('[data-chat-more]');
+ if(more){const row=more.closest('.chat-conversation');document.querySelectorAll('.chat-conv-menu').forEach(m=>{if(m!==row.querySelector('.chat-conv-menu'))m.classList.add('hidden');});row.querySelector('.chat-conv-menu').classList.toggle('hidden');return;}
+ const act=e.target.closest('[data-profile-action]');if(!act)return;
+ const targetPeerId=act.dataset.peerId||activePeerId;const targetChatId=act.dataset.chatId||activeChatId;
+ $('chatProfileMenu').classList.add('hidden');document.querySelectorAll('.chat-conv-menu').forEach(m=>m.classList.add('hidden'));
+ if(act.dataset.profileAction==='view'){activePeerId=targetPeerId;await viewMemberProfile(targetPeerId);return;}
+ if(act.dataset.profileAction==='erase'){
+  if(!targetChatId||!confirm('Clear this conversation from your chat history? The other participant will keep their messages.'))return;
+  const {error}=await client.rpc('rohs_erase_chat_history',{p_conversation_id:targetChatId});if(error)return notice(error.message,true);
+  if(activeChatId===targetChatId)await loadChatMessages();await loadChatConversations();notice('Conversation cleared from your history.');return;
+ }
+ if(act.dataset.profileAction==='delete'){
+  if(!targetPeerId)return;if(!isAdmin)return notice('Only the administrator can delete another member profile. You can delete your own profile from Profile settings.',true);
+  if(!confirm('Permanently delete this member profile, their shared posts, voice records, chat history and uploaded attachments? This cannot be undone.'))return;
+  const {error}=await client.rpc('rohs_admin_delete_member_profile',{p_user_id:targetPeerId});if(error)return notice(error.message,true);
+  if(activePeerId===targetPeerId){activeChatId=null;activePeerId=null;$('chatActive').classList.add('hidden');$('chatWelcome').classList.remove('hidden');}
+  await refresh();notice('Member profile and associated content deleted.');
+ }
+});
+$('eraseOwnHistory').onclick=async()=>{if(!currentUser)return;if(!confirm('Clear all your conversations from your chat history? Other participants will keep their copies.'))return;const {error}=await client.rpc('rohs_erase_all_my_chat_history');if(error)return notice(error.message,true);await loadChatMessages();await loadChatConversations();notice('Your chat history was cleared.');};
+$('deleteOwnProfile').onclick=async()=>{if(!currentUser||!confirm('Permanently delete your profile, shared posts, voice records, chat history and uploaded attachments? Your anonymous sign-in session will remain so you can create a new profile.'))return;const {error}=await client.rpc('rohs_delete_my_profile');if(error)return notice(error.message,true);currentProfile=null;activeChatId=null;activePeerId=null;await client.auth.signOut();currentUser=null;await refresh();notice('Your profile and associated content were deleted.');};
+function closeMoreMenu(){if(!$('moreMenu'))return;$('moreMenu').classList.add('hidden');$('moreMenuBackdrop').classList.add('hidden');$('moreMenuBtn').setAttribute('aria-expanded','false');if($('albumViewer').classList.contains('hidden')&&$('readingView').classList.contains('hidden')&&$('cropModal').classList.contains('hidden'))document.body.style.overflow='';}function openMoreMenu(){$('moreMenu').classList.remove('hidden');$('moreMenuBackdrop').classList.remove('hidden');$('moreMenuBtn').setAttribute('aria-expanded','true');document.body.style.overflow='hidden';}$('moreMenuBtn').onclick=()=>{$('moreMenu').classList.contains('hidden')?openMoreMenu():closeMoreMenu();};$('moreMenuClose').onclick=closeMoreMenu;$('moreMenuBackdrop').onclick=closeMoreMenu;document.addEventListener('click',e=>{if(e.target.closest('#moreMenu a'))closeMoreMenu();else if(!e.target.closest('.more-wrap')&&!e.target.closest('#moreMenu'))closeMoreMenu();});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMoreMenu();});
+
+showRoute();
+refresh();
+</script>
+</body></html>
