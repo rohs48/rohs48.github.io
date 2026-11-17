@@ -150,17 +150,57 @@ a{color:#c1d4b9}
 .chat-avatar-image{width:42px;height:42px;flex:0 0 42px;border-radius:50%;object-fit:cover;background:#34314c}.member-avatar-image{width:42px;height:42px;flex:none;border-radius:50%;object-fit:cover;border:1px solid #526455}
 
 /* ROHS48 requested interaction polish */
-.read-list{display:grid;gap:9px}.read-item{width:100%;display:flex;flex-direction:column;align-items:flex-start;gap:5px;text-align:left;padding:14px 16px;border:1px solid var(--line);border-radius:13px;background:var(--card);color:var(--ink);transition:background .18s ease,border-color .18s ease,transform .18s ease,box-shadow .18s ease}.read-item strong{font-size:14px}.read-item span{font-size:11px;color:var(--muted);line-height:1.45}.read-item:hover{background:#f0f1e9;border-color:#b9c3b3;transform:translateY(-1px);box-shadow:0 7px 18px #19241712}
-.more-menu{left:0;right:auto;width:clamp(350px,30vw,520px);max-width:88vw;border-left:0;border-right:1px solid #526455;border-radius:0 20px 20px 0;transform:translateX(-105%);visibility:hidden;transition:transform .24s ease,visibility .24s ease}.more-menu:not(.hidden){transform:translateX(0);visibility:visible}.more-menu a{padding:16px 17px;font-size:16px;border-radius:12px}.more-backdrop{opacity:0;transition:opacity .2s ease}.more-backdrop:not(.hidden){opacity:1}
+.read-list{display:grid;gap:9px}.read-item{width:100%;display:flex;flex-direction:column;align-items:flex-start;gap:5px;text-align:left;padding:14px 16px;border:1px solid var(--line);border-radius:13px;background:var(--card);color:var(--ink);transition:background .18s ease,border-color .18s ease,transform .18s ease,box-shadow .18s ease}.read-item strong{font-size:21px}.read-item span{font-size:11px;color:var(--muted);line-height:1.45}.read-item:hover{background:#f0f1e9;border-color:#b9c3b3;transform:translateY(-1px);box-shadow:0 7px 18px #19241712}
+.more-menu{left:auto;right:0;width:min(340px,88vw);max-width:88vw;border-left:1px solid #526455;border-right:0;border-radius:20px 0 0 20px;transform:translateX(105%);visibility:hidden;transition:transform .24s ease,visibility .24s ease}.more-menu:not(.hidden){transform:translateX(0);visibility:visible}.more-menu a{padding:13px 14px;font-size:14px;border-radius:10px}.more-backdrop{opacity:0;transition:opacity .2s ease}.more-backdrop:not(.hidden){opacity:1}
 .chat-shell{height:calc(100dvh - 205px);min-height:520px;display:block;position:relative}.chat-sidebar{height:100%;width:100%;border:0}.chat-main{display:none;position:absolute;inset:0;z-index:3;width:100%;height:100%;border-radius:inherit}.chat-shell.chat-open .chat-sidebar{display:none}.chat-shell.chat-open .chat-main{display:flex}.chat-back-btn{display:inline-flex}.chat-page .chat-heading{margin-bottom:12px}.chat-conversation{position:relative}.chat-conversation-open{display:flex;flex:1;min-width:0;align-items:center;gap:12px;background:transparent;color:inherit;text-align:left;padding:12px;border-radius:13px}.chat-conversation{padding-right:42px}.chat-conv-more{position:absolute;right:6px;top:50%;transform:translateY(-50%);padding:7px 10px;background:transparent;color:#aaa6ca}.chat-conversation-list{display:grid;align-content:start;gap:3px}.chat-route main{max-width:none;padding:12px 18px 0}.chat-route #messages{max-width:none;margin:0;padding:0}.chat-route .chat-page{max-width:none;width:100%;margin:0}.chat-route .chat-shell{height:calc(100dvh - 150px);min-height:420px;border-radius:18px}.chat-route .chat-heading{transition:opacity .18s ease}.chat-conversation-open.chat-route .chat-heading{display:none}.chat-conversation-open.chat-route>header{display:none}.chat-conversation-open.chat-route main{padding:0}.chat-conversation-open.chat-route #messages{margin:0}.chat-conversation-open.chat-route .chat-shell{height:100dvh;min-height:100dvh;border-radius:0;border:0}
 @media(max-width:720px){.more-menu{width:84vw;max-width:84vw}.chat-route main{padding:0}.chat-route #messages{padding:0}.chat-route .chat-heading{padding:10px 14px}.chat-route .chat-shell{height:calc(100dvh - 132px);min-height:380px;border-radius:0;border-left:0;border-right:0}.chat-route .chat-page .chat-heading h2{font-size:28px}.chat-bubble-row{max-width:92%}}
 @keyframes rohsPageIn{from{opacity:.72;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}.page-section.route-active:not(.hidden){animation:rohsPageIn .22s ease-out}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 
+.lock-hint{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:#d5c18a}.lock-hint::before{content:"🔒"}.more-menu{will-change:transform}.more-backdrop{position:fixed;isolation:isolate}
+
+/* ROHS48 menu compatibility fix: restore the original right-side drawer behaviour.
+   Keep the menu and backdrop fixed to the viewport, outside the sticky header. */
+body #moreMenuBackdrop.more-backdrop{position:fixed!important;inset:0!important;z-index:9998!important;isolation:isolate;opacity:0;pointer-events:none;transition:opacity .2s ease}
+body #moreMenuBackdrop.more-backdrop:not(.hidden){opacity:1;pointer-events:auto}
+body #moreMenu.more-menu{position:fixed!important;top:0!important;right:0!important;bottom:0!important;left:auto!important;z-index:9999!important;width:min(340px,88vw)!important;max-width:88vw!important;height:100dvh;max-height:100dvh;box-sizing:border-box;overflow-y:auto;overscroll-behavior:contain;padding:22px 18px calc(24px + env(safe-area-inset-bottom));border-left:1px solid #526455!important;border-right:0!important;border-radius:20px 0 0 20px!important;box-shadow:-20px 0 60px #0008;transform:translateX(105%);visibility:hidden;transition:transform .24s ease,visibility .24s ease;will-change:transform}
+body #moreMenu.more-menu:not(.hidden){transform:translateX(0);visibility:visible}
+@media(max-width:720px){body #moreMenu.more-menu{width:88vw!important;max-width:88vw!important}}
+
+/* Mobile navigation: keep the brand/actions on the first row and links on the second. */
+@media(max-width:720px){
+  .nav{
+    flex-wrap:wrap;
+    gap:12px;
+    padding:12px 14px;
+  }
+  .brand{margin-right:auto;font-size:24px}
+  .nav nav{
+    order:3;
+    flex:0 0 100%;
+    width:100%;
+    min-width:0;
+    display:flex;
+    flex-wrap:nowrap;
+    justify-content:flex-start;
+    gap:18px;
+    overflow-x:auto;
+    white-space:nowrap;
+    padding:3px 0 5px;
+    scrollbar-width:none;
+  }
+  .nav nav::-webkit-scrollbar{display:none}
+  .nav nav a{flex:0 0 auto}
+  .more-wrap{flex:none}
+  #accountBtn{flex:none;white-space:nowrap;padding:9px 11px;font-size:12px}
+  #notificationWrap{flex:none}
+}
+
 </style>
 </head>
 <body>
-<header><div class="nav"><div class="brand">rohs48.</div><nav aria-label="Main navigation"><a href="#home">Home</a><a href="#memories">Albums</a><a href="#diary">Diaries</a><a href="#records">Records</a><a href="#messages">Chats</a><a href="#posts">Posts</a></nav><div class="more-wrap"><button id="moreMenuBtn" class="secondary" type="button" aria-expanded="false" aria-controls="moreMenu">More ☰</button></div><div id="moreMenuBackdrop" class="more-backdrop hidden"></div><aside id="moreMenu" class="more-menu hidden" aria-label="More sections"><div class="more-menu-head"><strong>More sections</strong><button id="moreMenuClose" class="secondary" type="button">Close ✕</button></div><a href="#share">Share a moment</a><a href="#members">Members</a><a href="#mine">My Space</a><a href="#friends">Close friends</a><a href="#about-website">About My Website</a><a href="#about-creator">About Creator</a><a href="#admin" id="adminLink" class="hidden">Review desk</a></aside><button id="accountBtn" class="secondary">Create profile</button><div class="bell-wrap hidden" id="notificationWrap"><button type="button" id="notificationBell" class="secondary bell-btn" aria-label="Notifications" title="Notifications">🔔<span id="notificationCount" class="bell-count hidden">0</span></button><div id="notificationPanel" class="notification-panel hidden"><div class="notification-head"><h3>Notifications</h3><button id="clearNotifications" type="button" class="secondary">Clear all</button></div><div id="notificationList"></div></div></div></div></header>
+<header><div class="nav"><div class="brand">rohs48.</div><nav aria-label="Main navigation"><a href="#home">Home</a><a href="#memories">Albums</a><a href="#diary">Diaries</a><a href="#records">Records</a><a href="#messages">Chats</a><a href="#posts">Posts</a></nav><div class="more-wrap"><button id="moreMenuBtn" class="secondary" type="button" aria-expanded="false" aria-controls="moreMenu">More ☰</button></div><button id="accountBtn" class="secondary">Create profile</button><div class="bell-wrap hidden" id="notificationWrap"><button type="button" id="notificationBell" class="secondary bell-btn" aria-label="Notifications" title="Notifications">🔔<span id="notificationCount" class="bell-count hidden">0</span></button><div id="notificationPanel" class="notification-panel hidden"><div class="notification-head"><h3>Notifications</h3><button id="clearNotifications" type="button" class="secondary">Clear all</button></div><div id="notificationList"></div></div></div></div></header>
+<div id="moreMenuBackdrop" class="more-backdrop hidden"></div><aside id="moreMenu" class="more-menu hidden" aria-label="More sections"><div class="more-menu-head"><strong>More sections</strong><button id="moreMenuClose" class="secondary" type="button">Close ✕</button></div><a href="#share">Share a moment</a><a href="#members">Members</a><a href="#mine">My Space</a><a href="#friends">Close friends</a><a href="#about-website">About My Website</a><a href="#about-creator">About Creator</a><a href="#admin" id="adminLink" class="hidden">Review desk</a></aside>
 <main>
 <section id="home" class="hero page-section" data-page="home"><div class="eyebrow">A shared collection of little moments</div><h1>A place where<br>memories live.</h1><p class="sub">Photographs, everyday thoughts and memories worth keeping. Every memory has a person, a moment and a place here.</p><div class="actions"><a class="button" href="#memories">Explore memories</a><a class="button secondary" href="#share">Share a moment</a><a class="button secondary" href="#messages">Message the creator</a></div><div id="nameGate" class="name-gate"><h3>Welcome to ROHS48</h3><p class="muted">Enter your name to create your profile. No email or password needed.</p><label for="visitorName">Your name</label><input id="visitorName" maxlength="60" placeholder="Enter your name"><button id="createVisitorProfile" type="button">Continue</button></div><div class="about-panel" id="contactCreator"><div class="eyebrow">A direct line to the creator</div><h2>Message Rohith</h2><p>Anyone can leave a message here. No profile, email address or password is required.</p><label for="visitorMessageName">Your name</label><input id="visitorMessageName" maxlength="60" placeholder="Your name"><label for="visitorMessageBody">Your message</label><textarea id="visitorMessageBody" maxlength="3000" placeholder="Write your message..."></textarea><button id="sendVisitorMessage" type="button">Send message</button></div><div class="about-panel" id="about-website"><div class="eyebrow">The idea behind this place</div><h2>About My Website</h2><p>ROHS48 is a place to collect memories, photographs, everyday thoughts and conversations worth keeping.</p></div><div class="about-panel" id="about-creator"><div class="eyebrow">The person behind ROHS48</div><h2>About Creator</h2><p id="creatorAboutText">The creator has not added an introduction yet.</p><button id="editCreatorAbout" class="secondary hidden" type="button">Edit About Creator</button><div id="creatorAboutEditor" class="hidden"><textarea id="creatorAboutInput" maxlength="10000" placeholder="Write about yourself..."></textarea><div class="actions"><button id="saveCreatorAbout" type="button">Save</button><button id="deleteCreatorAbout" class="secondary" type="button">Delete content</button><button id="cancelCreatorAbout" class="secondary" type="button">Cancel</button></div></div></div></section>
 <section id="onThisDay" data-page="home" class="section page-section"><div class="eyebrow">A little time travel</div><h2>On This Day</h2><p class="sub">Memories shared on this date in earlier years.</p><div id="onThisDayGrid" class="read-list"><p class="muted">Create your name-only profile to see your memories from this day.</p></div></section>
@@ -169,9 +209,9 @@ a{color:#c1d4b9}
 <section id="diary" data-page="diary" class="page-section section"><div class="eyebrow">Pages from real days</div><h2>Diaries</h2><p class="sub">Public diary entries shared by community members.</p><div id="diaryGrid" class="grid"></div></section>
 <section id="posts" data-page="posts" class="page-section section"><div class="eyebrow">From your people</div><h2>Posts</h2><p class="sub">Albums, diaries and records shared with you. Private entries stay private.</p><div id="postsFeed" class="grid"><p class="muted">Loading posts…</p></div></section>
 <section id="friendsFeed" data-page="friends" class="page-section section hidden"><div class="eyebrow">Just for you</div><h2>From your close friends</h2><p class="sub">Posts people have shared with you as a close friend.</p><div id="friendsGrid" class="grid"></div></section>
-<section id="records" data-page="records" class="page-section section"><div class="eyebrow">Voices worth keeping</div><h2>Records</h2><p class="sub">Voice recordings appear here by title. Open one to listen. Guest recordings are public after approval.</p><div id="recordComposer" class="panel"><label for="recordTitle">Recording title</label><input id="recordTitle" maxlength="100" placeholder="A little thought from today"><div id="recordVisibilityWrap"><label for="recordVisibility">Who can listen?</label><select id="recordVisibility"><option value="public">Public — after approval</option><option value="friends">Close friends — after approval</option><option value="private">Private — only you</option></select></div><div class="actions"><button id="startRecording" type="button"><span aria-hidden="true">●</span> Start recording</button><button id="pauseRecording" type="button" class="secondary" disabled>Pause</button><button id="resumeRecording" type="button" class="secondary hidden" disabled>Resume</button><button id="stopRecording" type="button" class="secondary" disabled>Stop</button></div><p id="recordTimer" class="muted">Maximum 10 minutes per recording.</p><p id="recordHint" class="muted" style="font-size:13px">Your browser will ask for microphone permission when you start.</p><button id="saveRecording" type="button" disabled>Submit recording for review</button></div><div id="recordsGrid" class="read-list"><p class="muted">No approved voice records yet.</p></div></section>
+<section id="records" data-page="records" class="page-section section"><div class="eyebrow">Voices worth keeping</div><h2>Records</h2><p class="sub">Voice recordings appear here by title. Open one to listen. Guest recordings are public after approval.</p><div id="recordComposer" class="panel"><label for="recordTitle">Recording title</label><input id="recordTitle" maxlength="100" placeholder="A little thought from today"><div id="recordVisibilityWrap"><label for="recordVisibility">Who can listen?</label><select id="recordVisibility"><option value="public">Public — after approval</option><option value="friends">Close friends — after approval</option><option value="private">Private — only you</option><option value="locked">Lock — password required</option></select></div><div id="recordLockPasswordWrap" class="hidden"><label for="recordLockPassword">Lock password</label><input id="recordLockPassword" type="password" minlength="4" maxlength="128" autocomplete="new-password" placeholder="Choose a password"><p class="muted" style="font-size:12px">The recording title stays visible. Listening requires this password.</p></div><div class="actions"><button id="startRecording" type="button"><span aria-hidden="true">●</span> Start recording</button><button id="pauseRecording" type="button" class="secondary" disabled>Pause</button><button id="resumeRecording" type="button" class="secondary hidden" disabled>Resume</button><button id="stopRecording" type="button" class="secondary" disabled>Stop</button></div><p id="recordTimer" class="muted">Maximum 10 minutes per recording.</p><p id="recordHint" class="muted" style="font-size:13px">Your browser will ask for microphone permission when you start.</p><button id="saveRecording" type="button" disabled>Submit recording for review</button></div><div id="recordsGrid" class="read-list"><p class="muted">No approved voice records yet.</p></div></section>
 <section id="share" data-page="share" class="page-section section"><div class="eyebrow">Add to the collection</div><h2>Share a moment</h2><p class="sub">Create a name-only profile to share memories and manage your personal space. Public submissions are reviewed before they appear.</p>
-<div id="submitPanel" class="panel"><div class="row"><div><label for="kind">What are you sharing?</label><select id="kind"><option value="memory">Photo album</option><option value="diary">Diary entry</option></select></div><div><label for="title">Title</label><input id="title" maxlength="100" placeholder="Give this moment a title"></div></div><label for="body">Your words</label><textarea id="body" maxlength="10000" placeholder="What would you like people to know?"></textarea><div id="photoField"><label for="photo">Photos (JPG, PNG or WebP, up to 20)</label><input id="photo" type="file" multiple accept="image/jpeg,image/png,image/webp"><div id="photoPreview" class="thumbs"></div><p class="muted" style="font-size:13px;margin:8px 0 0">Large photos are automatically resized before upload.</p></div><div id="visibilityWrap"><label for="visibility">Who can read this?</label><select id="visibility"><option value="public">Public — after approval</option><option value="friends">Close friends — after approval</option><option value="private">Private — only you</option></select></div><div class="actions"><button id="submitPost">Submit for review</button><button id="signOut" class="secondary hidden">Sign out</button></div><p class="muted" id="profileLine"></p></div></section>
+<div id="submitPanel" class="panel"><div class="row"><div><label for="kind">What are you sharing?</label><select id="kind"><option value="memory">Photo album</option><option value="diary">Diary entry</option></select></div><div><label for="title">Title</label><input id="title" maxlength="100" placeholder="Give this moment a title"></div></div><label for="body">Your words</label><textarea id="body" maxlength="10000" placeholder="What would you like people to know?"></textarea><div id="photoField"><label for="photo">Photos (JPG, PNG or WebP, up to 20)</label><input id="photo" type="file" multiple accept="image/jpeg,image/png,image/webp"><div id="photoPreview" class="thumbs"></div><p class="muted" style="font-size:13px;margin:8px 0 0">Large photos are automatically resized before upload.</p></div><div id="visibilityWrap"><label for="visibility">Who can read this?</label><select id="visibility"><option value="public">Public — after approval</option><option value="friends">Close friends — after approval</option><option value="private">Private — only you</option><option value="locked">Lock — password required</option></select></div><div id="postLockPasswordWrap" class="hidden"><label for="postLockPassword">Lock password</label><input id="postLockPassword" type="password" minlength="4" maxlength="128" autocomplete="new-password" placeholder="Choose a password"><p class="muted" style="font-size:12px">The title stays visible. The words and photos require this password.</p></div><div class="actions"><button id="submitPost">Submit for review</button><button id="signOut" class="secondary hidden">Sign out</button></div><p class="muted" id="profileLine"></p></div></section>
 <section id="messages" data-page="messages" class="page-section section chat-page">
  <div class="chat-heading"><div><div class="chat-kicker">YOUR PRIVATE CORNER</div><h2>Messages</h2><p>Little conversations, just between you and them.</p></div><div class="chat-status"><i></i> private chats</div></div>
  <div class="chat-shell">
@@ -196,7 +236,7 @@ a{color:#c1d4b9}
 <section id="members" data-page="members" class="page-section section hidden"><div class="eyebrow">Find your people</div><h2>Members</h2><p class="sub">Discover members and add people to your close-friends circle.</p><label for="memberSearch">Search members</label><input id="memberSearch" type="search" placeholder="Search by display name"><div id="memberDirectory" class="grid"></div></section>
 <section id="mine" data-page="mine" class="page-section section hidden"><div class="eyebrow">Only visible to you</div><h2>My Space</h2><p class="sub">Your entries, shown as titles until you open them.</p><h3 class="mine-heading">Your posts</h3><div id="mineGrid" class="read-list"></div><h3 class="mine-heading">Your voice records</h3><div id="myRecordsGrid" class="read-list"></div><div class="actions"><a class="button secondary" href="#friends">Close friends</a></div></section>
 <section id="friends" data-page="friends" class="page-section section hidden"><div class="eyebrow">Your circle</div><h2>Close friends</h2><p class="sub">People you add from Members can read the posts and records you share with &ldquo;Close friends&rdquo; once approved.</p><div class="panel"><p class="muted">Add people by their ROHS48 profile name from the Members page. This is your current close-friends list.</p><a class="button secondary" href="#members">Find members</a><div id="friendList" style="margin-top:14px"></div></div></section>
-<section id="admin" data-page="admin" class="page-section section hidden"><div class="eyebrow">For the site owner</div><h2>Review desk</h2><p class="sub">Approve submissions before they appear publicly.</p><div id="pendingGrid" class="grid"></div><h3 style="margin-top:28px">Voice records awaiting review</h3><div id="pendingRecordsGrid" class="grid"></div><h3 style="margin-top:28px">Messages from visitors</h3><div id="adminVisitorMessages" class="read-list"></div></section>
+<section id="admin" data-page="admin" class="page-section section hidden"><div class="eyebrow">For the site owner</div><h2>Review desk</h2><p class="sub">Approve submissions before they appear publicly.</p><div id="pendingGrid" class="grid"></div><h3 style="margin-top:28px">Private uploads (admin only)</h3><p class="muted">These entries are hidden from other members.</p><div id="adminPrivatePosts" class="read-list"></div><h3 style="margin-top:22px">Private voice records</h3><div id="adminPrivateVoice" class="read-list"></div><h3 style="margin-top:28px">Voice records awaiting review</h3><div id="pendingRecordsGrid" class="grid"></div><h3 style="margin-top:28px">Messages from visitors</h3><div id="adminVisitorMessages" class="read-list"></div></section>
 </main>
 <div id="cropModal" class="crop-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="cropTitle"><div class="crop-card"><div class="crop-head"><div><div class="eyebrow">Profile photo</div><h2 id="cropTitle">Adjust your picture</h2></div><button type="button" id="cropCancel" class="secondary">Cancel</button></div><div class="crop-stage"><canvas id="cropCanvas" width="640" height="640" aria-label="Profile picture crop preview"></canvas></div><label for="cropZoom">Zoom</label><input id="cropZoom" type="range" min="1" max="3" step="0.01" value="1"><label for="cropX">Move left / right</label><input id="cropX" type="range" min="-1" max="1" step="0.01" value="0"><label for="cropY">Move up / down</label><input id="cropY" type="range" min="-1" max="1" step="0.01" value="0"><div class="actions"><button type="button" id="cropApply">Use this photo</button></div></div></div>
 <div id="albumViewer" class="album-viewer hidden" role="dialog" aria-modal="true" aria-label="Fullscreen album"><button id="albumClose" class="album-close" type="button" aria-label="Close gallery">✕</button><button id="albumPrev" class="album-arrow album-prev" type="button" aria-label="Previous photo">‹</button><img id="albumViewerImage" alt="Album photo"><button id="albumNext" class="album-arrow album-next" type="button" aria-label="Next photo">›</button><div id="albumCounter" class="album-counter"></div></div>
@@ -222,6 +262,42 @@ function gallery(u,title){const a=(Array.isArray(u)?u:[u]).filter(Boolean);if(!a
 let albumImages=[],albumIndex=0,albumTouchX=0,galleryHoldTimer=null;document.addEventListener('click',e=>{const b=e.target.closest('[data-gallery-open]');if(b){try{showAlbum(JSON.parse(b.dataset.galleryOpen),0);}catch(_){}}});document.addEventListener('dblclick',e=>{const g=e.target.closest('.gwrap');if(g){const imgs=[...g.querySelectorAll('.gallery img')].map(i=>i.src);showAlbum(imgs,0);}});document.addEventListener('pointerdown',e=>{const g=e.target.closest('.gwrap');if(!g)return;galleryHoldTimer=setTimeout(()=>{showAlbum([...g.querySelectorAll('.gallery img')].map(i=>i.src),0);galleryHoldTimer=null;},560);});['pointerup','pointercancel','pointerleave'].forEach(ev=>document.addEventListener(ev,()=>{if(galleryHoldTimer){clearTimeout(galleryHoldTimer);galleryHoldTimer=null;}}));function showAlbum(images,index=0){albumImages=(Array.isArray(images)?images:[images]).filter(Boolean);if(!albumImages.length)return;albumIndex=Math.max(0,Math.min(index,albumImages.length-1));renderAlbumViewer();$('albumViewer').classList.remove('hidden');document.body.style.overflow='hidden';}function renderAlbumViewer(){$('albumViewerImage').src=albumImages[albumIndex];$('albumCounter').textContent=`${albumIndex+1} / ${albumImages.length}`;$('albumPrev').disabled=albumIndex===0;$('albumNext').disabled=albumIndex===albumImages.length-1;}function closeAlbum(){ $('albumViewer').classList.add('hidden');$('albumViewerImage').removeAttribute('src');if($('readingView').classList.contains('hidden'))document.body.style.overflow='';}function moveAlbum(delta){albumIndex=Math.max(0,Math.min(albumImages.length-1,albumIndex+delta));renderAlbumViewer();}$('albumClose').onclick=closeAlbum;$('albumPrev').onclick=()=>moveAlbum(-1);$('albumNext').onclick=()=>moveAlbum(1);$('albumViewer').addEventListener('click',e=>{if(e.target===$('albumViewer'))closeAlbum();else if(e.target===$('albumViewerImage')){const r=e.target.getBoundingClientRect();moveAlbum(e.clientX>r.left+r.width/2?1:-1);}});$('albumViewer').addEventListener('touchstart',e=>albumTouchX=e.changedTouches[0].clientX,{passive:true});$('albumViewer').addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-albumTouchX;if(Math.abs(dx)>45)moveAlbum(dx<0?1:-1);},{passive:true});document.addEventListener('keydown',e=>{if($('albumViewer').classList.contains('hidden'))return;if(e.key==='ArrowRight')moveAlbum(1);if(e.key==='ArrowLeft')moveAlbum(-1);if(e.key==='Escape')closeAlbum();});
 const photoPaths=p=>p.media_paths?.length?p.media_paths:(p.media_path?[p.media_path]:[]);
 async function getSignedAll(p){return Promise.all(photoPaths(p).map(getSigned));}
+// Locked content is kept in protected tables and returned only by the Edge Function.
+const LOCK_CACHE_KEY="rohs48_lock_passwords_v1";
+function cachedLockPasswords(){try{return JSON.parse(sessionStorage.getItem(LOCK_CACHE_KEY)||"[]").filter(x=>typeof x==="string");}catch(_){return [];}}
+function rememberLockPassword(password){const all=cachedLockPasswords().filter(x=>x!==password);all.unshift(password);sessionStorage.setItem(LOCK_CACHE_KEY,JSON.stringify(all.slice(0,8)));}
+async function callLockService(action,itemId,password="",content=null){
+ const {data,error}=await client.functions.invoke("rohs-lock-content",{body:{action,itemId,password,content}});
+ if(error)throw new Error(error.message||"Could not verify the lock password.");
+ if(!data||data.error)throw new Error(data?.error||"Could not open this locked item.");
+ return data;
+}
+async function unlockProtectedItem(kind,item){
+ const action=kind==="post"?"unlock-post":"unlock-voice";
+ try{return await callLockService(action,item.id,"");}catch(e){}
+ const passwords=cachedLockPasswords();
+ for(const pass of passwords){try{const data=await callLockService(action,item.id,pass);return data;}catch(e){}}
+ let pass=prompt("This item is locked. Enter its password:");
+ if(pass===null)return null;
+ pass=pass.trim();if(!pass)return notice("Enter the lock password.",true),null;
+ const data=await callLockService(action,item.id,pass);
+ rememberLockPassword(pass);
+ return data;
+}
+async function openPostWithUnlock(p){
+ if(p.access_mode==="locked"){
+  try{const d=await unlockProtectedItem("post",p);if(!d)return;openReading({...p,body:d.body||""},d.images||[]);}
+  catch(e){notice(e.message||"That password did not unlock this item.",true);}return;
+ }
+ openReading(p,await getSignedAll(p));
+}
+async function openVoiceWithUnlock(r,owner=false){
+ if(r.access_mode==="locked"){
+  try{const d=await unlockProtectedItem("voice",r);if(!d)return;openVoiceReading(r,d.audio_url||"",owner||!!d.owner_access);}
+  catch(e){notice(e.message||"That password did not unlock this recording.",true);}return;
+ }
+ openVoiceReading(r,await signedVoice(r.audio_path),owner);
+}
 function card(p,url="",badge=""){return `<article class="card">${gallery(url,p.title)}<div class="card-body">${badge?`<span class="badge">${esc(badge)}</span>`:""}<div class="meta">${esc(p.kind)} · ${new Date(p.created_at).toLocaleDateString()}</div><h3>${esc(p.title||"Untitled")}</h3><p>${esc(p.body||"")}</p><div class="meta">by ${esc(p.display_name||"rohs member")}</div><div class="interaction-tools"><button type="button" class="like-btn" data-like-type="post" data-like-id="${esc(p.id)}">♡ Like <span class="like-count">…</span></button><button type="button" class="secondary" data-open-post="${esc(p.id)}">Open album & comments</button></div></div></article>`;}
 function openReading(p,images=[]){
  $("readingDate").textContent=new Date(p.created_at).toLocaleDateString();
@@ -249,9 +325,9 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape")closeReading();});
 function readingList(p){
  const b=document.createElement("button");b.type="button";b.className="read-item";
  const stamp=new Date(p.created_at),author=p.display_name||p.author_name||"";
- const visibility=p.visibility? (p.visibility==="friends"?"Close friends":p.visibility==="private"?"Private":"Public"):"";
- b.innerHTML=`<strong>${esc(p.title||"Untitled")}</strong><span>${stamp.toLocaleDateString()} · ${stamp.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})}${author?` · ${esc(author)}`:""}${visibility?` · ${esc(visibility)}`:""}</span>`;
- b.onclick=()=>openReading(p);return b;
+ const visibility=p.access_mode==="locked"?"Locked":(p.visibility? (p.visibility==="friends"?"Close friends":p.visibility==="private"?"Private":"Public"):"");
+ b.innerHTML=`<strong>${esc(p.title||"Untitled")}${p.access_mode==="locked"?` <span class="lock-hint">Locked</span>`:""}</strong><span>${stamp.toLocaleDateString()} · ${stamp.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})}${author?` · ${esc(author)}`:""}${visibility?` · ${esc(visibility)}`:""}</span>`;
+ b.onclick=()=>openPostWithUnlock(p);return b;
 }
 
 const publicPostCache=new Map();
@@ -266,17 +342,17 @@ async function mountPostInteractions(p){const box=$("readingInteractions");if(p.
 async function mountVoiceInteractions(r){const box=$("readingInteractions");if(r.visibility!=="public"||r.status!=="approved"){box.innerHTML="";return;}box.innerHTML=`<div class="interaction-panel"><div class="interaction-tools"><button type="button" class="like-btn" data-like-type="voice" data-like-id="${esc(r.id)}">♡ Like <span class="like-count">…</span></button></div></div>`;await refreshLikeButton(box.querySelector(".like-btn"));}
 async function loadAlbumComments(postId){const box=$("albumComments");if(!box)return;const {data,error}=await client.from("rohs_album_comments").select("id,display_name,body,created_at").eq("post_id",postId).order("created_at",{ascending:true}).limit(100);if(error){box.innerHTML='<p class="muted">Comments are not available yet. Run the community SQL migration.</p>';return;}box.innerHTML=(data||[]).map(c=>`<article class="comment-item"><strong>${esc(c.display_name||"Guest")}</strong><small class="muted"> · ${new Date(c.created_at).toLocaleString()}</small><p>${esc(c.body)}</p></article>`).join("")||'<p class="muted">No comments yet. Start the conversation.</p>';}
 async function submitAlbumComment(postId){const name=$("commentName").value.trim()||"Guest",body=$("commentBody").value.trim();if(!body)return notice("Write a comment first.",true);const {error}=await client.from("rohs_album_comments").insert({post_id:postId,user_id:currentUser?.id||null,actor_key:visitorKey(),display_name:name.slice(0,60),body:body.slice(0,2000)});if(error)return notice(error.message,true);$("commentBody").value="";await loadAlbumComments(postId);notice("Comment posted.");}
-document.addEventListener("click",e=>{const like=e.target.closest("[data-like-type]");if(like){toggleLike(like);return;}const open=e.target.closest("[data-open-post]");if(open){const item=publicPostCache.get(open.dataset.openPost);if(item)openReading(item.post,item.images);}});
+document.addEventListener("click",e=>{const like=e.target.closest("[data-like-type]");if(like){toggleLike(like);return;}const open=e.target.closest("[data-open-post]");if(open){const item=publicPostCache.get(open.dataset.openPost);if(item)openPostWithUnlock(item.post);}});
 async function hydrateLikeButtons(root=document){for(const b of root.querySelectorAll(".like-btn"))refreshLikeButton(b);}
 
 async function loadPublic(){
  if(!client)return;
  for(const [kind,target] of [["memory","memoryGrid"],["diary","diaryGrid"]]){
-  const {data,error}=await client.from("posts").select("id,kind,title,body,media_paths,media_path,created_at,display_name,visibility,status,user_id").eq("status","approved").eq("visibility","public").eq("kind",kind).order("created_at",{ascending:false}).limit(30);
+  const {data,error}=await client.from("posts").select("id,kind,title,body,media_paths,media_path,created_at,display_name,visibility,status,user_id,access_mode").eq("status","approved").eq("visibility","public").eq("kind",kind).order("created_at",{ascending:false}).limit(30);
   if(error){$(target).innerHTML='<p class="muted">Could not load this section yet.</p>';continue;}
   if(kind==="memory"){
    $(target).classList.add("read-list");$(target).innerHTML="";
-   (data||[]).forEach(p=>{const item=readingList(p);item.onclick=async()=>openReading(p,await getSignedAll(p));$(target).appendChild(item);});
+   (data||[]).forEach(p=>{const item=readingList(p);item.onclick=async()=>openPostWithUnlock(p);$(target).appendChild(item);});
    if(!data?.length)$(target).innerHTML='<p class="muted">No public albums yet. Be the first to share one.</p>';
   }else{
    $(target).classList.add("read-list");$(target).innerHTML="";
@@ -288,15 +364,15 @@ async function loadPublic(){
 }
 async function loadPostsFeed(){
  const box=$("postsFeed");if(!box||!client)return;box.innerHTML='<p class="muted">Loading your feed…</p>';
- let rows=[];const pub=await client.from("posts").select("id,kind,title,body,media_paths,media_path,created_at,display_name,visibility,status,user_id").eq("status","approved").eq("visibility","public").in("kind",["memory","diary"]).order("created_at",{ascending:false}).limit(50);
+ let rows=[];const pub=await client.from("posts").select("id,kind,title,body,media_paths,media_path,created_at,display_name,visibility,status,user_id,access_mode").eq("status","approved").eq("visibility","public").in("kind",["memory","diary"]).order("created_at",{ascending:false}).limit(50);
  if(!pub.error)rows.push(...(pub.data||[]));
  if(currentUser){const fr=await client.rpc("friends_feed");if(!fr.error)rows.push(...(fr.data||[]).filter(p=>p.kind==="memory"||p.kind==="diary").map(p=>({...p,display_name:p.author_name||p.display_name,feed_visibility:"Close friends"})));}
- const vr=await client.from("voice_records").select("id,user_id,title,audio_path,duration_seconds,created_at,visibility,status").eq("status","approved").in("visibility",["public","friends"]).order("created_at",{ascending:false}).limit(40);
+ const vr=await client.from("voice_records").select("id,user_id,title,audio_path,duration_seconds,created_at,visibility,status,access_mode").eq("status","approved").in("visibility",["public","friends"]).order("created_at",{ascending:false}).limit(40);
  if(!vr.error)rows.push(...(vr.data||[]).map(r=>({...r,kind:"record",body:"",feed_visibility:r.visibility==="friends"?"Close friends":"Public"})));
  const unique=[...new Map(rows.map(x=>[x.id,x])).values()].sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
  const directory=currentUser?((await client.rpc("rohs_member_directory")).data||[]):[];const names=new Map(directory.map(m=>[m.id,m.display_name]));if(currentUser&&currentProfile)names.set(currentUser.id,currentProfile.display_name);
  box.classList.add("read-list");box.innerHTML="";
- for(const item of unique){const p={...item,display_name:item.display_name||names.get(item.user_id),visibility:item.feed_visibility? (item.feed_visibility==="Close friends"?"friends":"public"):item.visibility};const row=readingList(p);row.onclick=async()=>{if(p.kind==="record")openVoiceReading(p,await signedVoice(p.audio_path),false);else openReading(p,await getSignedAll(p));};box.appendChild(row);}
+ for(const item of unique){const p={...item,display_name:item.display_name||names.get(item.user_id),visibility:item.feed_visibility? (item.feed_visibility==="Close friends"?"friends":"public"):item.visibility};const row=readingList(p);row.onclick=async()=>{if(p.kind==="record")await openVoiceWithUnlock(p,false);else await openPostWithUnlock(p);};box.appendChild(row);}
  if(!unique.length)box.innerHTML='<p class="muted">No shared posts yet. Public posts and close-friends posts shared with you will appear here.</p>';
 }
 
@@ -317,7 +393,7 @@ async function refresh(){
  if(currentUser){
   const {data:profile}=await client.from("profiles").select("display_name,role").eq("id",currentUser.id).maybeSingle();
   isAdmin=profile?.role==="admin";$("adminLink").classList.toggle("hidden",!isAdmin);$("profileLine").textContent="Posting as "+(profile?.display_name||"Visitor");
-  $("admin").classList.toggle("hidden",!isAdmin);if(isAdmin){await loadPending();await loadPendingRecords();await loadAdminVisitorMessages();}$("notificationWrap").classList.remove("hidden");await loadNotifications();subscribeNotifications();
+  $("admin").classList.toggle("hidden",!isAdmin);if(isAdmin){await loadPending();await loadPendingRecords();await loadAdminPrivateUploads();await loadAdminVisitorMessages();}$("notificationWrap").classList.remove("hidden");await loadNotifications();subscribeNotifications();
  } else {$("admin").classList.add("hidden");$("adminLink").classList.add("hidden");isAdmin=false;$ ("notificationWrap").classList.add("hidden");if(notificationChannel){client.removeChannel(notificationChannel);notificationChannel=null;notificationChannelUserId=null;}}
  await loadMine();
  await loadFriends();
@@ -328,19 +404,20 @@ async function refresh(){
  showRoute();
 }
 function statusLabel(p){
+ if(p.access_mode==="locked")return "Locked · password required";
  if(p.visibility==="private")return "Private · only you";
  const where=p.visibility==="friends"?"Close friends":"Public";
  if(p.status==="approved")return where+" · live";
  if(p.status==="rejected")return where+" · not approved";
  return where+" · waiting for approval";
 }
-function visOptions(sel){return [["public","Public — after approval"],["friends","Close friends — after approval"],["private","Private — only you"]].map(([v,t])=>`<option value="${v}"${v===sel?" selected":""}>${t}</option>`).join("");}
+function visOptions(sel){return [["public","Public — after approval"],["friends","Close friends — after approval"],["private","Private — only you"],["locked","Locked — password required"]].map(([v,t])=>`<option value="${v}"${v===sel?" selected":""}>${t}</option>`).join("");}
 function mineCard(p,url){
  const wrap=document.createElement("div");
  const show=()=>{
-  wrap.innerHTML=`<button type="button" class="read-item"><strong>${esc(p.title||"Untitled")}</strong><span>${new Date(p.created_at).toLocaleDateString()} · ${esc(statusLabel(p))}</span></button><div class="actions"><button class="secondary" data-a="edit">Edit</button><button class="secondary" data-a="del">Delete</button></div>`;
-  wrap.querySelector(".read-item").onclick=async()=>openReading(p,await getSignedAll(p));
-  wrap.querySelector('[data-a="edit"]').onclick=edit;
+  wrap.innerHTML=`<button type="button" class="read-item"><strong>${esc(p.title||"Untitled")}${p.access_mode==="locked"?` <span class="lock-hint">Locked</span>`:""}</strong><span>${new Date(p.created_at).toLocaleDateString()} · ${esc(statusLabel(p))}</span></button><div class="actions">${p.access_mode==="locked"?"":'<button class="secondary" data-a="edit">Edit</button>'}<button class="secondary" data-a="del">Delete</button></div>`;
+  wrap.querySelector(".read-item").onclick=async()=>openPostWithUnlock(p);
+  const editButton=wrap.querySelector('[data-a="edit"]');if(editButton)editButton.onclick=edit;
   wrap.querySelector('[data-a="del"]').onclick=del;
  };
  const edit=()=>{
@@ -397,9 +474,14 @@ function mineCard(p,url){
  };
  const del=async()=>{
   if(!confirm("Delete this post? This can't be undone."))return;
-  const {data,error}=await client.from("posts").delete().eq("id",p.id).select("id");
-  if(error||!data?.length)return notice(error?.message||"Could not delete this post.",true);
-  if(photoPaths(p).length)await client.storage.from("rohs-media").remove(photoPaths(p));
+  if(p.access_mode==="locked"){
+   const {data:cleanup,error:cleanupError}=await client.functions.invoke("rohs-lock-content",{body:{action:"delete-post",itemId:p.id}});
+   if(cleanupError||cleanup?.error)return notice(cleanup?.error||cleanupError?.message||"Could not delete the locked post.",true);
+  }else{
+   const {data,error}=await client.from("posts").delete().eq("id",p.id).select("id");
+   if(error||!data?.length)return notice(error?.message||"Could not delete this post.",true);
+   if(photoPaths(p).length)await client.storage.from("rohs-media").remove(photoPaths(p));
+  }
   notice("Post deleted.");await refresh();
  };
  show();
@@ -409,14 +491,14 @@ async function loadMine(){
  const box=$("mine");
  if(!currentUser||!currentProfile?.display_name){box.classList.add("hidden");$("mineGrid").innerHTML="";$("myRecordsGrid").innerHTML="";return;}
  box.classList.remove("hidden");
- const {data,error}=await client.from("posts").select("id,kind,title,body,media_paths,media_path,created_at,display_name,visibility,status").eq("user_id",currentUser.id).in("kind",["memory","diary"]).order("created_at",{ascending:false}).limit(100);
+ const {data,error}=await client.from("posts").select("id,kind,title,body,media_paths,media_path,created_at,display_name,visibility,status,access_mode").eq("user_id",currentUser.id).in("kind",["memory","diary"]).order("created_at",{ascending:false}).limit(100);
  if(error){$("mineGrid").innerHTML='<p class="muted">Could not load your posts yet.</p>';return;}
  const grid=$("mineGrid");grid.innerHTML="";
  (data||[]).forEach(p=>grid.appendChild(mineCard(p,[])));
  if(!data?.length)grid.innerHTML='<p class="muted">You haven\'t shared anything yet.</p>';
  const vr=$("myRecordsGrid");vr.innerHTML="";
- const {data:voiceRows}=await client.from("voice_records").select("id,user_id,title,audio_path,duration_seconds,visibility,status,created_at").eq("user_id",currentUser.id).order("created_at",{ascending:false}).limit(100);
- for(const r of voiceRows||[]){const item=document.createElement("div");item.innerHTML=`<button type="button" class="read-item"><strong>${esc(r.title||"Untitled recording")}</strong><span>${new Date(r.created_at).toLocaleDateString()} · ${new Date(r.created_at).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})} · ${esc(statusLabel(r))}</span></button>`;item.querySelector("button").onclick=async()=>openVoiceReading(r,await signedVoice(r.audio_path),true);vr.appendChild(item);}
+ const {data:voiceRows}=await client.from("voice_records").select("id,user_id,title,audio_path,duration_seconds,visibility,status,created_at,access_mode").eq("user_id",currentUser.id).order("created_at",{ascending:false}).limit(100);
+ for(const r of voiceRows||[]){const item=document.createElement("div");item.innerHTML=`<button type="button" class="read-item"><strong>${esc(r.title||"Untitled recording")}</strong><span>${new Date(r.created_at).toLocaleDateString()} · ${new Date(r.created_at).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})} · ${esc(statusLabel(r))}</span></button>`;item.querySelector("button").onclick=async()=>openVoiceWithUnlock(r,true);vr.appendChild(item);}
  if(!voiceRows?.length)vr.innerHTML='<p class="muted">No voice records yet.</p>';
 }
 async function loadFriends(){
@@ -445,7 +527,7 @@ async function loadFriends(){
  if(e2){grid.innerHTML='<p class="muted">Could not load this section yet.</p>';return;}
  const visiblePosts=(posts||[]).filter(p=>p.kind==='memory'||p.kind==='diary');
  grid.innerHTML="";grid.classList.add("read-list");
- visiblePosts.forEach(p=>{const item=readingList({...p,display_name:p.author_name,visibility:"friends"});item.onclick=async()=>openReading(p,await getSignedAll(p));grid.appendChild(item);});
+ visiblePosts.forEach(p=>{const item=readingList({...p,display_name:p.author_name,visibility:"friends"});item.onclick=async()=>openPostWithUnlock(p);grid.appendChild(item);});
  if(!visiblePosts.length)grid.innerHTML='<p class="muted">Nothing from your close friends yet.</p>';
 }
 async function adminAuth(){const email=$("adminEmail").value.trim(),password=$("adminPassword").value;if(!email||!password)return notice("Enter the administrator credentials.",true);const {data,error}=await client.auth.signInWithPassword({email,password});if(error)return notice(error.message,true);$("adminLoginModal").classList.add("hidden");await refresh();if(!isAdmin){await client.auth.signOut();await refresh();return notice("This account is not marked as the site administrator.",true);}notice("Administrator signed in.");}
@@ -478,6 +560,8 @@ async function prepareImage(file){
   return blob&&blob.size<file.size?blob:file;
  }catch(e){return file;}
 }
+$("visibility").addEventListener("change",()=>{$("postLockPasswordWrap").classList.toggle("hidden",$("visibility").value!=="locked");});
+$("recordVisibility").addEventListener("change",()=>{$("recordLockPasswordWrap").classList.toggle("hidden",$("recordVisibility").value!=="locked");});
 $("photo").onchange=()=>{
  const box=$("photoPreview");box.innerHTML="";
  const files=[...$("photo").files];
@@ -487,7 +571,10 @@ $("photo").onchange=()=>{
 $("submitPost").onclick=async()=>{
  if(!currentProfile?.display_name)return notice("Enter your name on the homepage before sharing.",true);
  const kind=$("kind").value,title=$("title").value.trim(),body=$("body").value.trim(),visibility=currentUser?$("visibility").value:"public";
+ const lockPassword=visibility==="locked"?$("postLockPassword").value.trim():"";
+ const dbVisibility=visibility==="locked"?"public":visibility;
  const files=kind==="memory"?[...$("photo").files].slice(0,MAX_PHOTOS):[];
+ if(visibility==="locked"&&lockPassword.length<4)return notice("Choose a lock password with at least 4 characters.",true);
  if(!title||!body)return notice("Please add a title and some words.",true);
  if(kind==="memory"&&!files.length)return notice("Please choose at least one photo for your memory.",true);
  if(files.some(f=>!["image/jpeg","image/png","image/webp"].includes(f.type)))return notice("Photos must be JPG, PNG or WebP.",true);
@@ -499,11 +586,16 @@ $("submitPost").onclick=async()=>{
    progress("Uploading photo "+(i+1)+" of "+files.length+"…");
    uploaded.push(await uploadPhoto(files[i]));
   }
-  const {error}=await client.from("posts").insert({user_id:currentUser?.id||null,kind,title,body,visibility,status:visibility==="private"?"approved":"pending",display_name:currentProfile?.display_name||"Visitor",media_path:uploaded[0]||null,media_paths:[...uploaded]});
+  const payload={user_id:currentUser?.id||null,kind,title,body:visibility==="locked"?" ":body,visibility:dbVisibility,status:dbVisibility==="private"?"approved":"pending",display_name:currentProfile?.display_name||"Visitor",media_path:visibility==="locked"?null:(uploaded[0]||null),media_paths:visibility==="locked"?[]:[...uploaded],access_mode:visibility==="locked"?"locked":"normal"};
+  const {data:created,error}=await client.from("posts").insert(payload).select("id").single();
   if(error)throw error;
+  if(visibility==="locked"){
+   const {data:locked,error:lockErr}=await client.functions.invoke("rohs-lock-content",{body:{action:"protect-post",itemId:created.id,password:lockPassword,content:{body,media_paths:[...uploaded]}}});
+   if(lockErr||locked?.error){await client.from("posts").delete().eq("id",created.id);throw new Error(locked?.error||lockErr?.message||"Could not secure the locked album.");}
+  }
   uploaded.length=0;
-  $("title").value="";$("body").value="";$("photo").value="";$("photoPreview").innerHTML="";
-  notice(visibility==="private"?"Your private entry has been saved.":"Thanks! Your post is waiting for the site owner's approval.");
+  $("title").value="";$("body").value="";$("photo").value="";$("photoPreview").innerHTML="";$("postLockPassword").value="";$("visibility").value="public";$("postLockPasswordWrap").classList.add("hidden");
+  notice(visibility==="private"?"Your private entry has been saved.":visibility==="locked"?"Your locked entry has been saved.":"Thanks! Your post is waiting for the site owner's approval.");
   await refresh();
  }catch(e){
   if(uploaded.length)await client.storage.from("rohs-media").remove(uploaded);
@@ -512,13 +604,14 @@ $("submitPost").onclick=async()=>{
  finally{$("submitPost").disabled=false;}
 };
 async function loadPending(){
- const {data,error}=await client.from("posts").select("id,kind,title,body,media_paths,media_path,created_at,user_id,visibility,status").eq("status","pending").in("kind",["memory","diary"]).order("created_at",{ascending:true});
+ const {data,error}=await client.from("posts").select("id,kind,title,body,media_paths,media_path,created_at,user_id,visibility,status,access_mode").eq("status","pending").in("kind",["memory","diary"]).order("created_at",{ascending:true});
  if(error){$("pendingGrid").innerHTML='<p class="muted">Could not load pending posts.</p>';return;}
  $("pendingGrid").innerHTML="";
  for(const p of data||[]){
   const url=await getSignedAll(p);
   const el=document.createElement("article");el.className="card";
-  el.innerHTML=card(p,url,statusLabel(p))+`<div class="card-body"><button data-action="approve">Approve</button> <button class="secondary" data-action="reject">Reject</button></div>`;
+  el.innerHTML=card(p,url,statusLabel(p))+`<div class="card-body">${p.access_mode==="locked"?'<button class="secondary" data-action="preview">Preview locked item</button> ':""}<button data-action="approve">Approve</button> <button class="secondary" data-action="reject">Reject</button></div>`;
+  if(p.access_mode==="locked")el.querySelector('[data-action="preview"]').onclick=()=>openPostWithUnlock(p);
   el.querySelector('[data-action="approve"]').onclick=()=>moderate(p.id,"approved");
   el.querySelector('[data-action="reject"]').onclick=()=>moderate(p.id,"rejected");
   $("pendingGrid").appendChild(el);
@@ -559,21 +652,28 @@ $("saveRecording").onclick=async()=>{
  if(!currentProfile?.display_name)return notice("Create your name-only profile before saving a recording.",true);
  if(!recordBlob)return notice("Make a recording first.",true);
  const title=$("recordTitle").value.trim(),visibility=currentUser?$("recordVisibility").value:"public",duration=Math.min(RECORD_LIMIT_SECONDS,Math.ceil(recordElapsed()));
+ const lockPassword=visibility==="locked"?$("recordLockPassword").value.trim():"";const dbVisibility=visibility==="locked"?"public":visibility;
+ if(visibility==="locked"&&lockPassword.length<4)return notice("Choose a lock password with at least 4 characters.",true);
  if(!title)return notice("Please give your recording a title.",true);if(!duration)return notice("Your recording is empty.",true);
  const btn=$("saveRecording");btn.disabled=true;const ext=recordBlob.type.includes("mp4")?"m4a":recordBlob.type.includes("ogg")?"ogg":"webm";const path=(currentUser?currentUser.id:"guest")+"/"+crypto.randomUUID()+"."+ext;const canonicalType=ext==="m4a"?"audio/mp4":ext==="ogg"?"audio/ogg":"audio/webm";
  try{
   const {error:upErr}=await client.storage.from("rohs-voice").upload(path,recordBlob,{contentType:canonicalType,upsert:false});if(upErr)throw upErr;
-  const {error}=await client.from("voice_records").insert({user_id:currentUser?.id||null,title,audio_path:path,duration_seconds:duration,mime_type:canonicalType,visibility,status:visibility==="private"?"approved":"pending"});if(error){await client.storage.from("rohs-voice").remove([path]);throw error;}
-  recordBlob=null;recordChunks=[];$("recordTitle").value="";$("recordTimer").textContent="Maximum 10 minutes per recording.";$("recordHint").textContent="Saved! You can make another recording.";notice("Your voice recording is waiting for approval.");await loadRecords();if(isAdmin)await loadPendingRecords();
+  const placeholder=visibility==="locked"?"__locked__/"+crypto.randomUUID():path;
+  const {data:created,error}=await client.from("voice_records").insert({user_id:currentUser?.id||null,title,audio_path:placeholder,duration_seconds:duration,mime_type:canonicalType,visibility:dbVisibility,status:dbVisibility==="private"?"approved":"pending",access_mode:visibility==="locked"?"locked":"normal"}).select("id").single();if(error){await client.storage.from("rohs-voice").remove([path]);throw error;}
+  if(visibility==="locked"){
+   const {data:locked,error:lockErr}=await client.functions.invoke("rohs-lock-content",{body:{action:"protect-voice",itemId:created.id,password:lockPassword,content:{audio_path:path}}});
+   if(lockErr||locked?.error){await client.from("voice_records").delete().eq("id",created.id);await client.storage.from("rohs-voice").remove([path]);throw new Error(locked?.error||lockErr?.message||"Could not secure the locked recording.");}
+  }
+  recordBlob=null;recordChunks=[];$("recordTitle").value="";$("recordLockPassword").value="";$("recordVisibility").value="public";$("recordLockPasswordWrap").classList.add("hidden");$("recordTimer").textContent="Maximum 10 minutes per recording.";$("recordHint").textContent="Saved! You can make another recording.";notice(visibility==="locked"?"Your locked voice recording has been saved.":visibility==="private"?"Your private voice recording has been saved.":"Your voice recording is waiting for approval.");await loadRecords();if(isAdmin)await loadPendingRecords();
  }catch(e){notice(e.message||"Could not save the voice record.",true);}finally{btn.disabled=!recordBlob;}
 };
 async function signedVoice(path){const {data,error}=await client.storage.from("rohs-voice").createSignedUrl(path,3600);return error?"":data.signedUrl;}
 function voiceCard(r,url,adminMode=false){
  const el=document.createElement("div");
  const owner=!!currentUser&&r.user_id===currentUser.id;
- const status=adminMode?"Awaiting approval":(r.visibility==="private"?"Private":r.visibility==="friends"?"Close friends":r.status==="approved"?"Public":"Awaiting approval");
+ const status=r.access_mode==="locked"?"Locked · password required":(adminMode?"Awaiting approval":(r.visibility==="private"?"Private":r.visibility==="friends"?"Close friends":r.status==="approved"?"Public":"Awaiting approval"));
  el.innerHTML=`<button type="button" class="read-item"><strong>${esc(r.title||"Untitled recording")}</strong><span>${new Date(r.created_at).toLocaleDateString()} · ${new Date(r.created_at).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})}${r.display_name?` · ${esc(r.display_name)}`:""} · ${esc(status)}</span></button>`;
- el.querySelector("button").onclick=async()=>openVoiceReading(r,await signedVoice(r.audio_path),owner);
+ el.querySelector("button").onclick=async()=>openVoiceWithUnlock(r,owner);
  if(adminMode){const actions=document.createElement("div");actions.className="actions";actions.innerHTML='<button data-review="approved">Approve</button><button class="secondary" data-review="rejected">Reject</button>';actions.querySelectorAll("button").forEach(btn=>btn.onclick=()=>moderateVoice(r.id,btn.dataset.review));el.appendChild(actions);}
  return el;
 }
@@ -590,7 +690,7 @@ async function editVoice(r){
 async function loadRecords(){
  const grid=$("recordsGrid");if(!client){grid.innerHTML='<p class="muted">Connect Supabase to load voice records.</p>';return;}
 
- const {data:publicRows,error}=await client.from("voice_records").select("id,user_id,title,audio_path,duration_seconds,visibility,status,created_at").eq("status","approved").eq("visibility","public").order("created_at",{ascending:false}).limit(100);
+ const {data:publicRows,error}=await client.from("voice_records").select("id,user_id,title,audio_path,duration_seconds,visibility,status,created_at,access_mode").eq("status","approved").eq("visibility","public").order("created_at",{ascending:false}).limit(100);
  if(error){grid.innerHTML='<p class="muted">Records are not set up yet. Apply the voice-record SQL migration first.</p>';return;}
  const rows=[...(publicRows||[])];
  if(currentUser){
@@ -602,8 +702,22 @@ async function loadRecords(){
  grid.innerHTML="";for(const r of unique){grid.appendChild(voiceCard(r,""));}
  if(!unique.length)grid.innerHTML='<p class="muted">No voice records available yet.</p>';
 }
-async function deleteVoice(r){if(!confirm("Delete this voice recording? This cannot be undone."))return;const {data,error}=await client.from("voice_records").delete().eq("id",r.id).select("id");if(error||!data?.length)return notice(error?.message||"Could not delete this recording.",true);await client.storage.from("rohs-voice").remove([r.audio_path]);notice("Voice record deleted.");await loadRecords();await loadMine();}
-async function loadPendingRecords(){if(!isAdmin)return;const grid=$("pendingRecordsGrid");const {data,error}=await client.from("voice_records").select("id,user_id,title,audio_path,duration_seconds,visibility,status,created_at").eq("status","pending").order("created_at",{ascending:true});if(error){grid.innerHTML='<p class="muted">Could not load pending voice records.</p>';return;}grid.innerHTML="";for(const r of data||[]){grid.appendChild(voiceCard(r,"",true));}if(!data?.length)grid.innerHTML='<p class="muted">No voice records waiting for review.</p>';}
+async function deleteVoice(r){if(!confirm("Delete this voice recording? This cannot be undone."))return;if(r.access_mode==="locked"){const {data,error}=await client.functions.invoke("rohs-lock-content",{body:{action:"delete-voice",itemId:r.id}});if(error||data?.error)return notice(data?.error||error?.message||"Could not delete this recording.",true);}else{const {data,error}=await client.from("voice_records").delete().eq("id",r.id).select("id");if(error||!data?.length)return notice(error?.message||"Could not delete this recording.",true);await client.storage.from("rohs-voice").remove([r.audio_path]);}notice("Voice record deleted.");await loadRecords();await loadMine();}
+async function loadAdminPrivateUploads(){
+ if(!isAdmin)return;
+ const postsBox=$("adminPrivatePosts"),voiceBox=$("adminPrivateVoice");
+ const {data:posts,error:postError}=await client.from("posts").select("id,user_id,kind,title,body,media_paths,media_path,display_name,created_at,visibility,status,access_mode").eq("visibility","private").in("kind",["memory","diary"]).order("created_at",{ascending:false}).limit(100);
+ postsBox.innerHTML="";
+ if(postError)postsBox.innerHTML='<p class="muted">Could not load private posts.</p>';
+ else for(const p of posts||[]){const row=readingList(p);row.onclick=()=>openPostWithUnlock(p);postsBox.appendChild(row);}
+ if(!postError&&!(posts||[]).length)postsBox.innerHTML='<p class="muted">No private albums or diaries.</p>';
+ const {data:voices,error:voiceError}=await client.from("voice_records").select("id,user_id,title,audio_path,duration_seconds,visibility,status,created_at,access_mode").eq("visibility","private").order("created_at",{ascending:false}).limit(100);
+ voiceBox.innerHTML="";
+ if(voiceError)voiceBox.innerHTML='<p class="muted">Could not load private voice records.</p>';
+ else for(const r of voices||[]){const row=readingList({...r,kind:"record"});row.onclick=()=>openVoiceWithUnlock(r,true);voiceBox.appendChild(row);}
+ if(!voiceError&&!(voices||[]).length)voiceBox.innerHTML='<p class="muted">No private voice records.</p>';
+}
+async function loadPendingRecords(){if(!isAdmin)return;const grid=$("pendingRecordsGrid");const {data,error}=await client.from("voice_records").select("id,user_id,title,audio_path,duration_seconds,visibility,status,created_at,access_mode").eq("status","pending").order("created_at",{ascending:true});if(error){grid.innerHTML='<p class="muted">Could not load pending voice records.</p>';return;}grid.innerHTML="";for(const r of data||[]){grid.appendChild(voiceCard(r,"",true));}if(!data?.length)grid.innerHTML='<p class="muted">No voice records waiting for review.</p>';}
 async function moderateVoice(id,status){const {error}=await client.from("voice_records").update({status}).eq("id",id);if(error)return notice(error.message,true);notice(status==="approved"?"Voice record approved.":"Voice record rejected.");await loadPendingRecords();await loadRecords();}
 
 
@@ -680,7 +794,7 @@ $('memberSearch')?.addEventListener('input',renderMemberDirectory);
 document.addEventListener('click',async e=>{const m=e.target.closest('[data-member-chat]');if(m){const {data,error}=await client.rpc('rohs_start_conversation_by_id',{p_peer_id:m.dataset.memberChat});if(error)return notice(error.message,true);const c=data?.[0]||data;if(c?.conversation_id){location.hash='#messages';openChat(c.conversation_id,c.other_user_id,m.dataset.memberName);}return;}const f=e.target.closest('[data-member-friend]');if(f){const {error}=await client.rpc('rohs_add_close_friend_by_id',{p_friend_id:f.dataset.memberFriend});if(error)return notice(error.message,true);notice('Member added to your close friends.');await loadFriends();}});
 
 // 4) On This Day — database RPC returns only content the signed-in member may view.
-async function loadOnThisDay(){const box=$('onThisDayGrid');if(!currentUser){box.innerHTML='<p class="muted">Enter your name to see memories from this day.</p>';return;}const {data,error}=await client.rpc('rohs_on_this_day');if(error){box.innerHTML='<p class="muted">On This Day will appear after the community update is applied.</p>';return;}const rows=(data||[]).filter(p=>p.kind==='memory'||p.kind==='diary');box.innerHTML=rows.map(p=>`<button class="read-item" type="button" data-memory-day="${esc(p.id)}"><strong>${esc(p.title||'Untitled memory')}</strong><span>${new Date(p.created_at).toLocaleDateString()} · ${esc(p.kind)}</span></button>`).join('')||'<p class="muted">No earlier memories from this date yet. Start collecting moments.</p>';box.querySelectorAll('[data-memory-day]').forEach(b=>b.onclick=async()=>{const {data}=await client.from('posts').select('id,kind,title,body,media_paths,media_path,created_at,display_name,visibility,status,user_id').eq('id',b.dataset.memoryDay).maybeSingle();if(data)openReading(data,await getSignedAll(data));});}
+async function loadOnThisDay(){const box=$('onThisDayGrid');if(!currentUser){box.innerHTML='<p class="muted">Enter your name to see memories from this day.</p>';return;}const {data,error}=await client.rpc('rohs_on_this_day');if(error){box.innerHTML='<p class="muted">On This Day will appear after the community update is applied.</p>';return;}const rows=(data||[]).filter(p=>p.kind==='memory'||p.kind==='diary');box.innerHTML=rows.map(p=>`<button class="read-item" type="button" data-memory-day="${esc(p.id)}"><strong>${esc(p.title||'Untitled memory')}</strong><span>${new Date(p.created_at).toLocaleDateString()} · ${esc(p.kind)}</span></button>`).join('')||'<p class="muted">No earlier memories from this date yet. Start collecting moments.</p>';box.querySelectorAll('[data-memory-day]').forEach(b=>b.onclick=async()=>{const item=rows.find(p=>p.id===b.dataset.memoryDay);if(item)await openPostWithUnlock(item);});}
 
 // 5) Collaborative albums. Contributors add a note or photo contribution without
 // overwriting the album owner's original post/media array.
@@ -705,10 +819,30 @@ async function loadNotifications(){if(!currentUser)return;const {data,error}=awa
 async function subscribeNotifications(){if(!currentUser)return;if(notificationChannel&&notificationChannelUserId===currentUser.id)return;if(notificationChannel){await client.removeChannel(notificationChannel);notificationChannel=null;}notificationChannelUserId=currentUser.id;notificationChannel=client.channel("rohs-notifications-"+currentUser.id).on("postgres_changes",{event:"INSERT",schema:"public",table:"rohs_notifications",filter:"recipient_id=eq."+currentUser.id},async()=>{await loadNotifications();}).subscribe();}
 $("notificationBell").onclick=async()=>{$("notificationPanel").classList.toggle("hidden");if(!$ ("notificationPanel").classList.contains("hidden"))await loadNotifications();};
 $("clearNotifications").onclick=async()=>{if(!currentUser)return;const {error}=await client.rpc("rohs_clear_my_notifications");if(error)return notice(error.message||"Could not clear notifications.",true);await loadNotifications();notice("Notifications cleared.");};
-document.addEventListener("click",async e=>{const n=e.target.closest("[data-notification]");if(n){const id=n.dataset.notification;await client.from("rohs_notifications").update({read_at:new Date().toISOString()}).eq("id",id);$("notificationPanel").classList.add("hidden");await loadNotifications();const type=n.dataset.targetType,target=n.dataset.targetId;if(type==="post"&&target){const {data}=await client.from("posts").select("id,kind,title,body,media_paths,media_path,created_at,display_name,visibility,status,user_id").eq("id",target).maybeSingle();if(data){location.hash=data.kind==="memory"?"#memories":"#diary";openReading(data,await getSignedAll(data));}}else if(type==="voice"&&target){const {data}=await client.from("voice_records").select("id,user_id,title,audio_path,duration_seconds,visibility,status,created_at").eq("id",target).maybeSingle();if(data){location.hash="#records";openVoiceReading(data,await signedVoice(data.audio_path),true);}}else if(type==="message"){location.hash="#messages";}else if(type==="chat"&&target){location.hash="#messages";await loadChatConversations();const {data:chats}=await client.rpc("rohs_list_conversations");const chat=(chats||[]).find(c=>c.conversation_id===target);if(chat)openChat(chat.conversation_id,chat.other_user_id,chat.other_name);}return;}
+document.addEventListener("click",async e=>{const n=e.target.closest("[data-notification]");if(n){const id=n.dataset.notification;await client.from("rohs_notifications").update({read_at:new Date().toISOString()}).eq("id",id);$("notificationPanel").classList.add("hidden");await loadNotifications();const type=n.dataset.targetType,target=n.dataset.targetId;if(type==="post"&&target){const {data}=await client.from("posts").select("id,kind,title,body,media_paths,media_path,created_at,display_name,visibility,status,user_id,access_mode").eq("id",target).maybeSingle();if(data){location.hash=data.kind==="memory"?"#memories":"#diary";openPostWithUnlock(data);}}else if(type==="voice"&&target){const {data}=await client.from("voice_records").select("id,user_id,title,audio_path,duration_seconds,visibility,status,created_at,access_mode").eq("id",target).maybeSingle();if(data){location.hash="#records";openVoiceWithUnlock(data,true);}}else if(type==="message"){location.hash="#messages";}else if(type==="chat"&&target){location.hash="#messages";await loadChatConversations();const {data:chats}=await client.rpc("rohs_list_conversations");const chat=(chats||[]).find(c=>c.conversation_id===target);if(chat)openChat(chat.conversation_id,chat.other_user_id,chat.other_name);}return;}
 });
 
-async function viewMemberProfile(userId){if(!userId)return;const {data,error}=await client.rpc('rohs_get_profile_details',{p_user_id:userId});if(error||!data)return notice(error?.message||'This profile is not available.',true);const d=data;if(d.avatar_path){const av=await client.storage.from('rohs-avatars').createSignedUrl(d.avatar_path,1800);d.avatar_url=av.data?.signedUrl||'';}for(const post of (d.posts||[])){const paths=Array.isArray(post.media_paths)?post.media_paths:[];post.media_urls=await Promise.all(paths.map(async path=>(await client.storage.from('rohs-media').createSignedUrl(path,1800)).data?.signedUrl||''));}for(const record of (d.records||[])){record.audio_url=(await client.storage.from('rohs-voice').createSignedUrl(record.audio_path,1800)).data?.signedUrl||'';} $('viewProfileName').textContent=d.display_name||'ROHS48 member';let html=`<div class="profile-layout">${d.avatar_url?`<img class="profile-avatar" src="${d.avatar_url}" alt="">`:`<div class="member-avatar">${esc((d.display_name||'R').slice(0,1).toUpperCase())}</div>`}<div><h3>${esc(d.display_name||'ROHS48 member')}</h3><p class="muted">Joined ${d.created_at?new Date(d.created_at).toLocaleString():'date unavailable'}</p></div></div><h3 class="mine-heading">Albums</h3><div class="profile-shared-grid">${(d.posts||[]).filter(x=>x.kind==='memory').map(x=>`<article class="profile-shared-item"><strong>${esc(x.title||'Untitled album')}</strong><small>${new Date(x.created_at).toLocaleDateString()}</small>${x.media_urls?.map(u=>`<img src="${u}" alt="Shared album photo">`).join('')||''}<p>${esc(x.body||'')}</p></article>`).join('')||'<p class="muted">No albums visible to you.</p>'}</div><h3 class="mine-heading">Diaries</h3><div class="profile-shared-grid">${(d.posts||[]).filter(x=>x.kind==='diary').map(x=>`<article class="profile-shared-item"><strong>${esc(x.title||'Untitled diary')}</strong><small>${new Date(x.created_at).toLocaleDateString()}</small><p>${esc(x.body||'')}</p></article>`).join('')||'<p class="muted">No diaries visible to you.</p>'}</div><h3 class="mine-heading">Records</h3><div class="profile-shared-grid">${(d.records||[]).map(x=>`<article class="profile-shared-item"><strong>${esc(x.title||'Untitled record')}</strong><small>${new Date(x.created_at).toLocaleDateString()}</small>${x.audio_url?`<audio controls preload="none" src="${x.audio_url}"></audio>`:''}</article>`).join('')||'<p class="muted">No records visible to you.</p>'}</div>`;$('viewProfileBody').innerHTML=html;location.hash='#viewProfile';}
+async function viewMemberProfile(userId){
+ if(!userId)return;
+ const {data,error}=await client.rpc('rohs_get_profile_details',{p_user_id:userId});
+ if(error||!data)return notice(error?.message||'This profile is not available.',true);
+ const d=data;
+ if(d.avatar_path){const av=await client.storage.from('rohs-avatars').createSignedUrl(d.avatar_path,1800);d.avatar_url=av.data?.signedUrl||'';}
+ for(const post of (d.posts||[])){
+  const paths=Array.isArray(post.media_paths)?post.media_paths:[];
+  post.media_urls=post.access_mode==='locked'?[]:await Promise.all(paths.map(async path=>(await client.storage.from('rohs-media').createSignedUrl(path,1800)).data?.signedUrl||''));
+ }
+ for(const record of (d.records||[])){
+  record.audio_url=record.access_mode==='locked'||!record.audio_path?'':(await client.storage.from('rohs-voice').createSignedUrl(record.audio_path,1800)).data?.signedUrl||'';
+ }
+ $('viewProfileName').textContent=d.display_name||'ROHS48 member';
+ const postCard=(x,kind)=>`<article class="profile-shared-item"><strong>${esc(x.title|| (kind==='memory'?'Untitled album':'Untitled diary'))}${x.access_mode==='locked'?' <span class="lock-hint">Locked</span>':''}</strong><small>${new Date(x.created_at).toLocaleDateString()}</small>${x.access_mode==='locked'?`<p class="muted">This entry is password protected.</p><button type="button" class="secondary" data-profile-open-post="${esc(x.id)}">Open locked entry</button>`:`${x.media_urls?.map(u=>`<img src="${u}" alt="Shared album photo">`).join('')||''}<p>${esc(x.body||'')}</p>`}</article>`;
+ const html=`<div class="profile-layout">${d.avatar_url?`<img class="profile-avatar" src="${d.avatar_url}" alt="">`:`<div class="member-avatar">${esc((d.display_name||'R').slice(0,1).toUpperCase())}</div>`}<div><h3>${esc(d.display_name||'ROHS48 member')}</h3><p class="muted">Joined ${d.created_at?new Date(d.created_at).toLocaleString():'date unavailable'}</p></div></div><h3 class="mine-heading">Albums</h3><div class="profile-shared-grid">${(d.posts||[]).filter(x=>x.kind==='memory').map(x=>postCard(x,'memory')).join('')||'<p class="muted">No albums visible to you.</p>'}</div><h3 class="mine-heading">Diaries</h3><div class="profile-shared-grid">${(d.posts||[]).filter(x=>x.kind==='diary').map(x=>postCard(x,'diary')).join('')||'<p class="muted">No diaries visible to you.</p>'}</div><h3 class="mine-heading">Records</h3><div class="profile-shared-grid">${(d.records||[]).map(x=>`<article class="profile-shared-item"><strong>${esc(x.title||'Untitled record')}${x.access_mode==='locked'?' <span class="lock-hint">Locked</span>':''}</strong><small>${new Date(x.created_at).toLocaleDateString()}</small>${x.access_mode==='locked'?'<p class="muted">This recording is password protected.</p><button type="button" class="secondary" data-profile-open-voice="'+esc(x.id)+'">Open locked recording</button>':(x.audio_url?`<audio controls preload="none" src="${x.audio_url}"></audio>`:'')}</article>`).join('')||'<p class="muted">No records visible to you.</p>'}</div>`;
+ $('viewProfileBody').innerHTML=html;
+ $('viewProfileBody').querySelectorAll('[data-profile-open-post]').forEach(btn=>btn.onclick=()=>{const post=(d.posts||[]).find(x=>x.id===btn.dataset.profileOpenPost);if(post)openPostWithUnlock(post);});
+ $('viewProfileBody').querySelectorAll('[data-profile-open-voice]').forEach(btn=>btn.onclick=()=>{const record=(d.records||[]).find(x=>x.id===btn.dataset.profileOpenVoice);if(record)openVoiceWithUnlock(record,userId===currentUser?.id||isAdmin);});
+ location.hash='#viewProfile';
+}
 $('chatProfileMenuBtn').onclick=()=>{$('chatProfileMenu').classList.toggle('hidden');};
 document.addEventListener('click',async e=>{
  const more=e.target.closest('[data-chat-more]');
