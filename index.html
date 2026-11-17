@@ -381,7 +381,7 @@ function statusLabel(p){
  if(p.status==="rejected")return where+" · not approved";
  return where+" · waiting for approval";
 }
-function visOptions(sel){return [["public","Public — after approval"],["friends","Close friends — after approval"],["private","Private — only you"]].map(([v,t])=>`<option value="${v}"${v===sel?" selected":""}>${t}</option>`).join("");}
+function visOptions(sel){return [["public","Public — after approval"],["friends","Close friends — after approval"],["private","Private — only you"],["locked","Locked — password required"]].map(([v,t])=>`<option value="${v}"${v===sel?" selected":""}>${t}</option>`).join("");}
 function mineCard(p,url){
  const wrap=document.createElement("div");
  const show=()=>{
