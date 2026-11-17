@@ -556,7 +556,7 @@ $("submitPost").onclick=async()=>{
    progress("Uploading photo "+(i+1)+" of "+files.length+"…");
    uploaded.push(await uploadPhoto(files[i]));
   }
-  const payload={user_id:currentUser?.id||null,kind,title,body:visibility==="locked"?"":body,visibility:dbVisibility,status:dbVisibility==="private"?"approved":"pending",display_name:currentProfile?.display_name||"Visitor",media_path:visibility==="locked"?null:(uploaded[0]||null),media_paths:visibility==="locked"?[]:[...uploaded],access_mode:visibility==="locked"?"locked":"normal"};
+  const payload={user_id:currentUser?.id||null,kind,title,body:visibility==="locked"?" ":body,visibility:dbVisibility,status:dbVisibility==="private"?"approved":"pending",display_name:currentProfile?.display_name||"Visitor",media_path:visibility==="locked"?null:(uploaded[0]||null),media_paths:visibility==="locked"?[]:[...uploaded],access_mode:visibility==="locked"?"locked":"normal"};
   const {data:created,error}=await client.from("posts").insert(payload).select("id").single();
   if(error)throw error;
   if(visibility==="locked"){
